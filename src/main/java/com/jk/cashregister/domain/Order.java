@@ -1,7 +1,8 @@
-package com.jk.cashregister.model;
+package com.jk.cashregister.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -10,6 +11,7 @@ import java.util.List;
 @Entity
 @Table(name = "purchase_order")
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class Order {
 		@Id@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,8 +21,8 @@ public class Order {
 		private LocalDateTime dateOfCreation;
 
 		@ManyToOne
-		@JoinColumn(name = "employee_id", referencedColumnName = "id")
-		private Employee employee;
+		@JoinColumn(name = "cr_user_id", referencedColumnName = "id")
+		private User user;
 
 		@OneToMany(mappedBy = "order")
 		private List<OrderDetails> orderDetailsList;

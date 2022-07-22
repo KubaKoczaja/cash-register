@@ -1,18 +1,18 @@
-package com.jk.cashregister.model;
+package com.jk.cashregister.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "EMPLOYEE")
+@Table(name = "cr_user")
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
-@EqualsAndHashCode
-public class Employee {
+public class User {
 		@Id
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
 		private Long id;
@@ -26,6 +26,16 @@ public class Employee {
 		@Column(name = "job_position")
 		private String position;
 
-		@OneToMany(mappedBy = "employee")
+		@Column(name = "login")
+		private String login;
+
+		@Column(name = "password")
+		private String password;
+
+		@OneToMany(mappedBy = "user")
+		private List<Report> reports;
+
+		@OneToMany(mappedBy = "user")
 		private List<Order> orders;
+
 }

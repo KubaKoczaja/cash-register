@@ -1,8 +1,9 @@
-package com.jk.cashregister.model;
+package com.jk.cashregister.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 @Entity
 @Table(name = "STOCK")
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 @EqualsAndHashCode(exclude = "id")
 public class Stock {

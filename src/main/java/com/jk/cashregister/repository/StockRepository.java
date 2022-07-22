@@ -1,6 +1,6 @@
 package com.jk.cashregister.repository;
 
-import com.jk.cashregister.model.Stock;
+import com.jk.cashregister.domain.Stock;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
