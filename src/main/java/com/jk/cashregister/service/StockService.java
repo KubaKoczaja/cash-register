@@ -46,5 +46,12 @@ public class StockService {
 				stockRepository.save(stock);
 				return stock;
 		}
+
+		public void updateStock(StockCreateRequest request, Stock stockToUpdate) {
+				stockCreateRequestValidator.validate(request);
+				Stock stock = stockCreateRequestMapper.mapToStock(request);
+				stock.setId(stockToUpdate.getId());
+				stockRepository.save(stock);
+		}
 }
 

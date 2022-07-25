@@ -1,11 +1,3 @@
-CREATE TABLE employee (
-	id bigint auto_increment NOT NULL,
-	first_name varchar NOT NULL,
-	last_name varchar NOT NULL,
-	job_position varchar NOT NULL,
-	CONSTRAINT employee_pk PRIMARY KEY (id)
-);
-
 CREATE TABLE cr_user (
 	id bigint auto_increment NOT NULL,
 	first_name varchar NOT NULL,
