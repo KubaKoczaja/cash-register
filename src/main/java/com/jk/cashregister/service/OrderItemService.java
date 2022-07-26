@@ -38,7 +38,7 @@ public class OrderItemService {
 				stockRepository.save(orderItem.getStock());
 		}
 
-		public List<OrderItem> getAllOrderItemsByOrder(Order order) {
-				return orderItemRepository.findAllByOrder(order);
+		public List<OrderItem> getAllOrderItemsByOrderId(Long orderId) {
+				return orderItemRepository.findAllByOrderId(orderId);
 		}
 }
