@@ -17,15 +17,18 @@ public class Order {
 		@Id@GeneratedValue(strategy = GenerationType.IDENTITY)
 		private Long id;
 
-		@Column(name = "date_of_creation")
-		private LocalDateTime dateOfCreation;
+		@Column(name = "open_date")
+		private LocalDateTime openDate;
+
+		@Column(name = "close_date")
+		private LocalDateTime closeDate;
 
 		@ManyToOne
 		@JoinColumn(name = "cr_user_id", referencedColumnName = "id")
 		private User user;
 
 		@OneToMany(mappedBy = "order")
-		private List<OrderDetails> orderDetailsList;
+		private List<OrderItem> orderItemList;
 
 
 }

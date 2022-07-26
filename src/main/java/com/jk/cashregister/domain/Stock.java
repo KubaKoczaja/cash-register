@@ -32,6 +32,6 @@ public class Stock {
 		private int price;
 
 		@OneToMany(mappedBy = "stock")
-		private List<OrderDetails> orderDetailsList;
+		private List<OrderItem> orderItemList;
 
 }

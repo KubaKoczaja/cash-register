@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "order_details")
+@Table(name = "order_item")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class OrderDetails {
+public class OrderItem {
 		@Id
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
 		private Long id;

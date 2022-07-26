@@ -30,23 +30,24 @@ CREATE TABLE stock (
 
 CREATE TABLE purchase_order (
 	id bigint auto_increment NOT NULL,
-	date_of_creation timestamp NOT NULL,
+	open_date timestamp NOT NULL,
+	close_date timestamp,
 	user_id int4 NOT NULL,
 	CONSTRAINT order_pk PRIMARY KEY (id)
 );
 
-CREATE TABLE order_details (
+CREATE TABLE order_item (
 	id bigint auto_increment NOT NULL,
 	stock_id bigint NOT NULL,
 	quantity_ordered int4 NOT NULL,
 	order_id bigint NOT NULL,
-	CONSTRAINT order_details_pk PRIMARY KEY (id)
+	CONSTRAINT order_item_pk PRIMARY KEY (id)
 );
 
 ALTER TABLE report ADD CONSTRAINT report_fk FOREIGN KEY (user_id) REFERENCES cr_user(id);
 ALTER TABLE purchase_order ADD CONSTRAINT order_fk FOREIGN KEY (user_id) REFERENCES cr_user(id);
-ALTER TABLE order_details ADD CONSTRAINT order_details_fk FOREIGN KEY (order_id) REFERENCES purchase_order(id);
-ALTER TABLE order_details ADD CONSTRAINT order_details_fk_1 FOREIGN KEY (stock_id) REFERENCES stock(id);
+ALTER TABLE order_item ADD CONSTRAINT order_item_fk FOREIGN KEY (order_id) REFERENCES purchase_order(id);
+ALTER TABLE order_item ADD CONSTRAINT order_item_fk_1 FOREIGN KEY (stock_id) REFERENCES stock(id);
 
 insert into cr_user(first_name, last_name, job_position, login, "password") values ('John', 'Smith', 'Cashier', 'johsmi1', 'test');
 insert into cr_user(first_name, last_name, job_position, login, "password") values ('Mary', 'Kay', 'Senior Cashier', 'markay2', 'test');
