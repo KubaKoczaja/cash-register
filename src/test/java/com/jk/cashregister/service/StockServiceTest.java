@@ -4,8 +4,6 @@ import com.jk.cashregister.domain.Stock;
 import com.jk.cashregister.domain.dto.StockCreateRequest;
 import com.jk.cashregister.repository.StockRepository;
 import com.jk.cashregister.service.exception.NoSuchStockItemException;
-import com.jk.cashregister.service.mapper.StockCreateRequestMapper;
-import com.jk.cashregister.service.validator.StockCreateRequestValidator;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,7 +11,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Optional;
