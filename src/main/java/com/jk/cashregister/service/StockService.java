@@ -4,11 +4,11 @@ import com.jk.cashregister.domain.Stock;
 import com.jk.cashregister.domain.dto.StockCreateRequest;
 import com.jk.cashregister.repository.StockRepository;
 import com.jk.cashregister.service.exception.NoSuchStockItemException;
+import com.jk.cashregister.service.exception.NotEnoughQuantityException;
 import com.jk.cashregister.service.mapper.StockCreateRequestMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,35 +18,41 @@ import java.util.List;
 public class StockService {
 		private final StockRepository stockRepository;
 
-		private Pageable firstPageWithTenElements = PageRequest.of(0, 10);
 		private final StockCreateRequestMapper stockCreateRequestMapper;
 
-//		@Autowired
-//		public StockService(StockRepository stockRepository,
-//												StockCreateRequestMapper stockCreateRequestMapper) {
-//				this.stockRepository = stockRepository;
-//				this.stockCreateRequestMapper = stockCreateRequestMapper;
-//		}
 // getting dto object instead database entity?
 		public Stock getById(Long id) {
 				return stockRepository.findById(id).orElseThrow(NoSuchStockItemException::new);
 		}
 
-		public List<Stock> getAllStock() {
-				Page<Stock> all = stockRepository.findAll(firstPageWithTenElements);
+		public List<Stock> getAllStock(int page) {
+				Page<Stock> all = stockRepository.findAll(PageRequest.of(page - 1, 1));
 				return all.getContent();
 		}
 //using dto object instead database entity
 		public Stock createStock(StockCreateRequest request) {
 				Stock stock = stockCreateRequestMapper.mapToStock(request);
-				stockRepository.save(stock);
-				return stock;
+				return stockRepository.save(stock);
 		}
 
-		public void updateStock(StockCreateRequest request, Stock stockToUpdate) {
+		public Stock updateStock(StockCreateRequest request, Long stockToUpdateId) {
 				Stock stock = stockCreateRequestMapper.mapToStock(request);
-				stock.setId(stockToUpdate.getId());
-				stockRepository.save(stock);
+				stock.setId(stockToUpdateId);
+				return stockRepository.save(stock);
+		}
+
+		public void updateQuantity(long stockId, int newQuantity) {
+				Stock byId = getById(stockId);
+				if (byId.getQuantity() >= newQuantity) {
+						byId.setQuantity(newQuantity);
+				} else {
+						throw new NotEnoughQuantityException();
+				}
+				stockRepository.save(byId);
+		}
+
+		public void deleteStockById(Long id) {
+				stockRepository.deleteById(id);
 		}
 }
 

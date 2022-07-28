@@ -1,28 +1,31 @@
 package com.jk.cashregister.service;
 
 import com.jk.cashregister.domain.Order;
-import com.jk.cashregister.domain.User;
 import com.jk.cashregister.domain.dto.OrderOpenRequest;
 import com.jk.cashregister.repository.OrderRepository;
-import com.jk.cashregister.repository.UserRepository;
 import com.jk.cashregister.service.exception.NoSuchOrderException;
+import com.jk.cashregister.service.mapper.OrderOpenRequestMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class OrderService {
 		private final OrderRepository orderRepository;
-		private final UserRepository userRepository;
+		private final OrderOpenRequestMapper mapper;
+
 //		private final OrderItemService orderItemService;
+		/* problem with circular references - during closing of new order OrderItemList must be updated using
+		OrderItemService and this causes problem
+		*/
 
-
-		public List<Order> getAllOrders() {
-				return orderRepository.findAll();
+		public List<Order> getAllOrders(int page) {
+				Page<Order> all = orderRepository.findAll(PageRequest.of(page, 5));
+				return all.getContent();
 		}
 
 		public Order getOrderById(Long id) {
@@ -31,10 +34,7 @@ public class OrderService {
 
 //		OrderOpenRequest holds information about user id and open of order time
 		public Order openNewOrder(OrderOpenRequest orderOpenRequest) {
-				Order openOrder = new Order();
-				openOrder.setOpenDate(LocalDateTime.now());
-				Optional<User> user = userRepository.findById(orderOpenRequest.getUserId());
-				user.ifPresent(openOrder::setUser);
+				Order openOrder = mapper.map(orderOpenRequest);
 				return orderRepository.save(openOrder);
 		}
 

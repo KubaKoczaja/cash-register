@@ -2,40 +2,41 @@ package com.jk.cashregister.controller;
 
 import com.jk.cashregister.domain.Stock;
 import com.jk.cashregister.domain.dto.StockCreateRequest;
-import com.jk.cashregister.repository.StockRepository;
 import com.jk.cashregister.service.StockService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.jk.cashregister.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
 @RequestMapping("/stock")
+@RequiredArgsConstructor
 public class StockController {
 
+		public static final String STOCK_ROOT = "/stock";
 		private final StockService stockService;
-		private final StockRepository stockRepository;
+		private final UserService userService;
 
-		@Autowired
-		public StockController(StockService stockService, StockRepository stockRepository) {
-				this.stockService = stockService;
-				this.stockRepository = stockRepository;
-		}
 
-		@GetMapping
-		public String viewAllStock(Model model) {
-				List<Stock> allStock = stockService.getAllStock();
+		@GetMapping(name = "?page={page}")
+		public String viewAllStock(@RequestParam(defaultValue = "1") int page, HttpSession session, Model model) {
+				//Mocking user being logged in, so app can use its id during creation of order
+				session.setAttribute("sessionUser", userService.getUserById(1L));
+
+				List<Stock> allStock = stockService.getAllStock(page);
 				model.addAttribute("allStock", allStock);
-				return "/stock";
+				return STOCK_ROOT;
 		}
 
 		@PostMapping("/addstock")
 		public RedirectView addingNewStock(@RequestBody StockCreateRequest stockCreateRequest) {
 				stockService.createStock(stockCreateRequest);
-				return new RedirectView("/stock");
+				return new RedirectView(STOCK_ROOT);
 		}
 
 		@GetMapping("/details/{id}")
@@ -50,23 +51,22 @@ public class StockController {
 				return "/stock/addstock";
 		}
 
-		@DeleteMapping("/details/{id}")
+		@DeleteMapping("/{id}/delete")
 		public RedirectView deleteStock(@PathVariable long id) {
-				stockRepository.deleteById(id);
-				return new RedirectView("/stock");
+				stockService.deleteStockById(id);
+				return new RedirectView(STOCK_ROOT);
 		}
 
-		@GetMapping("/update/{id}")
+		@GetMapping("/{id}/update")
 		public String viewUpdateStock(@PathVariable long id, Model model) {
 				Stock stockToUpdate = stockService.getById(id);
 				model.addAttribute("stockToUpdate", stockToUpdate);
-				return "/stock/update/{id}";
+				return "/stock/{id}/update";
 		}
 
-		@PutMapping("/update")
-		public RedirectView updateStock(@RequestBody StockCreateRequest stockCreateRequest, Model model) {
-				Stock stock = (Stock) model.getAttribute("stockToUpdate");
-				stockService.updateStock(stockCreateRequest,stock);
-				return new RedirectView("/stock");
+		@PutMapping("{id}/update")
+		public RedirectView updateStock(@PathVariable Long id, @RequestBody StockCreateRequest stockCreateRequest, Model model) {
+				stockService.updateStock(stockCreateRequest,id);
+				return new RedirectView(STOCK_ROOT);
 		}
 }

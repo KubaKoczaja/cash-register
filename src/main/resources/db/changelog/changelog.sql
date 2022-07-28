@@ -4,7 +4,7 @@ CREATE TABLE cr_user (
     last_name varchar NOT NULL,
     job_position varchar NOT NULL,
 	login varchar NOT NULL,
-	"password" varchar NOT NULL,
+	user_password varchar NOT NULL,
 	CONSTRAINT user_pk PRIMARY KEY (id),
 	CONSTRAINT cr_user_un UNIQUE (login)
 );
@@ -49,10 +49,10 @@ ALTER TABLE purchase_order ADD CONSTRAINT order_fk FOREIGN KEY (user_id) REFEREN
 ALTER TABLE order_item ADD CONSTRAINT order_item_fk FOREIGN KEY (order_id) REFERENCES purchase_order(id);
 ALTER TABLE order_item ADD CONSTRAINT order_item_fk_1 FOREIGN KEY (stock_id) REFERENCES stock(id);
 
-insert into cr_user(first_name, last_name, job_position, login, "password") values ('John', 'Smith', 'Cashier', 'johsmi1', 'test');
-insert into cr_user(first_name, last_name, job_position, login, "password") values ('Mary', 'Kay', 'Senior Cashier', 'markay2', 'test');
-insert into cr_user(first_name, last_name, job_position, login, "password") values ('John', 'Williams', 'Senior Cashier', 'johwil3', 'test');
-insert into cr_user(first_name, last_name, job_position, login, "password") values ('Tom', 'Smith', 'Commodity Expert', 'tomsmi4', 'test');
+insert into cr_user(first_name, last_name, job_position, login, user_password) values ('John', 'Smith', 'Cashier', 'johsmi1', 'test');
+insert into cr_user(first_name, last_name, job_position, login, user_password) values ('Mary', 'Kay', 'Senior Cashier', 'markay2', 'test');
+insert into cr_user(first_name, last_name, job_position, login, user_password) values ('John', 'Williams', 'Senior Cashier', 'johwil3', 'test');
+insert into cr_user(first_name, last_name, job_position, login, user_password) values ('Tom', 'Smith', 'Commodity Expert', 'tomsmi4', 'test');
 
 insert into stock (product_code, product_name, quantity, price) values ('aaa55', 'Book', 3, 1500);
 insert into stock (product_code, product_name, quantity, price) values ('nnn6', 'Велосипед', 10, 35);
