@@ -11,9 +11,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderOpenRequest {
+
 		private LocalDateTime openDate;
 
 		@Positive(message = "User's id must be positive number")
 		private Long userId;
+
 
 }
