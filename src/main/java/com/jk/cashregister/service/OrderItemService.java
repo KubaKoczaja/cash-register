@@ -1,32 +1,26 @@
 package com.jk.cashregister.service;
 
 import com.jk.cashregister.domain.OrderItem;
-import com.jk.cashregister.domain.dto.OrderItemCreateRequest;
+import com.jk.cashregister.domain.dto.OrderItemDTO;
 import com.jk.cashregister.repository.OrderItemRepository;
-import com.jk.cashregister.service.mapper.OrderItemCreateRequestMapper;
+import com.jk.cashregister.service.exception.NoSuchOrderItemException;
+import com.jk.cashregister.service.mapper.OrderItemDTOMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class OrderItemService {
-		private final OrderItemCreateRequestMapper mapper;
-		private final OrderItemRepository repository;
-		private final StockService stockService;
 
-		@Transactional
-		public void createNewOrderItem(OrderItemCreateRequest request) {
-				OrderItem orderItem = mapper.map(request);
-				repository.save(orderItem);
-				// stock quantity is updated. check if there is enough quantity in warehouse -> stockService updateQuantity method
-				// stock is updated after creating each order item
-				stockService.updateQuantity(orderItem.getOrder().getId(), orderItem.getQuantityOrdered());
+		private final OrderItemRepository orderItemRepository;
+		private final OrderItemDTOMapper orderItemDTOMapper;
+		public OrderItem getById(Long id) {
+				return orderItemRepository.findById(id).orElseThrow(NoSuchOrderItemException::new);
 		}
 
-		public List<OrderItem> getAllOrderItemsByOrderId(Long orderId) {
-				return repository.findAllByOrderId(orderId);
+		public OrderItem updateOrderItem(OrderItemDTO orderItemDTO, Long id) {
+				OrderItem orderItem = orderItemDTOMapper.map(orderItemDTO);
+				orderItem.setId(id);
+				return orderItemRepository.save(orderItem);
 		}
 }

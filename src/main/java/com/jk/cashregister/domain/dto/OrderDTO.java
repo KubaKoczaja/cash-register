@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderOpenRequest {
+public class OrderDTO {
 
 		private LocalDateTime openDate;
 

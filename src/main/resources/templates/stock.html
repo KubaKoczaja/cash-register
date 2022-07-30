@@ -56,7 +56,7 @@
                 <tr th:each="stock : ${allStock}">
                     <td th:text="${stock.id}">Id</td>
                     <td th:text="${stock.productCode}">Product Code</td>
-                    <td><a th:href="@{/stock/details/{id}(id=${stock.id})}" th:text="${stock.productName}">Product Name</a></td>
+                    <td><a th:href="@{/stock/{id}/details(id=${stock.id})}" th:text="${stock.productName}">Product Name</a></td>
                     <td th:text="${stock.quantity}">Quantity</td>
                     <td th:text="${stock.price}">Price</td>
 <!--                    <td><a th:href="@{/stock/{id}(id=${stock.id})}" th:text="${stock.id}">details</a></td>-->

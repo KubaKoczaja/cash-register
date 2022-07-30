@@ -11,7 +11,7 @@ import javax.validation.constraints.PositiveOrZero;
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
-public class StockCreateRequest {
+public class StockDTO {
 
 		@NotBlank
 		private String productCode;

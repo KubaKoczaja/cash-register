@@ -1,11 +1,11 @@
 package com.jk.cashregister.service;
 
 import com.jk.cashregister.domain.Stock;
-import com.jk.cashregister.domain.dto.StockCreateRequest;
+import com.jk.cashregister.domain.dto.StockDTO;
 import com.jk.cashregister.repository.StockRepository;
 import com.jk.cashregister.service.exception.NoSuchStockItemException;
 import com.jk.cashregister.service.exception.NotEnoughQuantityException;
-import com.jk.cashregister.service.mapper.StockCreateRequestMapper;
+import com.jk.cashregister.service.mapper.StockDTOMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,7 +18,7 @@ import java.util.List;
 public class StockService {
 		private final StockRepository stockRepository;
 
-		private final StockCreateRequestMapper stockCreateRequestMapper;
+		private final StockDTOMapper stockDTOMapper;
 
 // getting dto object instead database entity?
 		public Stock getById(Long id) {
@@ -26,17 +26,17 @@ public class StockService {
 		}
 
 		public List<Stock> getAllStock(int page) {
-				Page<Stock> all = stockRepository.findAll(PageRequest.of(page - 1, 1));
+				Page<Stock> all = stockRepository.findAll(PageRequest.of(page - 1, 5));
 				return all.getContent();
 		}
 //using dto object instead database entity
-		public Stock createStock(StockCreateRequest request) {
-				Stock stock = stockCreateRequestMapper.mapToStock(request);
+		public Stock createStock(StockDTO request) {
+				Stock stock = stockDTOMapper.mapToStock(request);
 				return stockRepository.save(stock);
 		}
 
-		public Stock updateStock(StockCreateRequest request, Long stockToUpdateId) {
-				Stock stock = stockCreateRequestMapper.mapToStock(request);
+		public Stock updateStock(StockDTO request, Long stockToUpdateId) {
+				Stock stock = stockDTOMapper.mapToStock(request);
 				stock.setId(stockToUpdateId);
 				return stockRepository.save(stock);
 		}

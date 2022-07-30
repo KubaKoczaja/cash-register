@@ -1,7 +1,7 @@
 package com.jk.cashregister.controller;
 
 import com.jk.cashregister.domain.Stock;
-import com.jk.cashregister.domain.dto.StockCreateRequest;
+import com.jk.cashregister.domain.dto.StockDTO;
 import com.jk.cashregister.service.StockService;
 import com.jk.cashregister.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -24,26 +23,26 @@ public class StockController {
 
 
 		@GetMapping(name = "?page={page}")
-		public String viewAllStock(@RequestParam(defaultValue = "1") int page, HttpSession session, Model model) {
-				//Mocking user being logged in, so app can use its id during creation of order
-				session.setAttribute("sessionUser", userService.getUserById(1L));
-
+		public String viewAllStock(@RequestParam(defaultValue = "1") int page, Model model) {
 				List<Stock> allStock = stockService.getAllStock(page);
 				model.addAttribute("allStock", allStock);
+				model.addAttribute("currentPage", page);
+				model.addAttribute("previousPage", page - 1);
+				model.addAttribute("nextPage", page + 1);
 				return STOCK_ROOT;
 		}
 
 		@PostMapping("/addstock")
-		public RedirectView addingNewStock(@RequestBody StockCreateRequest stockCreateRequest) {
-				stockService.createStock(stockCreateRequest);
+		public RedirectView addingNewStock(@RequestBody StockDTO stockDTO) {
+				stockService.createStock(stockDTO);
 				return new RedirectView(STOCK_ROOT);
 		}
 
-		@GetMapping("/details/{id}")
+		@GetMapping("/{id}/details")
 		public String viewStockById(@PathVariable long id, Model model) {
 				Stock stock = stockService.getById(id);
 				model.addAttribute("stockItem", stock);
-				return "/stock/details";
+				return "/stock/{id}/details";
 		}
 
 		@GetMapping("/addstock")
@@ -65,8 +64,8 @@ public class StockController {
 		}
 
 		@PutMapping("{id}/update")
-		public RedirectView updateStock(@PathVariable Long id, @RequestBody StockCreateRequest stockCreateRequest, Model model) {
-				stockService.updateStock(stockCreateRequest,id);
+		public RedirectView updateStock(@PathVariable Long id, @RequestBody StockDTO stockDTO, Model model) {
+				stockService.updateStock(stockDTO,id);
 				return new RedirectView(STOCK_ROOT);
 		}
 }

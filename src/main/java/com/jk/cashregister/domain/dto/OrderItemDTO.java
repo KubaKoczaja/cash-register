@@ -4,13 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Positive;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderItemCreateRequest {
+public class OrderItemDTO {
 
 		@Positive(message = "Stock's id must be positive number")
 		private Long stockId;

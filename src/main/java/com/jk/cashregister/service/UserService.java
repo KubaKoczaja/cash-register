@@ -15,4 +15,8 @@ public class UserService {
 				return userRepository.findById(id).orElseThrow(UserDoesntExistException::new);
 		}
 
+		public User getLoggedUser() {
+				return getUserById(1L);
+		}
+
 }

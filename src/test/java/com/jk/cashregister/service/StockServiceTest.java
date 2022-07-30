@@ -1,7 +1,7 @@
 package com.jk.cashregister.service;
 
 import com.jk.cashregister.domain.Stock;
-import com.jk.cashregister.domain.dto.StockCreateRequest;
+import com.jk.cashregister.domain.dto.StockDTO;
 import com.jk.cashregister.repository.StockRepository;
 import com.jk.cashregister.service.exception.NoSuchStockItemException;
 import org.junit.jupiter.api.Disabled;
@@ -48,8 +48,8 @@ class StockServiceTest {
 		@Disabled
 		@Test
 		void shouldCreateStock() {
-				StockCreateRequest stockCreateRequest = new StockCreateRequest("test", "test", 2, 100);
-				Stock expectedStock = stockService.createStock(stockCreateRequest);
+				StockDTO stockDTO = new StockDTO("test", "test", 2, 100);
+				Stock expectedStock = stockService.createStock(stockDTO);
 				Mockito.when(stockRepository.findById(2L))
 								.thenReturn(Optional.of(new Stock(2L,"test", "test", 2, 100, new ArrayList<>())));
 				assertEquals(expectedStock.getProductName(), stockService.getById(2L).getProductName());
