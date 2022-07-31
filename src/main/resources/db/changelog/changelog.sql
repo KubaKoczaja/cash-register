@@ -14,7 +14,7 @@ CREATE TABLE report (
 	user_id int4 NOT NULL,
 	date_from timestamp NOT NULL,
 	date_to timestamp NOT NULL,
-	number_of_orders int4 NULL,
+	content varchar NULL,
 	report_type varchar NOT NULL,
 	CONSTRAINT report_pk PRIMARY KEY (id)
 );
@@ -57,4 +57,4 @@ insert into cr_user(first_name, last_name, job_position, login, user_password) v
 insert into stock (product_code, product_name, quantity, price) values ('aaa55', 'Book', 3, 1500);
 insert into stock (product_code, product_name, quantity, price) values ('nnn6', 'Велосипед', 10, 35);
 
-insert into report(user_id, date_from, date_to, number_of_orders, report_type) values (2, '2022-07-23 11:45:58.299', '2022-07-23 14:45:58.299', 10, 'x');
+insert into report(user_id, date_from, date_to, content, report_type) values (2, '2022-07-23 11:45:58.299', '2022-07-23 14:45:58.299', 'test', 'x');

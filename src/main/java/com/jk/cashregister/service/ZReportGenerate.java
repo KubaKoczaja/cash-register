@@ -14,26 +14,33 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ReportGenerateService {
+public class ZReportGenerate implements ReportGenerate {
 		private final ReportDTOMapper reportDTOMapper;
 		private final OrderRepository orderRepository;
 		private final ReportRepository reportRepository;
-
+		@Override
 		public Report generateReport(ReportDTO reportDTO) {
 				Report report = reportDTOMapper.map(reportDTO);
-				LocalDateTime fromDate = provideFromDate(report.getReportType());
-				List<Order> ordersPlacedInGivenTime = orderRepository.findAllByOpenDateGreaterThanAndCloseDateLessThanEqual(fromDate, report.getToDate());
+				LocalDateTime fromDate = provideFromDate();
 				report.setFromDate(fromDate);
-				report.setNumberOfOrders(ordersPlacedInGivenTime.size());
-				return reportRepository.save(report);
+				report.setContent(provideContent(report.getFromDate(), report.getToDate()));
+				return report;
 		}
 
-		private LocalDateTime provideFromDate(String type) {
-				List<Report> reports = reportRepository.findAllByReportType(type);
+		@Override
+		public LocalDateTime provideFromDate() {
+				List<Report> reports = reportRepository.findAllByReportType("Z");
 				reports.sort((o1, o2) -> o2.getToDate().compareTo(o1.getToDate()));
 				if (reports.isEmpty()) {
 						return LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(1);
 				}
 				return reports.get(0).getToDate();
+		}
+
+		@Override
+		public String provideContent(LocalDateTime fromDate, LocalDateTime toDate) {
+				List<Order> ordersPlacedInGivenTime = orderRepository.findAllByOpenDateGreaterThanAndCloseDateLessThanEqual(fromDate, toDate);
+				long numberOfItems = ordersPlacedInGivenTime.stream().map(Order::getOrderItemList).mapToLong(List::size).sum();
+				return "Number of orders: " + ordersPlacedInGivenTime.size() + "\nTotal items: " + numberOfItems;
 		}
 }

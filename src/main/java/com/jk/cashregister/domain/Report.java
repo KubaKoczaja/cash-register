@@ -23,8 +23,8 @@ public class Report {
 		@Column(name = "date_to")
 		private LocalDateTime toDate;
 
-		@Column(name = "number_of_orders")
-		private int numberOfOrders;
+		@Column(name = "content")
+		private String content;
 
 		@Column(name = "report_type")
 		private String reportType;
