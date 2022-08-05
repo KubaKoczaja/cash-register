@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Details</title>
+    <link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/stock}">Cash Register</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/stock}">Stock
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/order}">Orders</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Login</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container fluid">
+    <div class="row">
+        <div class="col-lg-7 mt-5 mb-5">
+            <div class="col-md-8 order-md-2 mb-4">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted">Id</span>
+                    <span class="badge badge-secondary badge-pill" th:text="${newOrder.id}">number</span>
+                </h4>
+                <ul class="list-group mb-3">
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+
+                        <h6 class="my-0">Opened</h6>
+                        <small class="text-muted" th:text="${newOrder.openDate}">Opened</small>
+                    </li>
+                </ul>
+            </div>
+<!--add serching options-->
+        </div>
+        <div class="col-lg-5 mt-5 mb-5">
+            <form class="card p-2">
+                <div class="input-group rounded">
+                    <input type="search" class="form-control rounded" placeholder="Search by code"/>
+                    <span class="input-group-text border-0">
+                        <i class="fas fa-search"/>
+                    </span>
+                </div>
+                <div class="input-group rounded mt-4">
+                    <input type="search" class="form-control rounded" placeholder="Search by name"/>
+                    <span class="input-group-text border-0">
+                        <i class="fas fa-search"/>
+                    </span>
+                </div>
+                <div class="input-group mt-4">
+                    <div class="input-group-append">
+                        <form th:object="${newOrder}" th:action="@{/order/openorder}" th:method="post"><button type="submit" class="btn btn-dark">Delete</button></form>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!--should display order items for this order-->
+    <div class="row">
+        <div class="col-lg-10 mt-5 mb-5">
+            <table class="table table-bordered" style="width: 100%">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Product Code</th>
+                    <th>Product Name</th>
+                    <th>Quantity left</th>
+                    <th>Price</th>
+                    <th>Quantity ordered</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${orderItemsForOrder}">
+                    <td th:text="${item.id}">Id</td>
+                    <td th:text="${item.stock.productCode}">Product Code</td>
+                    <!--                    <td><a th:href="@{/stock/{id}/details(id=${stock.id})}" th:text="${stock.productName}">Product Name</a></td>-->
+                    <td th:text="${item.stock.productName}">Product Name</td>
+                    <td th:text="${item.stock.quantity}">Quantity</td>
+                    <td th:text="${item.stock.price}">Price</td>
+                    <td th:text="${item.quantityOrdered}">Quantity ordered</td>
+                    <!--                    <td><form th:object="${stock}" th:action="@{/stock/{id}/update(id=${stock.id})}" th:method="get"><button type="submit" class="btn btn-dark">Update</button></form></td>-->
+                    <!--                    <td><form th:object="${stock}" th:action="@{/stock/{id}/delete(id=${stock.id})}" th:method="post"><button type="submit" class="btn btn-dark">Delete</button></form></td>-->
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+
+</body>
+</html>

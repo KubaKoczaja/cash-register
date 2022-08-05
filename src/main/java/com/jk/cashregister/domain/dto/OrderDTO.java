@@ -12,10 +12,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class OrderDTO {
 
-		private LocalDateTime openDate;
+		private LocalDateTime openDate = LocalDateTime.now();
 
 		@Positive(message = "User's id must be positive number")
 		private Long userId;
-
-
 }

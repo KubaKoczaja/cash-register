@@ -18,15 +18,22 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="#">Stock
+                        <a class="nav-link" th:href="@{/stock}">Stock
                             <span class="sr-only">(current)</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Orders</a>
+                        <a class="nav-link" th:href="@{/order}">Orders</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Login</a>
+                        <div th:if="${param.logout}">
+                        <a class="nav-link" th:href="@{/login}">Login</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div th:if="${param.login}">
+                            <a class="nav-link" th:href="@{/logout}">Logout</a>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -36,7 +43,7 @@
 
 <div class="d flex">
 <div class="container fluid mt-5 text-center">
-    <button type="button" class="btn btn-dark" th:href="@{/stock/addstock}">Add stock</button>
+    <button type="button" class="btn btn-dark"><a th:href="@{/stock/addstock}">Add stock</a></button>
 </div>
 
 <div class="container fluid">
@@ -59,7 +66,8 @@
                     <td><a th:href="@{/stock/{id}/details(id=${stock.id})}" th:text="${stock.productName}">Product Name</a></td>
                     <td th:text="${stock.quantity}">Quantity</td>
                     <td th:text="${stock.price}">Price</td>
-<!--                    <td><a th:href="@{/stock/{id}(id=${stock.id})}" th:text="${stock.id}">details</a></td>-->
+                    <td><form th:object="${stock}" th:action="@{/stock/{id}/update(id=${stock.id})}" th:method="get"><button type="submit" class="btn btn-dark">Update</button></form></td>
+                    <td><form th:object="${stock}" th:action="@{/stock/{id}/delete(id=${stock.id})}" th:method="post"><button type="submit" class="btn btn-dark">Delete</button></form></td>
                 </tr>
                 </tbody>
             </table>

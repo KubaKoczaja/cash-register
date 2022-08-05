@@ -26,8 +26,8 @@ public class User {
 		@Column(name = "job_position")
 		private String position;
 
-		@Column(name = "login")
-		private String login;
+		@Column(name = "username")
+		private String username;
 
 		@Column(name = "user_password")
 		private String password;

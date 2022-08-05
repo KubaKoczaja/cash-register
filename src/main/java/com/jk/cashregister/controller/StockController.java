@@ -5,11 +5,13 @@ import com.jk.cashregister.domain.dto.StockDTO;
 import com.jk.cashregister.service.StockService;
 import com.jk.cashregister.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -32,25 +34,26 @@ public class StockController {
 				return STOCK_ROOT;
 		}
 
-		@PostMapping("/addstock")
-		public RedirectView addingNewStock(@RequestBody StockDTO stockDTO) {
-				stockService.createStock(stockDTO);
-				return new RedirectView(STOCK_ROOT);
-		}
-
 		@GetMapping("/{id}/details")
 		public String viewStockById(@PathVariable long id, Model model) {
 				Stock stock = stockService.getById(id);
 				model.addAttribute("stockItem", stock);
 				return "/stock/{id}/details";
 		}
+		@PostMapping("/addstock")
+		public RedirectView addingNewStock(@Valid @ModelAttribute StockDTO stockDTO) {
+				stockService.createStock(stockDTO);
+				return new RedirectView(STOCK_ROOT);
+		}
 
 		@GetMapping("/addstock")
-		public String addNewStockView() {
+		@PreAuthorize("hasRole('ROLE_COMMODITY_EXPERT')")
+		public String addNewStockView(Model model) {
+				model.addAttribute("stockDTO", new StockDTO());
 				return "/stock/addstock";
 		}
 
-		@DeleteMapping("/{id}/delete")
+		@PostMapping("/{id}/delete")
 		public RedirectView deleteStock(@PathVariable long id) {
 				stockService.deleteStockById(id);
 				return new RedirectView(STOCK_ROOT);
@@ -60,11 +63,12 @@ public class StockController {
 		public String viewUpdateStock(@PathVariable long id, Model model) {
 				Stock stockToUpdate = stockService.getById(id);
 				model.addAttribute("stockToUpdate", stockToUpdate);
+				model.addAttribute("stockDTO", new StockDTO());
 				return "/stock/{id}/update";
 		}
 
-		@PutMapping("{id}/update")
-		public RedirectView updateStock(@PathVariable Long id, @RequestBody StockDTO stockDTO, Model model) {
+		@PostMapping("{id}/update")
+		public RedirectView updateStock(@PathVariable Long id, @ModelAttribute StockDTO stockDTO, Model model) {
 				stockService.updateStock(stockDTO,id);
 				return new RedirectView(STOCK_ROOT);
 		}

@@ -6,7 +6,12 @@ import com.jk.cashregister.repository.OrderItemRepository;
 import com.jk.cashregister.service.exception.NoSuchOrderItemException;
 import com.jk.cashregister.service.mapper.OrderItemDTOMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +25,11 @@ public class OrderItemService {
 
 		public OrderItem updateOrderItem(OrderItemDTO orderItemDTO, Long id) {
 				OrderItem orderItem = orderItemDTOMapper.map(orderItemDTO);
-				orderItem.setId(id);
 				return orderItemRepository.save(orderItem);
+		}
+
+		public List<OrderItem> getAllOrderItems(Long id) {
+				List<OrderItem> allOrderItems = orderItemRepository.findAllByOrderId(id);
+				return allOrderItems;
 		}
 }
