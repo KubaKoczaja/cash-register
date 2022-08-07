@@ -2,8 +2,8 @@ package com.jk.cashregister.controller;
 
 import com.jk.cashregister.domain.Stock;
 import com.jk.cashregister.domain.dto.StockDTO;
+import com.jk.cashregister.repository.OrderItemRepository;
 import com.jk.cashregister.service.StockService;
-import com.jk.cashregister.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -21,7 +21,7 @@ public class StockController {
 
 		public static final String STOCK_ROOT = "/stock";
 		private final StockService stockService;
-		private final UserService userService;
+		private final OrderItemRepository orderItemRepository;
 
 
 		@GetMapping(name = "?page={page}")
@@ -38,7 +38,7 @@ public class StockController {
 		public String viewStockById(@PathVariable long id, Model model) {
 				Stock stock = stockService.getById(id);
 				model.addAttribute("stockItem", stock);
-				return "/stock/{id}/details";
+				return STOCK_ROOT + "/{id}/details";
 		}
 		@PostMapping("/addstock")
 		public RedirectView addingNewStock(@Valid @ModelAttribute StockDTO stockDTO) {
@@ -54,7 +54,12 @@ public class StockController {
 		}
 
 		@PostMapping("/{id}/delete")
+		@PreAuthorize("hasRole('ROLE_COMMODITY_EXPERT')")
 		public RedirectView deleteStock(@PathVariable long id) {
+				// check if stock item is somewhere in order
+				if (!orderItemRepository.findAllByStockId(id).isEmpty()) {
+						throw new RuntimeException("You can't delete stock in active order");
+				}
 				stockService.deleteStockById(id);
 				return new RedirectView(STOCK_ROOT);
 		}

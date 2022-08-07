@@ -10,11 +10,11 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class OrderDTOMapper {
 		private final UserService userService;
-		//TODO get rid of session and obtain user using Spring Security
+
 		public Order map(OrderDTO orderDTO) {
 				Order order = new Order();
 				order.setOpenDate(orderDTO.getOpenDate());
-				order.setUser(userService.getLoggedUser());
+				order.setUser(userService.getAuthenticatedUser());
 				return order;
 		}
 }

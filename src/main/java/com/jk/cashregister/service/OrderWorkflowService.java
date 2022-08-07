@@ -2,13 +2,12 @@ package com.jk.cashregister.service;
 
 import com.jk.cashregister.domain.Order;
 import com.jk.cashregister.domain.OrderItem;
-import com.jk.cashregister.domain.dto.OrderItemDTO;
 import com.jk.cashregister.domain.dto.OrderDTO;
 import com.jk.cashregister.repository.OrderItemRepository;
 import com.jk.cashregister.repository.OrderRepository;
 import com.jk.cashregister.service.exception.EmptyOrderException;
-import com.jk.cashregister.service.mapper.OrderItemDTOMapper;
 import com.jk.cashregister.service.mapper.OrderDTOMapper;
+import com.jk.cashregister.service.mapper.OrderItemDTOMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,12 +32,15 @@ public class OrderWorkflowService {
 		}
 
 		@Transactional
-		public void createNewOrderItem(OrderItemDTO request) {
-				OrderItem orderItem = orderItemDTOMapper.map(request);
-				orderItemRepository.save(orderItem);
+		public void addNewOrderItemToOrder(OrderItem orderItem) {
+
+
+				OrderItem savedOrderItem = orderItemRepository.save(orderItem);
+
 				// stock quantity is updated. check if there is enough quantity in warehouse -> stockService updateQuantity method
 				// stock is updated after creating each order item
-				stockService.updateQuantity(orderItem.getOrder().getId(), orderItem.getQuantityOrdered());
+
+				stockService.updateQuantity(savedOrderItem.getStock().getId(), savedOrderItem.getQuantityOrdered());
 		}
 
 		public void closeNewOrder(Long id) {

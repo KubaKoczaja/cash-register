@@ -4,6 +4,8 @@ import com.jk.cashregister.domain.User;
 import com.jk.cashregister.repository.UserRepository;
 import com.jk.cashregister.service.exception.UserDoesntExistException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,8 +17,9 @@ public class UserService {
 				return userRepository.findById(id).orElseThrow(UserDoesntExistException::new);
 		}
 
-		public User getLoggedUser() {
-				return getUserById(1L);
+		public User getAuthenticatedUser() {
+				Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+				return userRepository.findByUsername(authentication.getName());
 		}
 
 }

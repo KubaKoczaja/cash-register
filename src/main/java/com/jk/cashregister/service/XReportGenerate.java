@@ -21,6 +21,7 @@ public class XReportGenerate implements ReportGenerate {
 		@Override
 		public Report generateReport(ReportDTO reportDTO) {
 				Report report = reportDTOMapper.map(reportDTO);
+				System.out.println("-1--");
 				LocalDateTime fromDate = provideFromDate();
 				report.setFromDate(fromDate);
 				report.setContent(provideContent(report.getFromDate(), report.getToDate()));

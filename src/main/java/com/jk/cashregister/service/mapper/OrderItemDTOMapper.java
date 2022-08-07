@@ -15,7 +15,7 @@ public class OrderItemDTOMapper {
 
 		public OrderItem map(OrderItemDTO orderItemDTO) {
 				OrderItem orderItem = new OrderItem();
-				orderItem.setOrder(orderService.getOrderById(orderItemDTO.getOrderId()));
+//				orderItem.setOrder(orderService.getOrderById(orderItemDTO.getOrderId()));
 				orderItem.setStock(stockService.getById(orderItemDTO.getStockId()));
 				orderItem.setQuantityOrdered(orderItemDTO.getQuantityOrdered());
 				return orderItem;

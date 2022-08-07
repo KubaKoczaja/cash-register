@@ -44,7 +44,7 @@ public class StockService {
 		public void updateQuantity(long stockId, int newQuantity) {
 				Stock byId = getById(stockId);
 				if (byId.getQuantity() >= newQuantity) {
-						byId.setQuantity(newQuantity);
+						byId.setQuantity(byId.getQuantity() - newQuantity);
 				} else {
 						throw new NotEnoughQuantityException();
 				}

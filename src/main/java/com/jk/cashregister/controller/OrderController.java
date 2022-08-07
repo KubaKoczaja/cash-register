@@ -2,10 +2,12 @@ package com.jk.cashregister.controller;
 
 import com.jk.cashregister.domain.Order;
 import com.jk.cashregister.domain.dto.OrderDTO;
+import com.jk.cashregister.repository.OrderItemRepository;
 import com.jk.cashregister.repository.OrderRepository;
 import com.jk.cashregister.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
@@ -21,6 +23,7 @@ public class OrderController {
 		private final OrderService orderService;
 
 		private final OrderRepository orderRepository;
+		private final OrderItemRepository orderItemRepository;
 
 		//TODO add hidden inputs for OrderDTO
 		@GetMapping(name = "?page={page}")
@@ -41,8 +44,10 @@ public class OrderController {
 				return "/order/{id}/details";
 		}
 
+		@Transactional
 		@PostMapping("/{id}/delete")
 		public RedirectView deleteOrder(@PathVariable long id) {
+				orderItemRepository.deleteAllByOrderId(id);
 				orderRepository.deleteById(id);
 				return new RedirectView(ORDER_ROOT);
 		}

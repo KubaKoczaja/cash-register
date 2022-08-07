@@ -15,9 +15,9 @@ public class ReportFactory {
 		private final OrderRepository orderRepository;
 		private final ReportRepository reportRepository;
 		public ReportGenerate createService(ReportDTO reportDTO) {
-				if (reportDTO.getReportType().equals("X")) {
+				if (reportDTO.getReportType().equalsIgnoreCase("X")) {
 						return new XReportGenerate(reportDTOMapper, orderRepository, reportRepository);
-				} else if (reportDTO.getReportType().equals("Z")) {
+				} else if (reportDTO.getReportType().equalsIgnoreCase("Z")) {
 						return new ZReportGenerate(reportDTOMapper, orderRepository, reportRepository);
 				} else {
 						throw new InvalidReportTypeException();

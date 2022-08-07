@@ -30,6 +30,6 @@ public class Report {
 		private String reportType;
 
 		@ManyToOne
-		@JoinColumn(name = "cr_user_id", referencedColumnName = "id")
+		@JoinColumn(name = "user_id", referencedColumnName = "id")
 		private User user;
 }

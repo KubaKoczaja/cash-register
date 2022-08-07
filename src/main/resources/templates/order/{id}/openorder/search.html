@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Order View</title>
+    <title>Stock View</title>
     <link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
 </head>
 <body>
@@ -17,12 +17,13 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/stock}">Stock</a>
-                    </li>
                     <li class="nav-item active">
-                        <a class="nav-link" th:href="@{/order}">Orders</a>
+                        <a class="nav-link" th:href="@{/stock}">Stock
                             <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/order}">Orders</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/report}">Reports
@@ -32,10 +33,11 @@
                     <li class="nav-item" >
 
                         <form th:action="@{/logout}" method="post">
-                          <input class="nav-link btn btn-outline-primary" type="submit" th:value="Logout"/>
+                            <input class="nav-link btn btn-outline-primary" type="submit" th:value="Logout"/>
                         </form>
 
                     </li>
+
                 </ul>
             </div>
         </div>
@@ -44,9 +46,25 @@
 
 <div class="d flex">
     <div class="container fluid mt-5 text-center">
-        <form  th:object="${orderDTO}" th:action="@{/order/openorder}" th:method="post">
-            <button type="submit" class="btn btn-dark">Open New Order</button>
+        <thead>
+        <tr>
+            <th>Stock Id</th>
+            <th>Ordered</th>
+        </tr>
+        </thead>
+        <tbody>
+        <form th:object="${orderItemDTO}" th:action="@{/order/{id}/openorder/additem(id=${openedOrder.id})}" th:method="post">
+            <td>
+                <input type="number" th:field="*{stockId}"/>
+            </td>
+            <td>
+                <input type="number" th:field="*{quantityOrdered}"/>
+            </td>
+            <td>
+            <button type="submit" class="btn btn-dark">Add</button>
+            </td>
         </form>
+        </tbody>
     </div>
 
     <div class="container fluid">
@@ -56,20 +74,20 @@
                     <thead>
                     <tr>
                         <th>Id</th>
-                        <th>Opened</th>
-                        <th>Closed</th>
-                        <th>Employee</th>
+                        <th>Product Code</th>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Ordered</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="order : ${allOrders}">
-                        <td><a th:href="@{/order/{id}/details(id=${order.id})}" th:text="${order.id}">Id</a></td>
-                        <td th:text="${order.openDate}">Opened</td>
-                        <td th:text="${order.closeDate}">Closed</td>
-                        <td th:text="${order.user.lastName}">Employee</td>
-
-                        <td><form th:object="${order}" th:action="@{/order/{id}/update(id=${order.id})}" th:method="get"><button type="submit" class="btn btn-dark">Update</button></form></td>
-                        <td><form th:object="${order}" th:action="@{/order/{id}/delete(id=${order.id})}" th:method="post"><button type="submit" class="btn btn-dark">Delete</button></form></td>
+                    <tr th:each="stock : ${stockList}">
+                        <td th:text="${stock.id}">Id</td>
+                        <td th:text="${stock.productCode}">Product Code</td>
+                        <td th:text="${stock.productName}">Product Name</td>
+                        <td th:text="${stock.quantity}">Quantity</td>
+                        <td th:text="${stock.price}">Price</td>
                     </tr>
                     </tbody>
                 </table>
@@ -78,10 +96,5 @@
     </div>
 
 </div>
-<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
-<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
-<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-
-
 </body>
 </html>
