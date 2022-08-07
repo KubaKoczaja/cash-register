@@ -16,7 +16,7 @@ public class OrderService {
 		private final OrderRepository orderRepository;
 
 		public List<Order> getAllOrders(int page) {
-				Page<Order> all = orderRepository.findAll(PageRequest.of(page - 1, 5));
+				Page<Order> all = orderRepository.findAll(PageRequest.of(page - 1, 10));
 				return all.getContent();
 		}
 

@@ -24,7 +24,7 @@ public class ReportService {
 		}
 
 		public List<Report> getAllReports(int page) {
-				Page<Report> all = reportRepository.findAll(PageRequest.of(page - 1, 5));
+				Page<Report> all = reportRepository.findAll(PageRequest.of(page - 1, 10));
 				return all.getContent();
 		}
 

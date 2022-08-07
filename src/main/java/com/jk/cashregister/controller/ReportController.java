@@ -5,6 +5,7 @@ import com.jk.cashregister.domain.dto.ReportDTO;
 import com.jk.cashregister.service.ReportService;
 import com.jk.cashregister.service.mapper.ReportDTOMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +41,7 @@ public class ReportController {
 		}
 
 		@PostMapping("/generatereport")
+		@PreAuthorize("hasRole('ROLE_SENIOR_CASHIER')")
 		public String generateXReport(@Valid ReportDTO reportDTO) {
 				reportService.saveReport(reportDTO);
 

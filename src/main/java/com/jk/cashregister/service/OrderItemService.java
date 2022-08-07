@@ -6,9 +6,6 @@ import com.jk.cashregister.repository.OrderItemRepository;
 import com.jk.cashregister.service.exception.NoSuchOrderItemException;
 import com.jk.cashregister.service.mapper.OrderItemDTOMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

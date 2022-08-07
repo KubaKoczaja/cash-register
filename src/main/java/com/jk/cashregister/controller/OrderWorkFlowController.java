@@ -12,6 +12,7 @@ import com.jk.cashregister.service.OrderWorkflowService;
 import com.jk.cashregister.service.StockService;
 import com.jk.cashregister.service.mapper.OrderItemDTOMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,7 @@ public class OrderWorkFlowController {
 		private final OrderItemDTOMapper orderItemDTOMapper;
 
 		@PostMapping("/openorder")
+		@PreAuthorize("hasAnyRole('ROLE_SENIOR_CASHIER','ROLE_CASHIER')")
 		public String openingNewOrder(@Valid @ModelAttribute OrderDTO orderDTO, Model model) {
 				Order order = orderWorkFlowService.openNewOrder(orderDTO);
 				model.addAttribute("newOrder", order);
@@ -39,6 +41,7 @@ public class OrderWorkFlowController {
 		}
 
 		@GetMapping("/{id}/openorder")
+		@PreAuthorize("hasAnyRole('ROLE_SENIOR_CASHIER','ROLE_CASHIER')")
 		public String addNewOrderView(@PathVariable Long id, Model model) {
 				Order newOrder = orderService.getOrderById(id);
 				model.addAttribute("newOrder", newOrder);
@@ -48,6 +51,7 @@ public class OrderWorkFlowController {
 		}
 
 		@GetMapping("/{id}/openorder/searchCode")
+		@PreAuthorize("hasAnyRole('ROLE_SENIOR_CASHIER','ROLE_CASHIER')")
 		public String searchByCode(@PathVariable Long id, Model model, String code) {
 				List<Stock> stockListCode;
 				if(code != null) {
@@ -62,6 +66,7 @@ public class OrderWorkFlowController {
 				return ORDER_ROOT + "/{id}/openorder/search";
 		}
 		@GetMapping("/{id}/openorder/searchName")
+		@PreAuthorize("hasAnyRole('ROLE_SENIOR_CASHIER','ROLE_CASHIER')")
 		public String searchByName(@PathVariable Long id, Model model, String name) {
 				List<Stock> stockListName;
 				if(name != null) {
@@ -77,6 +82,7 @@ public class OrderWorkFlowController {
 		}
 
 		@PostMapping("/{id}/openorder/additem")
+		@PreAuthorize("hasAnyRole('ROLE_SENIOR_CASHIER','ROLE_CASHIER')")
 		public String addItem(@PathVariable(name = "id") Long orderId, Model model, OrderItemDTO orderItemDTO){
 				OrderItem orderItem = orderItemDTOMapper.map(orderItemDTO);
 
@@ -90,6 +96,7 @@ public class OrderWorkFlowController {
 		}
 
 		@GetMapping("/{id}/closeorder")
+		@PreAuthorize("hasAnyRole('ROLE_SENIOR_CASHIER','ROLE_CASHIER')")
 		public String closeOrder(@PathVariable Long id, Model model) {
 				orderWorkFlowService.closeNewOrder(id);
 				return "redirect:" + ORDER_ROOT;

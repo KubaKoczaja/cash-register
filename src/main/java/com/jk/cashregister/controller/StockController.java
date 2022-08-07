@@ -41,6 +41,7 @@ public class StockController {
 				return STOCK_ROOT + "/{id}/details";
 		}
 		@PostMapping("/addstock")
+		@PreAuthorize("hasRole('ROLE_COMMODITY_EXPERT')")
 		public RedirectView addingNewStock(@Valid @ModelAttribute StockDTO stockDTO) {
 				stockService.createStock(stockDTO);
 				return new RedirectView(STOCK_ROOT);
@@ -65,6 +66,7 @@ public class StockController {
 		}
 
 		@GetMapping("/{id}/update")
+		@PreAuthorize("hasRole('ROLE_COMMODITY_EXPERT')")
 		public String viewUpdateStock(@PathVariable long id, Model model) {
 				Stock stockToUpdate = stockService.getById(id);
 				model.addAttribute("stockToUpdate", stockToUpdate);
@@ -73,6 +75,7 @@ public class StockController {
 		}
 
 		@PostMapping("{id}/update")
+		@PreAuthorize("hasRole('ROLE_COMMODITY_EXPERT')")
 		public RedirectView updateStock(@PathVariable Long id, @ModelAttribute StockDTO stockDTO, Model model) {
 				stockService.updateStock(stockDTO,id);
 				return new RedirectView(STOCK_ROOT);

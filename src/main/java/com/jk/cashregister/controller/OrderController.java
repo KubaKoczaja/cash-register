@@ -6,6 +6,7 @@ import com.jk.cashregister.repository.OrderItemRepository;
 import com.jk.cashregister.repository.OrderRepository;
 import com.jk.cashregister.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -46,6 +47,7 @@ public class OrderController {
 
 		@Transactional
 		@PostMapping("/{id}/delete")
+		@PreAuthorize("hasRole('ROLE_SENIOR_CASHIER')")
 		public RedirectView deleteOrder(@PathVariable long id) {
 				orderItemRepository.deleteAllByOrderId(id);
 				orderRepository.deleteById(id);

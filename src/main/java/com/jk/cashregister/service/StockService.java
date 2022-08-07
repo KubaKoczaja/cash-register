@@ -26,7 +26,7 @@ public class StockService {
 		}
 
 		public List<Stock> getAllStock(int page) {
-				Page<Stock> all = stockRepository.findAll(PageRequest.of(page - 1, 5));
+				Page<Stock> all = stockRepository.findAll(PageRequest.of(page - 1, 10));
 				return all.getContent();
 		}
 //using dto object instead database entity
