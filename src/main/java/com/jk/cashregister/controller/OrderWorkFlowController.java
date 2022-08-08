@@ -5,12 +5,15 @@ import com.jk.cashregister.domain.OrderItem;
 import com.jk.cashregister.domain.Stock;
 import com.jk.cashregister.domain.dto.OrderDTO;
 import com.jk.cashregister.domain.dto.OrderItemDTO;
+import com.jk.cashregister.repository.OrderItemRepository;
 import com.jk.cashregister.repository.StockRepository;
 import com.jk.cashregister.service.OrderItemService;
 import com.jk.cashregister.service.OrderService;
 import com.jk.cashregister.service.OrderWorkflowService;
 import com.jk.cashregister.service.mapper.OrderItemDTOMapper;
+import com.jk.cashregister.util.Paging;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,19 +21,21 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
+
+import static com.jk.cashregister.util.URLs.*;
 
 @Controller
 @RequestMapping("/order")
 @RequiredArgsConstructor
 public class OrderWorkFlowController {
-		private static final String ORDER_ROOT = "/order";
-		public static final String REDIRECT = "redirect:";
-		public static final String ID_OPENORDER = "/{id}/openorder";
 		private final OrderWorkflowService orderWorkFlowService;
 		private final OrderItemService orderItemService;
 		private final StockRepository stockRepository;
 		private final OrderService orderService;
 		private final OrderItemDTOMapper orderItemDTOMapper;
+		private final OrderItemRepository orderItemRepository;
+		private final Paging<OrderItem> paging;
 
 		@PostMapping("/openorder")
 		@PreAuthorize("hasAnyRole('ROLE_SENIOR_CASHIER','ROLE_CASHIER')")
@@ -42,11 +47,21 @@ public class OrderWorkFlowController {
 
 		@GetMapping("/{id}/openorder")
 		@PreAuthorize("hasAnyRole('ROLE_SENIOR_CASHIER','ROLE_CASHIER')")
-		public String addNewOrderView(@PathVariable Long id, Model model) {
+		public String addNewOrderView(@RequestParam("page") Optional<Integer> page, @PathVariable Long id, Model model) {
 				Order newOrder = orderService.getOrderById(id);
 				model.addAttribute("newOrder", newOrder);
-				List<OrderItem> orderItemsForOrder = orderItemService.getAllOrderItems(id);
-				model.addAttribute("orderItemsForOrder", orderItemsForOrder);
+
+				List<OrderItem> orderItems = orderItemRepository.findAllByOrderId(id);
+				int currentPage = page.orElse(1);
+
+				Page<OrderItem> pageToReturn = paging.getPage(currentPage, orderItems, 3);
+
+				model.addAttribute("orderItemsForOrder", pageToReturn.getContent());
+				model.addAttribute("currentPage", currentPage);
+				model.addAttribute("previousPage", currentPage - 1);
+				model.addAttribute("nextPage", currentPage + 1);
+				model.addAttribute("numberOfPages", pageToReturn.getTotalPages());
+
 				return ORDER_ROOT + ID_OPENORDER;
 		}
 
@@ -102,31 +117,6 @@ public class OrderWorkFlowController {
 				return REDIRECT + ORDER_ROOT;
 		}
 
-		@PostMapping("/{id}/details/{itemId}/deleteitem")
-		@PreAuthorize("hasRole('ROLE_SENIOR_CASHIER')")
-		public String deleteItemFromOrder(@PathVariable(name = "id") Long orderId, @PathVariable(name = "itemId") Long itemId) {
-				orderItemService.deleteOrderItemFromOrder(itemId);
-				return REDIRECT + ORDER_ROOT + "/{id}/details";
-		}
-
-		@GetMapping("/{id}/details/{itemId}/updateitem")
-		@PreAuthorize("hasRole('ROLE_SENIOR_CASHIER')")
-		public String getItemUpdateView(@PathVariable(name = "id") Long orderId,@PathVariable(name = "itemId") Long id, Model model) {
-				Stock orderItemStock = orderItemService.getOrderItemById(id).getStock();
-				OrderItemDTO orderItemDTOToUpdate = orderItemService.getOrderItemDTOById(id);
-				model.addAttribute("orderItemDTOToUpdate", orderItemDTOToUpdate);
-				model.addAttribute("orderItemStock", orderItemStock);
-				model.addAttribute("orderId", orderId);
-				model.addAttribute("itemId", id);
-				return ORDER_ROOT + "/{id}/details/{itemId}/updateitem";
-		}
-
-		@PostMapping("/{id}/details/{itemId}/updateitem")
-		@PreAuthorize("hasRole('ROLE_SENIOR_CASHIER')")
-		public String updateOrderItem(@PathVariable(name = "itemId") Long itemId, @PathVariable(name = "id") Long id, @Valid OrderItemDTO orderItemDTOToUpdate) {
-				orderItemService.updateOrderItem(itemId, orderItemDTOToUpdate);
-				return REDIRECT + ORDER_ROOT + "/{id}/details";
-		}
 		@GetMapping("/{id}/openorder/{itemId}/updateitem")
 		@PreAuthorize("hasAnyRole('ROLE_SENIOR_CASHIER','ROLE_CASHIER')")
 		public String getItemUpdateForNewOrderView(@PathVariable(name = "id") Long orderId,@PathVariable(name = "itemId") Long id, Model model) {

@@ -61,29 +61,9 @@
           Z
         </label>
       </div>
-      <button type="submit" class="btn btn-dark">Generate Report</button>
+        <button type="submit" class="btn btn-dark mt-5">Generate Report</button>
     </form>
   </div>
-
-<!--  <div class="container fluid mt-5 mr-6 text-center">-->
-<!--    <form th:object="${reportDTO}" th:action="@{/report/generatereport}" th:method="post">-->
-<!--      <input type="hidden" th:field="*{reportType}">-->
-<!--      <button type="submit" class="btn btn-dark">Generate X Report</button>-->
-<!--    </form>-->
-<!--  </div>-->
-
-<!--  <div class="container fluid mt-5 text-center">-->
-<!--    <form th:object="${reportDTO}" th:action="@{/report/generatereport}" th:method="post">-->
-<!--      <input type="hidden" th:field="*{reportType}">-->
-<!--      <button type="submit" class="btn btn-dark">Generate Z Report</button>-->
-<!--    </form>-->
-<!--  </div>-->
-<!--    <div class="container fluid mt-5 text-center">-->
-<!--      <form th:object="${reportDTO}" th:action="@{/report/generatereport}" th:method="post">-->
-<!--        <input type="text" th:field="*{reportType}">-->
-<!--        <button type="submit" class="btn btn-dark">Generate Report</button>-->
-<!--      </form>-->
-<!--    </div>-->
 
   <div class="container fluid">
     <div class="row">
@@ -105,11 +85,26 @@
             <td th:text="${report.toDate}">To</td>
             <td th:text="${report.reportType}">Report Type</td>
             <td th:text="${report.user.lastName}">Employee</td>
-<!--            <td><form th:object="${stock}" th:action="@{/stock/{id}/update(id=${stock.id})}" th:method="get"><button type="submit" class="btn btn-dark">Update</button></form></td>-->
-<!--            <td><form th:object="${stock}" th:action="@{/stock/{id}/delete(id=${stock.id})}" th:method="post"><button type="submit" class="btn btn-dark">Delete</button></form></td>-->
+
           </tr>
           </tbody>
         </table>
+        <nav aria-label="Page navigation example">
+          <ul class="pagination">
+            <li class="page-item" th:if="${currentPage > 1}">
+              <a class="page-link" th:href="@{'/report?page=' + ${previousPage}}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+              </a>
+            </li>
+            <li class="page-item" th:if="${currentPage} < ${numberOfPages}">
+              <a class="page-link" th:href="@{'/report?page=' + ${nextPage}}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
       </div>
     </div>
   </div>

@@ -6,6 +6,7 @@ import com.jk.cashregister.repository.OrderItemRepository;
 import com.jk.cashregister.service.StockService;
 import com.jk.cashregister.service.exception.StockDeletingException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 @RequestMapping("/stock")
@@ -27,11 +27,12 @@ public class StockController {
 
 		@GetMapping(name = "?page={page}")
 		public String viewAllStock(@RequestParam(defaultValue = "1") int page, Model model) {
-				List<Stock> allStock = stockService.getAllStock(page);
-				model.addAttribute("allStock", allStock);
+				Page<Stock> allStock = stockService.getAllStock(page);
+				model.addAttribute("allStock", allStock.getContent());
 				model.addAttribute("currentPage", page);
 				model.addAttribute("previousPage", page - 1);
 				model.addAttribute("nextPage", page + 1);
+				model.addAttribute("numberOfPages", allStock.getTotalPages());
 				return STOCK_ROOT;
 		}
 

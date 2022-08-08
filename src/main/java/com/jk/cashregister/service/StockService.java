@@ -11,8 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class StockService {
@@ -27,9 +25,8 @@ public class StockService {
 				return StockDTOMapper.INSTANCE.stockToStockDTO(stock);
 		}
 
-		public List<Stock> getAllStock(int page) {
-				Page<Stock> all = stockRepository.findAll(PageRequest.of(page - 1, 10));
-				return all.getContent();
+		public Page<Stock> getAllStock(int page) {
+				return stockRepository.findAll(PageRequest.of(page - 1, 5));
 		}
 //using dto object instead database entity
 		public Stock createStock(StockDTO request) {

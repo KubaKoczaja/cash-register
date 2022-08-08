@@ -3,15 +3,14 @@ package com.jk.cashregister.controller;
 import com.jk.cashregister.domain.Report;
 import com.jk.cashregister.domain.dto.ReportDTO;
 import com.jk.cashregister.service.ReportService;
-import com.jk.cashregister.service.mapper.ReportDTOMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 @RequestMapping("/report")
@@ -19,17 +18,16 @@ import java.util.List;
 public class ReportController {
 		private static final String REPORT_ROOT = "/report";
 		public final ReportService reportService;
-		private ReportDTOMapper reportDTOMapper;
 
 		@GetMapping(name = "?page={page}")
 		public String getAllReports(@RequestParam(defaultValue = "1") int page, Model model) {
-				List<Report> allReports = reportService.getAllReports(page);
-				model.addAttribute("allReports", allReports);
+				Page<Report> allReports = reportService.getAllReports(page);
+				model.addAttribute("allReports", allReports.getContent());
 				model.addAttribute("currentPage", page);
 				model.addAttribute("previousPage", page - 1);
 				model.addAttribute("nextPage", page + 1);
 				model.addAttribute("reportDTO", new ReportDTO());
-				model.addAttribute("x","x");
+				model.addAttribute("numberOfPages", allReports.getTotalPages());
 				return REPORT_ROOT;
 		}
 
@@ -44,7 +42,6 @@ public class ReportController {
 		@PreAuthorize("hasRole('ROLE_SENIOR_CASHIER')")
 		public String generateXReport(@Valid ReportDTO reportDTO) {
 				reportService.saveReport(reportDTO);
-
 				return "redirect:" + REPORT_ROOT;
 		}
 }
