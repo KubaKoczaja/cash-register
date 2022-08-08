@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Item View View</title>
+    <link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/index}">Cash Register</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                    aria-controls="navbarResponsive"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/stock}">Stock
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" th:href="@{/order}">Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/report}">Reports
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" >
+
+                        <form th:action="@{/logout}" method="post">
+                            <input class="nav-link btn btn-outline-primary" type="submit" th:value="Logout"/>
+                        </form>
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<div class="d flex">
+    <div class="container fluid">
+        <div class="row">
+            <div class="col-lg-4 mt-5 mb-5">
+                <form th:object="${orderItemDTOToUpdate}" th:action="@{/order/{id}/details/{itemId}/updateitem(id=${orderId},itemId=${itemId})}" th:method="post">
+                    <table id="stock" class="table table-bordered" style="width: 100%">
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Product Code</th>
+                            <th>Product Name</th>
+                            <th>Quantity left</th>
+                            <th>Price</th>
+                            <th>Quantity ordered</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td th:text="${orderItemStock.id}">Id</td>
+                            <td th:text="${orderItemStock.productCode}">Product Code</td>
+                            <td th:text="${orderItemStock.productCode}">Product Name</a></td>
+                            <td th:text="${orderItemStock.quantity}">Quantity left</td>
+                            <td th:text="${orderItemStock.price}">Price</td>
+<!--                            <form th:action="@{/order/{id}/details/{itemId}/updateitem(id=${orderId},itemId=${itemId})}" th:method="post">-->
+                            <td><div class="input-group mb-3">
+                                <input type="number" class="form-control"  th:field="*{quantityOrdered}" th:placeholder="${orderItemDTOToUpdate.quantityOrdered}" th:value="${orderItemDTOToUpdate.quantityOrdered}"/>
+                            </div>
+                            </td>
+                            <td><button type="submit" class="btn btn-dark">Update</button></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

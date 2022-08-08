@@ -47,23 +47,23 @@
   <div class="container fluid">
     <div class="row">
       <div class="col-lg-4 mt-5 mb-5">
-        <form th:action="@{/stock/{id}/update(id=${stockToUpdate.id})}" th:object="${stockDTO}" th:method="post">
+        <form th:action="@{/stock/{id}/update(id=${stockId})}" th:object="${stockDTOToUpdate}" th:method="post">
         <table class="table table-bordered" style="width: 80%">
           <tr><div class="input-group mb-3">
             <span class="input-group-text" id="inputGroup-sizing-product_code">Product Code</span>
-            <input type="text" class="form-control" th:field="*{productCode}"th:placeholder="${stockToUpdate.productCode}" th:value="${stockToUpdate.productCode}"/>
+            <input type="text" class="form-control" th:field="*{productCode}"th:placeholder="${stockDTOToUpdate.productCode}" th:value="${stockDTOToUpdate.productCode}"/>
           </div></tr>
           <tr><div class="input-group mb-3">
             <span class="input-group-text" id="inputGroup-sizing-product_name">Product Name</span>
-            <input type="text" class="form-control" th:field="*{productName}" th:placeholder="${stockToUpdate.productName}" th:value="${stockToUpdate.productName}"/>
+            <input type="text" class="form-control" th:field="*{productName}" th:placeholder="${stockDTOToUpdate.productName}" th:value="${stockDTOToUpdate.productName}"/>
           </div></tr>
           <tr><div class="input-group mb-3">
             <span class="input-group-text" id="inputGroup-sizing-quantity">Quantity</span>
-            <input type="number" class="form-control" th:field="*{quantity}" th:placeholder="${stockToUpdate.quantity}" th:value="${stockToUpdate.quantity}"/>
+            <input type="number" class="form-control" th:field="*{quantity}" th:placeholder="${stockDTOToUpdate.quantity}" th:value="${stockDTOToUpdate.quantity}"/>
           </div></tr>
           <tr><div class="input-group mb-3">
             <span class="input-group-text" id="inputGroup-sizing-price">Price</span>
-            <input type="number" class="form-control" th:field="*{price}" th:placeholder="${stockToUpdate.price}" th:value="${stockToUpdate.price}"/>
+            <input type="number" class="form-control" th:field="*{price}" th:placeholder="${stockDTOToUpdate.price}" th:value="${stockDTOToUpdate.price}"/>
           </div></tr>
           <tr><button type="submit" class="btn btn-dark">Update</button></tr>
         </table>
@@ -73,10 +73,5 @@
   </div>
 
 </div>
-<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
-<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
-<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-
-
 </body>
 </html>

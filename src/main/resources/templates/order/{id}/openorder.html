@@ -111,16 +111,15 @@
                     <td th:text="${item.stock.quantity}">Quantity</td>
                     <td th:text="${item.stock.price}">Price</td>
                     <td th:text="${item.quantityOrdered}">Quantity ordered</td>
+                    <td><form th:action="@{/order/{id}/openorder/{itemId}/updateitem(id=${newOrder.id},itemId=${item.id})}" th:method="get"><button type="submit" class="btn btn-dark">Update</button></form></td>
+                    <td><form th:object="${item}" th:action="@{/order/{id}/openorder/{itemId}/deleteitem(id=${newOrder.id},itemId=${item.id})}" th:method="post"><button type="submit" class="btn btn-dark">Delete</button></form></td>
+                </tr>
                 </tr>
                 </tbody>
             </table>
         </div>
     </div>
 </div>
-<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
-<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
-<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-
-
+</div>
 </body>
 </html>

@@ -4,6 +4,7 @@ import com.jk.cashregister.domain.Stock;
 import com.jk.cashregister.domain.dto.StockDTO;
 import com.jk.cashregister.repository.OrderItemRepository;
 import com.jk.cashregister.service.StockService;
+import com.jk.cashregister.service.exception.StockDeletingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -36,13 +37,13 @@ public class StockController {
 
 		@GetMapping("/{id}/details")
 		public String viewStockById(@PathVariable long id, Model model) {
-				Stock stock = stockService.getById(id);
+				Stock stock = stockService.getStockById(id);
 				model.addAttribute("stockItem", stock);
 				return STOCK_ROOT + "/{id}/details";
 		}
 		@PostMapping("/addstock")
 		@PreAuthorize("hasRole('ROLE_COMMODITY_EXPERT')")
-		public RedirectView addingNewStock(@Valid @ModelAttribute StockDTO stockDTO) {
+		public RedirectView addingNewStock(@Valid StockDTO stockDTO) {
 				stockService.createStock(stockDTO);
 				return new RedirectView(STOCK_ROOT);
 		}
@@ -59,7 +60,7 @@ public class StockController {
 		public RedirectView deleteStock(@PathVariable long id) {
 				// check if stock item is somewhere in order
 				if (!orderItemRepository.findAllByStockId(id).isEmpty()) {
-						throw new RuntimeException("You can't delete stock in active order");
+						throw new StockDeletingException("You can't delete stock in active order");
 				}
 				stockService.deleteStockById(id);
 				return new RedirectView(STOCK_ROOT);
@@ -68,15 +69,15 @@ public class StockController {
 		@GetMapping("/{id}/update")
 		@PreAuthorize("hasRole('ROLE_COMMODITY_EXPERT')")
 		public String viewUpdateStock(@PathVariable long id, Model model) {
-				Stock stockToUpdate = stockService.getById(id);
-				model.addAttribute("stockToUpdate", stockToUpdate);
-				model.addAttribute("stockDTO", new StockDTO());
+				StockDTO stockDTOToUpdate = stockService.getStockDTOFromId(id);
+				model.addAttribute("stockDTOToUpdate", stockDTOToUpdate);
+				model.addAttribute("stockId", id);
 				return "/stock/{id}/update";
 		}
 
 		@PostMapping("{id}/update")
 		@PreAuthorize("hasRole('ROLE_COMMODITY_EXPERT')")
-		public RedirectView updateStock(@PathVariable Long id, @ModelAttribute StockDTO stockDTO, Model model) {
+		public RedirectView updateStock(@PathVariable Long id, @Valid StockDTO stockDTO, Model model) {
 				stockService.updateStock(stockDTO,id);
 				return new RedirectView(STOCK_ROOT);
 		}

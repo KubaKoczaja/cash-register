@@ -30,14 +30,14 @@ class StockServiceTest {
 		@Test
 		void shouldThrowExceptionWhenNoSuchId() {
 				Mockito.when(stockRepository.findById(1L)).thenReturn(Optional.empty());
-				assertThrows(NoSuchStockItemException.class, () -> stockService.getById(1L));
+				assertThrows(NoSuchStockItemException.class, () -> stockService.getStockById(1L));
 		}
 
 		@Test
 		void shouldReturnStockEntityById() {
 				Mockito.when(stockRepository.findById(2L))
 								.thenReturn(Optional.of(new Stock(2L,"test", "test", 2, 1000, new ArrayList<>())));
-				assertEquals("test", stockService.getById(2L).getProductName());
+				assertEquals("test", stockService.getStockById(2L).getProductName());
 		}
 
 		@Disabled
@@ -52,6 +52,6 @@ class StockServiceTest {
 				Stock expectedStock = stockService.createStock(stockDTO);
 				Mockito.when(stockRepository.findById(2L))
 								.thenReturn(Optional.of(new Stock(2L,"test", "test", 2, 100, new ArrayList<>())));
-				assertEquals(expectedStock.getProductName(), stockService.getById(2L).getProductName());
+				assertEquals(expectedStock.getProductName(), stockService.getStockById(2L).getProductName());
 		}
 }

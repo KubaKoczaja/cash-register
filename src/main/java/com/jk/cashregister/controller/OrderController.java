@@ -26,7 +26,6 @@ public class OrderController {
 		private final OrderRepository orderRepository;
 		private final OrderItemRepository orderItemRepository;
 
-		//TODO add hidden inputs for OrderDTO
 		@GetMapping(name = "?page={page}")
 		public String viewAllStock(@RequestParam(defaultValue = "1") int page, Model model) {
 				List<Order> allOrders = orderService.getAllOrders(page);
@@ -53,18 +52,4 @@ public class OrderController {
 				orderRepository.deleteById(id);
 				return new RedirectView(ORDER_ROOT);
 		}
-
-//		@GetMapping("/{id}/update")
-//		public String viewUpdateStock(@PathVariable long id, Model model) {
-//				Stock stockToUpdate = stockService.getById(id);
-//				model.addAttribute("stockToUpdate", stockToUpdate);
-//				model.addAttribute("stockDTO", new StockDTO());
-//				return "/order/{id}/update";
-//		}
-//
-//		@PostMapping("{id}/update")
-//		public RedirectView updateStock(@PathVariable Long id, @ModelAttribute StockDTO stockDTO, Model model) {
-//				stockService.updateStock(stockDTO,id);
-//				return new RedirectView(ORDER_ROOT);
-//		}
 }

@@ -2,19 +2,14 @@ package com.jk.cashregister.service.mapper;
 
 import com.jk.cashregister.domain.Stock;
 import com.jk.cashregister.domain.dto.StockDTO;
-import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
+import org.mapstruct.factory.Mappers;
 
-@Component
-@NoArgsConstructor
-public class StockDTOMapper {
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+public interface StockDTOMapper {
+		StockDTOMapper INSTANCE = Mappers.getMapper(StockDTOMapper.class);
 
-		public Stock mapToStock(StockDTO request) {
-				Stock stock = new Stock();
-				stock.setProductCode(request.getProductCode());
-				stock.setProductName(request.getProductName());
-				stock.setQuantity(request.getQuantity());
-				stock.setPrice(request.getPrice());
-				return stock;
-		}
+		StockDTO stockToStockDTO(Stock stock);
+		Stock stockDTOToStock(StockDTO stockDTO);
 }

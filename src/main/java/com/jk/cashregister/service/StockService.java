@@ -18,11 +18,13 @@ import java.util.List;
 public class StockService {
 		private final StockRepository stockRepository;
 
-		private final StockDTOMapper stockDTOMapper;
-
-// getting dto object instead database entity?
-		public Stock getById(Long id) {
+		public Stock getStockById(Long id) {
 				return stockRepository.findById(id).orElseThrow(NoSuchStockItemException::new);
+		}
+
+		public StockDTO getStockDTOFromId(Long id){
+				Stock stock = getStockById(id);
+				return StockDTOMapper.INSTANCE.stockToStockDTO(stock);
 		}
 
 		public List<Stock> getAllStock(int page) {
@@ -31,18 +33,18 @@ public class StockService {
 		}
 //using dto object instead database entity
 		public Stock createStock(StockDTO request) {
-				Stock stock = stockDTOMapper.mapToStock(request);
+				Stock stock = StockDTOMapper.INSTANCE.stockDTOToStock(request);
 				return stockRepository.save(stock);
 		}
 
-		public Stock updateStock(StockDTO request, Long stockToUpdateId) {
-				Stock stock = stockDTOMapper.mapToStock(request);
+		public void updateStock(StockDTO request, Long stockToUpdateId) {
+				Stock stock = StockDTOMapper.INSTANCE.stockDTOToStock(request);
 				stock.setId(stockToUpdateId);
-				return stockRepository.save(stock);
+				stockRepository.save(stock);
 		}
 
 		public void updateQuantity(long stockId, int newQuantity) {
-				Stock byId = getById(stockId);
+				Stock byId = getStockById(stockId);
 				if (byId.getQuantity() >= newQuantity) {
 						byId.setQuantity(byId.getQuantity() - newQuantity);
 				} else {

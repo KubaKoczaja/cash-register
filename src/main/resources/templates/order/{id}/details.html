@@ -17,12 +17,12 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="@{/stock}">Stock
+                    <a class="nav-link" th:href="@{/stock}">Stock
                         <span class="sr-only">(current)</span>
                     </a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="@{/order}">Orders</a>
+                    <a class="nav-link" th:href="@{/order}">Orders</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/report}">Reports
@@ -59,7 +59,6 @@
                             <small class="text-muted" th:text="${orderDetails.closeDate}">Closed</small>
                     </li>
                 </ul>
-
                 <form class="card p-2" th:action="@{/order/{id}/delete(id=${orderDetails.id})}" th:method="post">
                     <div class="input-group">
                         <div class="input-group-append">
@@ -90,13 +89,13 @@
                 <tr th:each="item : ${orderDetails.orderItemList}">
                     <td th:text="${item.id}">Id</td>
                     <td th:text="${item.stock.productCode}">Product Code</td>
-<!--                    <td><a th:href="@{/stock/{id}/details(id=${stock.id})}" th:text="${stock.productName}">Product Name</a></td>-->
                     <td th:text="${item.stock.productName}">Product Name</td>
                     <td th:text="${item.stock.quantity}">Quantity</td>
                     <td th:text="${item.stock.price}">Price</td>
                     <td th:text="${item.quantityOrdered}">Quantity ordered</td>
-<!--                    <td><form th:object="${stock}" th:action="@{/stock/{id}/update(id=${stock.id})}" th:method="get"><button type="submit" class="btn btn-dark">Update</button></form></td>-->
-<!--                    <td><form th:object="${stock}" th:action="@{/stock/{id}/delete(id=${stock.id})}" th:method="post"><button type="submit" class="btn btn-dark">Delete</button></form></td>-->
+
+                    <td><form th:action="@{/order/{id}/details/{itemId}/updateitem(id=${orderDetails.id},itemId=${item.id})}" th:method="get"><button type="submit" class="btn btn-dark">Update</button></form></td>
+                    <td><form th:object="${item}" th:action="@{/order/{id}/details/{itemId}/deleteitem(id=${orderDetails.id},itemId=${item.id})}" th:method="post"><button type="submit" class="btn btn-dark">Delete</button></form></td>
                 </tr>
                 </tbody>
             </table>
