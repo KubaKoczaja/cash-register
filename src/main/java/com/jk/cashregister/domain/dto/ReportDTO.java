@@ -1,6 +1,5 @@
 package com.jk.cashregister.domain.dto;
 
-import com.jk.cashregister.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,8 +11,6 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class ReportDTO {
 
-		@NotBlank
+		@NotBlank(message = "Report Type can't be blank!")
 		private String reportType;
-
-		private User user;
 }

@@ -13,12 +13,12 @@ import javax.validation.constraints.PositiveOrZero;
 @NoArgsConstructor
 public class StockDTO {
 
-		@NotBlank
+		@NotBlank(message = "Product code can't be blank!")
 		private String productCode;
-		@NotBlank
+		@NotBlank(message = "Product name can't be blank!")
 		private String productName;
-		@PositiveOrZero
+		@PositiveOrZero(message = "Quantity can't be negative number")
 		private int quantity;
-		@Positive
+		@Positive(message = "Price must be bigger than zero")
 		private int price;
 }

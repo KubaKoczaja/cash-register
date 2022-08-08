@@ -9,8 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class ReportService {
@@ -23,9 +21,8 @@ public class ReportService {
 				return reportRepository.save(report);
 		}
 
-		public List<Report> getAllReports(int page) {
-				Page<Report> all = reportRepository.findAll(PageRequest.of(page - 1, 10));
-				return all.getContent();
+		public Page<Report> getAllReports(int page, int size) {
+				return reportRepository.findAll(PageRequest.of(page - 1, size));
 		}
 
 		public Report getReportById(Long id) {

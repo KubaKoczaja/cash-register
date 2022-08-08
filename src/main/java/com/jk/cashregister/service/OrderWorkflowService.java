@@ -3,6 +3,7 @@ package com.jk.cashregister.service;
 import com.jk.cashregister.domain.Order;
 import com.jk.cashregister.domain.OrderItem;
 import com.jk.cashregister.domain.dto.OrderDTO;
+import com.jk.cashregister.domain.dto.OrderItemDTO;
 import com.jk.cashregister.repository.OrderItemRepository;
 import com.jk.cashregister.repository.OrderRepository;
 import com.jk.cashregister.service.exception.EmptyOrderException;
@@ -13,44 +14,42 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class OrderWorkflowService {
+		private final OrderItemDTOMapper orderItemDTOMapper;
 		private final OrderItemRepository orderItemRepository;
 		private final OrderRepository orderRepository;
 		private final OrderDTOMapper orderDTOMapper;
-		private final OrderItemDTOMapper orderItemDTOMapper;
 		private final StockService stockService;
 		private final OrderService orderService;
 
-		//		OrderOpenRequest holds information about user id and open of order time
 		public Order openNewOrder(OrderDTO orderDTO) {
 				Order openOrder = orderDTOMapper.map(orderDTO);
 				return orderRepository.save(openOrder);
 		}
 
 		@Transactional
-		public void addNewOrderItemToOrder(OrderItem orderItem) {
-
-
+		public Order addNewOrderItemToOrder(OrderItemDTO orderItemDTO, Long orderId) {
+				Order order = orderService.getOrderById(orderId);
+				OrderItem orderItem = orderItemDTOMapper.mapToOrderItem(orderItemDTO);
+				orderItem.setOrder(order);
 				OrderItem savedOrderItem = orderItemRepository.save(orderItem);
 
 				// stock quantity is updated. check if there is enough quantity in warehouse -> stockService updateQuantity method
 				// stock is updated after creating each order item
 
 				stockService.updateQuantity(savedOrderItem.getStock().getId(), savedOrderItem.getQuantityOrdered());
+				return order;
 		}
 
 		public void closeNewOrder(Long id) {
 				Order order = orderService.getOrderById(id);
-				List<OrderItem> orderItemsList = orderItemRepository.findAllByOrderId(id);
-				if (orderItemsList.isEmpty()) {
+				if (order.getOrderItemList().isEmpty()) {
 						orderRepository.deleteById(id);
 						throw new EmptyOrderException();
 				}
-				order.setOrderItemList(orderItemsList);
 				order.setCloseDate(LocalDateTime.now());
 				orderRepository.save(order);
 		}

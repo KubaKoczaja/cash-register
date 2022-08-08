@@ -14,9 +14,6 @@ public class OrderItemDTO {
 		@Positive(message = "Stock's id must be positive number")
 		private Long stockId;
 
-//		@Positive(message = "Order's id must be positive number")
-//		private Long orderId;
-
 		@Positive(message = "Quantity ordered must be positive number")
 		private int quantityOrdered;
 

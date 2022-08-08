@@ -11,8 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class OrderItemService {
@@ -36,11 +34,6 @@ public class OrderItemService {
 				stockRepository.save(stock);
 				orderItem.setQuantityOrdered(orderItemDTO.getQuantityOrdered());
 				orderItemRepository.save(orderItem);
-		}
-
-		public List<OrderItem> getAllOrderItems(Long id) {
-				List<OrderItem> allOrderItems = orderItemRepository.findAllByOrderId(id);
-				return allOrderItems;
 		}
 
 		@Transactional
