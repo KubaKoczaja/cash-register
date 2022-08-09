@@ -48,7 +48,7 @@ public class OrderWorkflowService {
 				Order order = orderService.getOrderById(id);
 				if (order.getOrderItemList().isEmpty()) {
 						orderRepository.deleteById(id);
-						throw new EmptyOrderException();
+						throw new EmptyOrderException("Newly created order can't be empty!");
 				}
 				order.setCloseDate(LocalDateTime.now());
 				orderRepository.save(order);

@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Error View</title>
+    <title>Custom Error View</title>
     <link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
 </head>
 <body>
@@ -19,14 +19,23 @@
     </nav>
 </header>
 
-    <div class="container main-content mt-2">
-        <ul class="list-group">
-            <li class="list-group-item list-group-item-danger"><h3 th:text="${error}">Status</h3></li>
-            <li class="list-group-item" th:text="'Status code: '+ ${status}"></li>
-            <li class="list-group-item" th:text="'Encountered: '+ ${timestamp}"></li>
-            <li class="list-group-item" th:text="'Message: '+ ${message}"></li>
-        </ul>
-        <p><a th:href="@{/}">Go back to main page</a></p>
+<div class="container fluid">
+    <div class="row">
+        <div class="col-lg-10 mt-5 mb-5">
+
+            <table class="table table-bordered" style="width: 100%">
+                <tbody>
+                <tr>
+                    <td th:text="${message}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
+    <div class="row mt-2">
+         <p><a th:href="@{/}">Go to Main Page</a></p>
+    </div>
+
+</div>
 </body>
 </html>

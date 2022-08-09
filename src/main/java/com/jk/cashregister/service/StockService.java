@@ -3,7 +3,7 @@ package com.jk.cashregister.service;
 import com.jk.cashregister.domain.Stock;
 import com.jk.cashregister.domain.dto.StockDTO;
 import com.jk.cashregister.repository.StockRepository;
-import com.jk.cashregister.service.exception.NoSuchStockItemException;
+import com.jk.cashregister.service.exception.NoSuchItemException;
 import com.jk.cashregister.service.exception.NotEnoughQuantityException;
 import com.jk.cashregister.service.mapper.StockDTOMapper;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ public class StockService {
 		private final StockRepository stockRepository;
 
 		public Stock getStockById(Long id) {
-				return stockRepository.findById(id).orElseThrow(NoSuchStockItemException::new);
+				return stockRepository.findById(id).orElseThrow(() -> new NoSuchItemException("Stock with such id doesn't exist"));
 		}
 
 		public StockDTO getStockDTOFromId(Long id){
@@ -45,7 +45,7 @@ public class StockService {
 				if (byId.getQuantity() >= newQuantity) {
 						byId.setQuantity(byId.getQuantity() - newQuantity);
 				} else {
-						throw new NotEnoughQuantityException();
+						throw new NotEnoughQuantityException("There is not enough stock left in warehouse");
 				}
 				stockRepository.save(byId);
 		}

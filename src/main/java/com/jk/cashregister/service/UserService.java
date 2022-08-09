@@ -14,7 +14,7 @@ public class UserService {
 		private final UserRepository userRepository;
 
 		public User getUserById(Long id) {
-				return userRepository.findById(id).orElseThrow(UserDoesntExistException::new);
+				return userRepository.findById(id).orElseThrow(() -> new UserDoesntExistException("Such user doesn't exist"));
 		}
 
 		public User getAuthenticatedUser() {

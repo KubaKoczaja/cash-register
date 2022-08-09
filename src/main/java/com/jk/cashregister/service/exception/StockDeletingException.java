@@ -1,6 +1,7 @@
 package com.jk.cashregister.service.exception;
 
-public class StockDeletingException extends RuntimeException {
-		public StockDeletingException(String s) {
+public class StockDeletingException extends CustomException {
+		public StockDeletingException(String message) {
+				super(message);
 		}
 }

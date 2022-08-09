@@ -5,7 +5,7 @@ import com.jk.cashregister.domain.Stock;
 import com.jk.cashregister.domain.dto.OrderItemDTO;
 import com.jk.cashregister.repository.OrderItemRepository;
 import com.jk.cashregister.repository.StockRepository;
-import com.jk.cashregister.service.exception.NoSuchOrderItemException;
+import com.jk.cashregister.service.exception.NoSuchItemException;
 import com.jk.cashregister.service.mapper.OrderItemDTOMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ public class OrderItemService {
 		private final OrderItemDTOMapper orderItemDTOMapper;
 		private final StockRepository stockRepository;
 		public OrderItem getOrderItemById(Long id) {
-				return orderItemRepository.findById(id).orElseThrow(NoSuchOrderItemException::new);
+				return orderItemRepository.findById(id).orElseThrow(() -> new NoSuchItemException("Order item with such element doesn't exist"));
 		}
 		public OrderItemDTO getOrderItemDTOById(Long id) {
 				OrderItem orderItem = getOrderItemById(id);

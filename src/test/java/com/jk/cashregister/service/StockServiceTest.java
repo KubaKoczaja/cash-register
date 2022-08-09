@@ -3,7 +3,7 @@ package com.jk.cashregister.service;
 import com.jk.cashregister.domain.Stock;
 import com.jk.cashregister.domain.dto.StockDTO;
 import com.jk.cashregister.repository.StockRepository;
-import com.jk.cashregister.service.exception.NoSuchStockItemException;
+import com.jk.cashregister.service.exception.NoSuchItemException;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,7 +30,7 @@ class StockServiceTest {
 		@Test
 		void shouldThrowExceptionWhenNoSuchId() {
 				Mockito.when(stockRepository.findById(1L)).thenReturn(Optional.empty());
-				assertThrows(NoSuchStockItemException.class, () -> stockService.getStockById(1L));
+				assertThrows(NoSuchItemException.class, () -> stockService.getStockById(1L));
 		}
 
 		@Test

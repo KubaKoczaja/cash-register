@@ -3,7 +3,7 @@ package com.jk.cashregister.service;
 import com.jk.cashregister.domain.Report;
 import com.jk.cashregister.domain.dto.ReportDTO;
 import com.jk.cashregister.repository.ReportRepository;
-import com.jk.cashregister.service.exception.NoSuchReportException;
+import com.jk.cashregister.service.exception.NoSuchItemException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,6 +26,6 @@ public class ReportService {
 		}
 
 		public Report getReportById(Long id) {
-				return reportRepository.findById(id).orElseThrow(NoSuchReportException::new);
+				return reportRepository.findById(id).orElseThrow(() -> new NoSuchItemException("Report with such id doesn't exist"));
 		}
 }

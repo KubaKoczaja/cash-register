@@ -2,7 +2,7 @@ package com.jk.cashregister.service;
 
 import com.jk.cashregister.domain.Order;
 import com.jk.cashregister.repository.OrderRepository;
-import com.jk.cashregister.service.exception.NoSuchOrderException;
+import com.jk.cashregister.service.exception.NoSuchItemException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +18,6 @@ public class OrderService {
 		}
 
 		public Order getOrderById(Long id) {
-				return orderRepository.findById(id).orElseThrow(NoSuchOrderException::new);
+				return orderRepository.findById(id).orElseThrow(() -> new NoSuchItemException("Order with such id doesn't exist"));
 		}
 }

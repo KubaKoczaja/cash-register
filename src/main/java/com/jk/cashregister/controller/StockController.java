@@ -47,7 +47,12 @@ public class StockController {
 		}
 		@PostMapping("/addstock")
 		@PreAuthorize("hasRole('ROLE_COMMODITY_EXPERT')")
-		public String addingNewStock(@Valid StockDTO stockDTO) {
+		public String addingNewStock(@Valid @ModelAttribute StockDTO stockDTO, Model model) {
+//				if (bindingResult.hasErrors()) {
+//						List<ObjectError> allErrors = bindingResult.getAllErrors();
+//						model.addAttribute("allErrors", allErrors);
+//						return "/inputerror";
+//				}
 				stockService.createStock(stockDTO);
 				return REDIRECT + STOCK_ROOT;
 		}
