@@ -6,46 +6,12 @@
     <link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
 </head>
 <body>
-<header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-        <div class="container">
-            <a class="navbar-brand" th:href="@{/index}">Cash Register</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-                    aria-controls="navbarResponsive"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/stock}">Stock</a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" th:href="@{/order}">Orders</a>
-                            <span class="sr-only">(current)</span>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/report}">Reports
-                            <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" >
-
-                        <form th:action="@{/logout}" method="post">
-                          <input class="nav-link btn btn-outline-primary" type="submit" th:value="Logout"/>
-                        </form>
-
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</header>
+<header th:insert="fragments/general.html :: header"> </header>
 
 <div class="d flex">
     <div class="container fluid mt-5 text-center">
         <form  th:object="${orderDTO}" th:action="@{/order/openorder}" th:method="post">
-            <button type="submit" class="btn btn-dark">Open New Order</button>
+            <button type="submit" class="btn btn-dark" th:text="#{open_new_order}">Open New Order</button>
         </form>
     </div>
 
@@ -56,9 +22,9 @@
                     <thead>
                     <tr>
                         <th>Id</th>
-                        <th>Opened</th>
-                        <th>Closed</th>
-                        <th>Employee</th>
+                        <th th:text="#{opened}">Opened</th>
+                        <th th:text="#{closed}">Closed</th>
+                        <th th:text="#{employee}">Employee</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -68,7 +34,7 @@
                         <td th:text="${order.closeDate}">Closed</td>
                         <td th:text="${order.user.lastName}">Employee</td>
 
-                        <td><form th:object="${order}" th:action="@{/order/{id}/delete(id=${order.id})}" th:method="post"><button type="submit" class="btn btn-dark">Delete</button></form></td>
+                        <td><form th:object="${order}" th:action="@{/order/{id}/delete(id=${order.id})}" th:method="post"><button type="submit" class="btn btn-dark" th:text="#{delete}">Delete</button></form></td>
                     </tr>
                     </tbody>
                 </table>

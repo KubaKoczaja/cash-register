@@ -6,47 +6,11 @@
     <link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
 </head>
 <body>
-<header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-        <div class="container">
-            <a class="navbar-brand" th:href="@{/index}">Cash Register</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-                    aria-controls="navbarResponsive"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" th:href="@{/stock}">Stock
-                            <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/order}">Orders</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/report}">Reports
-                            <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" >
-
-                        <form th:action="@{/logout}" method="post">
-                          <input class="nav-link btn btn-outline-primary" type="submit" th:value="Logout"/>
-                        </form>
-
-                    </li>
-
-                </ul>
-            </div>
-        </div>
-    </nav>
-</header>
+<header th:insert="fragments/general.html :: header"> </header>
 
 <div class="d flex">
 <div class="container fluid mt-5 text-center">
-    <button type="button" class="btn btn-dark"><a th:href="@{/stock/addstock}">Add stock</a></button>
+    <button type="button" class="btn btn-dark"><a th:href="@{/stock/addstock}" th:text="#{add_stock}">Add stock</a></button>
 </div>
 
 <div class="container fluid">
@@ -56,10 +20,10 @@
                 <thead>
                 <tr>
                     <th>Id</th>
-                    <th>Product Code</th>
-                    <th>Product Name</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
+                    <th th:text="#{product_code}">Product Code</th>
+                    <th th:text="#{product_name}">Product Name</th>
+                    <th th:text="#{quantity}">Quantity</th>
+                    <th th:text="#{price}">Price</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -69,8 +33,8 @@
                     <td><a th:href="@{/stock/{id}/details(id=${stock.id})}" th:text="${stock.productName}">Product Name</a></td>
                     <td th:text="${stock.quantity}">Quantity</td>
                     <td th:text="${stock.price}">Price</td>
-                    <td><form th:object="${stock}" th:action="@{/stock/{id}/update(id=${stock.id})}" th:method="get"><button type="submit" class="btn btn-dark">Update</button></form></td>
-                    <td><form th:object="${stock}" th:action="@{/stock/{id}/delete(id=${stock.id})}" th:method="post"><button type="submit" class="btn btn-dark">Delete</button></form></td>
+                    <td><form th:object="${stock}" th:action="@{/stock/{id}/update(id=${stock.id})}" th:method="get"><button type="submit" class="btn btn-dark"><span th:text="#{update}">Update</span></button></form></td>
+                    <td><form th:object="${stock}" th:action="@{/stock/{id}/delete(id=${stock.id})}" th:method="post"><button type="submit" class="btn btn-dark"><span th:text="#{delete}">Delete</span></button></form></td>
                 </tr>
                 </tbody>
             </table>

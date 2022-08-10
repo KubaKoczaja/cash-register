@@ -14,6 +14,6 @@ public class OrderDTO {
 
 		private LocalDateTime openDate = LocalDateTime.now();
 
-		@Positive(message = "User's id must be positive number")
+		@Positive(message = "{userId.positive}")
 		private Long userId;
 }

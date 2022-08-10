@@ -6,40 +6,7 @@
     <link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-    <div class="container">
-        <a class="navbar-brand" th:href="@{/index}">Cash Register</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-                aria-controls="navbarResponsive"
-                aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/stock}">Stock
-                        <span class="sr-only">(current)</span>
-                    </a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" th:href="@{/order}">Orders</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/report}">Reports
-                        <span class="sr-only">(current)</span>
-                    </a>
-                </li>
-                <li class="nav-item" >
-
-                      <form th:action="@{/logout}" method="post">
-                        <input class="nav-link btn btn-outline-primary" type="submit" th:value="Logout"/>
-                      </form>
-
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<header th:insert="fragments/general.html :: header"> </header>
 <div class="container">
     <div class="row">
         <div class="col-lg-10 mt-5 mb-5">
@@ -52,17 +19,17 @@
                     <li class="list-group-item d-flex justify-content-between lh-condensed">
 
                             <h6 class="my-0">Opened</h6>
-                            <small class="text-muted" th:text="${orderDetails.openDate}">Opened</small>
+                            <small class="text-muted" th:text="${orderDetails.openDate}" th:text="#{opened}">Opened</small>
                     </li>
                     <li class="list-group-item d-flex justify-content-between lh-condensed">
                             <h6 class="my-0">Closed</h6>
-                            <small class="text-muted" th:text="${orderDetails.closeDate}">Closed</small>
+                            <small class="text-muted" th:text="${orderDetails.closeDate}" th:text="#{closed}">Closed</small>
                     </li>
                 </ul>
                 <form class="card p-2" th:action="@{/order/{id}/delete(id=${orderDetails.id})}" th:method="post">
                     <div class="input-group">
                         <div class="input-group-append">
-                            <button type="submit" class="btn btn-dark">Delete</button>
+                            <button type="submit" class="btn btn-dark"><span th:text="#{delete}">Delete</span></button>
                         </div>
                     </div>
                 </form>
@@ -78,11 +45,11 @@
                 <thead>
                 <tr>
                     <th>Id</th>
-                    <th>Product Code</th>
-                    <th>Product Name</th>
-                    <th>Quantity left</th>
-                    <th>Price</th>
-                    <th>Quantity ordered</th>
+                    <th th:text="#{product_code}">Product Code</th>
+                    <th th:text="#{product_name}">Product Name</th>
+                    <th th:text="#{quantity_left}">Quantity left</th>
+                    <th th:text="#{price}">Price</th>
+                    <th th:text="#{quantity_ordered}">Quantity ordered</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -94,8 +61,8 @@
                     <td th:text="${item.stock.price}">Price</td>
                     <td th:text="${item.quantityOrdered}">Quantity ordered</td>
 
-                    <td><form th:action="@{/order/{id}/details/{itemId}/updateitem(id=${orderDetails.id},itemId=${item.id})}" th:method="get"><button type="submit" class="btn btn-dark">Update</button></form></td>
-                    <td><form th:object="${item}" th:action="@{/order/{id}/details/{itemId}/deleteitem(id=${orderDetails.id},itemId=${item.id})}" th:method="post"><button type="submit" class="btn btn-dark">Delete</button></form></td>
+                    <td><form th:action="@{/order/{id}/details/{itemId}/updateitem(id=${orderDetails.id},itemId=${item.id})}" th:method="get"><button type="submit" class="btn btn-dark"><span th:text="#{update}">Update</span></button></form></td>
+                    <td><form th:object="${item}" th:action="@{/order/{id}/details/{itemId}/deleteitem(id=${orderDetails.id},itemId=${item.id})}" th:method="post"><button type="submit" class="btn btn-dark"><span th:text="#{delete}">Delete</span></button></form></td>
                 </tr>
                 </tbody>
             </table>

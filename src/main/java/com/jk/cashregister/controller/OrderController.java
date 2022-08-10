@@ -71,8 +71,10 @@ public class OrderController {
 		@PostMapping("/{id}/delete")
 		@PreAuthorize("hasRole('ROLE_SENIOR_CASHIER')")
 		public RedirectView deleteOrder(@PathVariable long id) {
+				// log
 				orderItemRepository.deleteAllByOrderId(id);
 				orderRepository.deleteById(id);
+				//log out
 				return new RedirectView(ORDER_ROOT);
 		}
 		@PostMapping("/{id}/details/{itemId}/deleteitem")

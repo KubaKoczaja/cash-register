@@ -6,40 +6,7 @@
     <link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-    <div class="container">
-        <a class="navbar-brand" th:href="@{/index}">Cash Register</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-                aria-controls="navbarResponsive"
-                aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" th:href="@{/stock}">Stock
-                        <span class="sr-only">(current)</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/order}">Orders</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/report}">Reports
-                        <span class="sr-only">(current)</span>
-                    </a>
-                </li>
-                <li class="nav-item" >
-
-                      <form th:action="@{/logout}" method="post">
-                        <input class="nav-link btn btn-outline-primary" type="submit" th:value="Logout"/>
-                      </form>
-
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<header th:insert="fragments/general.html :: header"> </header>
 <div class="container fluid">
     <div class="row">
         <div class="col-lg-7 mt-5 mb-5">
@@ -51,14 +18,14 @@
                 <ul class="list-group mb-3">
                     <li class="list-group-item d-flex justify-content-between lh-condensed">
 
-                        <h6 class="my-0">Opened</h6>
+                        <h6 class="my-0" th:text="#{opened}">Opened</h6>
                         <small class="text-muted" th:text="${newOrder.openDate}">Opened</small>
                     </li>
                 </ul>
                 <form class="card p-2" th:action="@{/order/{id}/closeorder(id=${newOrder.id})}" th:method="get">
                     <div class="input-group">
                         <div class="input-group-append">
-                                <button type="submit" class="btn btn-dark">Close Order</button>
+                                <button type="submit" class="btn btn-dark" th:text="#{close_order}">Close Order</button>
                         </div>
                     </div>
                 </form>
@@ -72,7 +39,7 @@
                 </div>
                 <div class="input-group mt-4">
                     <div class="input-group-append">
-                            <button type="submit" class="btn btn-dark">Search</button>
+                            <button type="submit" class="btn btn-dark" th:text="#{search}">Search</button>
                     </div>
                 </div>
             </form>
@@ -83,7 +50,7 @@
                 </div>
                 <div class="input-group mt-4">
                     <div class="input-group-append">
-                        <button type="submit" class="btn btn-dark">Search</button>
+                        <button type="submit" class="btn btn-dark" th:text="#{search}">Search</button>
                     </div>
                 </div>
             </form>
@@ -95,11 +62,11 @@
                 <thead>
                 <tr>
                     <th>Id</th>
-                    <th>Product Code</th>
-                    <th>Product Name</th>
-                    <th>Quantity left</th>
-                    <th>Price</th>
-                    <th>Quantity ordered</th>
+                    <th th:text="#{product_code}">Product Code</th>
+                    <th th:text="#{product_name}">Product Name</th>
+                    <th th:text="#{quantity_left}">Quantity left</th>
+                    <th th:text="#{price}">Price</th>
+                    <th th:text="#{quantity_ordered}">Quantity ordered</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -110,8 +77,8 @@
                     <td th:text="${item.stock.quantity}">Quantity</td>
                     <td th:text="${item.stock.price}">Price</td>
                     <td th:text="${item.quantityOrdered}">Quantity ordered</td>
-                    <td><form th:action="@{/order/{id}/openorder/{itemId}/updateitem(id=${newOrder.id},itemId=${item.id})}" th:method="get"><button type="submit" class="btn btn-dark">Update</button></form></td>
-                    <td><form th:object="${item}" th:action="@{/order/{id}/openorder/{itemId}/deleteitem(id=${newOrder.id},itemId=${item.id})}" th:method="post"><button type="submit" class="btn btn-dark">Delete</button></form></td>
+                    <td><form th:action="@{/order/{id}/openorder/{itemId}/updateitem(id=${newOrder.id},itemId=${item.id})}" th:method="get"><button type="submit" class="btn btn-dark" th:text="#{update}">Update</button></form></td>
+                    <td><form th:object="${item}" th:action="@{/order/{id}/openorder/{itemId}/deleteitem(id=${newOrder.id},itemId=${item.id})}" th:method="post"><button type="submit" class="btn btn-dark" th:text="#{delete}">Delete</button></form></td>
                 </tr>
                 </tr>
                 </tbody>

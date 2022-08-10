@@ -16,9 +16,11 @@ public class ReportService {
 		private final ReportRepository reportRepository;
 
 		public Report saveReport(ReportDTO reportDTO) {
+				// log
 				ReportGenerate reportService = reportFactory.createService(reportDTO);
 				Report report = reportService.generateReport(reportDTO);
 				return reportRepository.save(report);
+				// log out
 		}
 
 		public Page<Report> getAllReports(int page, int size) {

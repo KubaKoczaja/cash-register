@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Stock View</title>
+  <link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+</head>
+<body>
+<header>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+    <div class="container">
+      <a class="navbar-brand" th:href="@{/index}" th:text="#{cash_register}">Cash Register</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+              aria-controls="navbarResponsive"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/stock}" th:text="#{stock}">Stock
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/order}" th:text="#{orders}">Orders</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/report}" th:text="#{reports}">Reports
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+
+          <ul class="navbar-nav" th:switch="${#authentication} ? ${#authorization.expression('isAuthenticated()')} : ${false}">
+            <li class="nav-item" >
+              <span th:case="${false}">
+               <a class="nav-link btn btn-outline-primary" th:href="@{/login}" th:text="#{login}">Login</a>
+              </span>
+            </li>
+            <li class="nav-item" >
+              <span th:case="${true}">
+                <form th:action="@{/logout}" method="post">
+                  <input class="nav-link btn btn-outline-primary" type="submit" th:value="#{logout}"/>
+                </form>
+              </span>
+            </li>
+            `</ul>
+          <li class="nav-item"><a class="nav-link" href="?lang=en">EN</a></li>
+          <li class="nav-item"><a class="nav-link" href="?lang=pl">PL</a></li>
+        </ul>
+
+      </div>
+    </div>
+  </nav>
+</header>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+</script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#locales").change(function () {
+        var selectedOption = $('#locales').val();
+
+            window.location.replace('?lang=' + selectedOption);
+
+    });
+});
+</script>
+</body>
+</html>

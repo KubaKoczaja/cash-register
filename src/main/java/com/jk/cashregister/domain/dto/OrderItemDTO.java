@@ -11,10 +11,10 @@ import javax.validation.constraints.Positive;
 @AllArgsConstructor
 public class OrderItemDTO {
 
-		@Positive(message = "Stock's id must be positive number")
+		@Positive(message = "{stockId.positive}")
 		private Long stockId;
 
-		@Positive(message = "Quantity ordered must be positive number")
+		@Positive(message = "{quantityOrdered.positive}")
 		private int quantityOrdered;
 
 }

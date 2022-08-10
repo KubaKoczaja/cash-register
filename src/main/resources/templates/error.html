@@ -9,12 +9,16 @@
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
         <div class="container">
-            <a class="navbar-brand" th:href="@{/index}">Cash Register</a>
+            <a class="navbar-brand" th:href="@{/index}" th:text="#{cash_register}">Cash Register</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                     aria-controls="navbarResponsive"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="?lang=en">EN</a></li>
+                <li class="nav-item"><a class="nav-link" href="?lang=pl">PL</a></li>
+            </ul>
         </div>
     </nav>
 </header>
@@ -23,10 +27,10 @@
         <ul class="list-group">
             <li class="list-group-item list-group-item-danger"><h3 th:text="${error}">Status</h3></li>
             <li class="list-group-item" th:text="'Status code: '+ ${status}"></li>
-            <li class="list-group-item" th:text="'Encountered: '+ ${timestamp}"></li>
-            <li class="list-group-item" th:text="'Message: '+ ${message}"></li>
+            <li class="list-group-item" th:text="#{encountered} + ${timestamp}"></li>
+            <li class="list-group-item" th:text="#{message} + ${message}"></li>
         </ul>
-        <p><a th:href="@{/}">Go back to main page</a></p>
+        <p><a th:href="@{/}" th:text="#{return_home}">Go back to main page</a></p>
     </div>
 </body>
 </html>

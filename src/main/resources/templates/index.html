@@ -6,54 +6,11 @@
   <link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
 </head>
 <body>
-<header>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-    <div class="container">
-      <a class="navbar-brand" th:href="@{/index}">Cash Register</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-              aria-controls="navbarResponsive"
-              aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" th:href="@{/stock}">Stock
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" th:href="@{/order}">Orders</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" th:href="@{/report}">Reports
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
-          <ul class="navbar-nav" th:switch="${#authentication} ? ${#authorization.expression('isAuthenticated()')} : ${false}">
-            <li class="nav-item" >
-              <span th:case="${false}">
-               <a class="nav-link btn btn-outline-primary" th:href="@{/login}">Login</a>
-              </span>
-            </li>
-            <li class="nav-item" >
-              <span th:case="${true}">
-                <form th:action="@{/logout}" method="post">
-                  <input class="nav-link btn btn-outline-primary" type="submit" th:value="Logout"/>
-                </form>
-              </span>
-            </li>
-        </ul>
-        </ul>
-
-      </div>
-    </div>
-  </nav>
-</header>
+<header th:insert="fragments/general.html :: header"> </header>
 
 <div class="d flex">
   <div class="container fluid mt-5 text-center">
-    <p><h1>    Welcome to Cash Register Application.  </h1>
+    <p><h1><span th:text="#{welcome}">    Welcome to Cash Register Application.  </span></h1>
     <h4>johsmi1 role Cashier</h4>
     <h4>markay2 role Senior Cashier</h4>
     <h4>tomsmi4 role Commodity Expert</h4>
@@ -61,5 +18,17 @@
     </p>
   </div>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+</script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#locales").change(function () {
+        var selectedOption = $('#locales').val();
+
+            window.location.replace('?lang=' + selectedOption);
+
+    });
+});
+</script>
 </body>
 </html>

@@ -9,30 +9,34 @@
 <header>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
     <div class="container">
-      <a class="navbar-brand" th:href="@{/index}">Cash Register</a>
+      <a class="navbar-brand" th:href="@{/index}" th:text="#{cash_register}">Cash Register</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
               aria-controls="navbarResponsive"
               aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item"><a class="nav-link" href="?lang=en">EN</a></li>
+        <li class="nav-item"><a class="nav-link" href="?lang=pl">PL</a></li>
+      </ul>
     </div>
   </nav>
 </header>
 <div class="container fluid">
 <div class="row mt-6">
-  <h1>Please log in</h1>
+  <h1><span th:text="#{please_log_in}">Please log in</span></h1>
 </div>
   <div th:if="${param.error}">
-    Invalid username and password.
+    <span th:text="#{invalid_user}">Invalid username and password</span>
   </div>
   <div th:if="${param.logout}">
-    You have been logged out.
+    <span th:text="#{you_logged_out}">You have been logged out</span>
   </div>
   <div class="row mt-6">
 <form th:action="@{/login}" method="post">
-  <div><label> User Name : <input type="text" name="username"/> </label></div>
-  <div><label> Password: <input type="password" name="password"/> </label></div>
-  <div><input type="submit" value="Log In"/></div>
+  <div><label><span th:text="#{user_name}"> User Name : </span><input type="text" name="username"/> </label></div>
+  <div><label><span th:text="#{password}"> Password: </span><input type="password" name="password"/> </label></div>
+  <div><input type="submit" th:value="#{login}"/></div>
 </form>
 </div>
 </div>

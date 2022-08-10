@@ -1,4 +1,4 @@
-package com.jk.cashregister;
+package com.jk.cashregister.configuration;
 
 import com.jk.cashregister.service.exception.CustomException;
 import org.springframework.validation.BindException;
