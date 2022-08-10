@@ -16,5 +16,4 @@ public class OrderItemDTO {
 
 		@Positive(message = "{quantityOrdered.positive}")
 		private int quantityOrdered;
-
 }

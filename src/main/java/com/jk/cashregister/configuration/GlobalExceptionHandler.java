@@ -30,7 +30,9 @@ public class GlobalExceptionHandler {
 
 				modelAndView.addObject("message", message);
 				modelAndView.addObject("url", req.getRequestURL());
+				modelAndView.addObject("referer", req.getHeader("Referer"));
 				modelAndView.setViewName("/customerror");
+
 				return modelAndView;
 		}
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <title>Order View</title>
@@ -9,7 +10,7 @@
 <header th:insert="fragments/general.html :: header"> </header>
 
 <div class="d flex">
-    <div class="container fluid mt-5 text-center">
+    <div class="container fluid mt-5 text-center" sec:authorize="hasAnyRole('ROLE_SENIOR_CASHIER','ROLE_CASHIER')">
         <form  th:object="${orderDTO}" th:action="@{/order/openorder}" th:method="post">
             <button type="submit" class="btn btn-dark" th:text="#{open_new_order}">Open New Order</button>
         </form>
@@ -34,7 +35,7 @@
                         <td th:text="${order.closeDate}">Closed</td>
                         <td th:text="${order.user.lastName}">Employee</td>
 
-                        <td><form th:object="${order}" th:action="@{/order/{id}/delete(id=${order.id})}" th:method="post"><button type="submit" class="btn btn-dark" th:text="#{delete}">Delete</button></form></td>
+                        <td sec:authorize="hasRole('ROLE_SENIOR_CASHIER')"><form th:object="${order}" th:action="@{/order/{id}/delete(id=${order.id})}" th:method="post"><button type="submit" class="btn-sm btn-dark" th:text="#{delete}">Delete</button></form></td>
                     </tr>
                     </tbody>
                 </table>

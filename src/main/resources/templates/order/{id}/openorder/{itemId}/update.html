@@ -17,11 +17,11 @@
             <thead>
             <tr>
               <th>Id</th>
-              <th>Product Code</th>
-              <th>Product Name</th>
-              <th>Quantity left</th>
-              <th>Price</th>
-              <th>Quantity ordered</th>
+              <th th:text="#{product_code}">Product Code</th>
+              <th th:text="#{product_name}">Product Name</th>
+              <th th:text="#{quantity_left}">Quantity left</th>
+              <th th:text="#{price}">Price</th>
+              <th th:text="#{quantity_ordered}">Quantity ordered</th>
             </tr>
             </thead>
             <tbody>
@@ -36,7 +36,7 @@
                 <input type="number" class="form-control"  th:field="*{quantityOrdered}" th:placeholder="${orderItemDTOToUpdate.quantityOrdered}" th:value="${orderItemDTOToUpdate.quantityOrdered}"/>
               </div>
               </td>
-              <td><button type="submit" class="btn btn-dark">Update</button></td>
+              <td><button type="submit" class="btn btn-dark"><span th:text="#{update}">Update</span></button></td>
             </tr>
             </tbody>
           </table>

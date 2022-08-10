@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <title>Details</title>
@@ -18,17 +19,17 @@
                 <ul class="list-group mb-3">
                     <li class="list-group-item d-flex justify-content-between lh-condensed">
 
-                            <h6 class="my-0">Opened</h6>
-                            <small class="text-muted" th:text="${orderDetails.openDate}" th:text="#{opened}">Opened</small>
+                            <h6 class="my-0" th:text="#{opened}">Opened</h6>
+                            <small class="text-muted" th:text="${orderDetails.openDate}">Opened</small>
                     </li>
                     <li class="list-group-item d-flex justify-content-between lh-condensed">
-                            <h6 class="my-0">Closed</h6>
-                            <small class="text-muted" th:text="${orderDetails.closeDate}" th:text="#{closed}">Closed</small>
+                            <h6 class="my-0" th:text="#{closed}">Closed</h6>
+                            <small class="text-muted" th:text="${orderDetails.closeDate}">Closed</small>
                     </li>
                 </ul>
                 <form class="card p-2" th:action="@{/order/{id}/delete(id=${orderDetails.id})}" th:method="post">
                     <div class="input-group">
-                        <div class="input-group-append">
+                        <div class="input-group-append" sec:authorize="hasRole('ROLE_SENIOR_CASHIER')">
                             <button type="submit" class="btn btn-dark"><span th:text="#{delete}">Delete</span></button>
                         </div>
                     </div>
@@ -61,8 +62,8 @@
                     <td th:text="${item.stock.price}">Price</td>
                     <td th:text="${item.quantityOrdered}">Quantity ordered</td>
 
-                    <td><form th:action="@{/order/{id}/details/{itemId}/updateitem(id=${orderDetails.id},itemId=${item.id})}" th:method="get"><button type="submit" class="btn btn-dark"><span th:text="#{update}">Update</span></button></form></td>
-                    <td><form th:object="${item}" th:action="@{/order/{id}/details/{itemId}/deleteitem(id=${orderDetails.id},itemId=${item.id})}" th:method="post"><button type="submit" class="btn btn-dark"><span th:text="#{delete}">Delete</span></button></form></td>
+                    <td sec:authorize="hasRole('ROLE_SENIOR_CASHIER')"><form th:action="@{/order/{id}/details/{itemId}/updateitem(id=${orderDetails.id},itemId=${item.id})}" th:method="get"><button type="submit" class="btn btn-dark"><span th:text="#{update}">Update</span></button></form></td>
+                    <td sec:authorize="hasRole('ROLE_SENIOR_CASHIER')"><form th:object="${item}" th:action="@{/order/{id}/details/{itemId}/deleteitem(id=${orderDetails.id},itemId=${item.id})}" th:method="post"><button type="submit" class="btn btn-dark"><span th:text="#{delete}">Delete</span></button></form></td>
                 </tr>
                 </tbody>
             </table>

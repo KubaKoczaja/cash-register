@@ -7,6 +7,7 @@ import com.jk.cashregister.repository.OrderItemRepository;
 import com.jk.cashregister.repository.StockRepository;
 import com.jk.cashregister.service.exception.NoSuchItemException;
 import com.jk.cashregister.service.mapper.OrderItemDTOMapper;
+import com.jk.cashregister.service.validator.StockQuantityValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,7 @@ public class OrderItemService {
 		private final OrderItemRepository orderItemRepository;
 		private final OrderItemDTOMapper orderItemDTOMapper;
 		private final StockRepository stockRepository;
+		private final StockQuantityValidator stockQuantityValidator;
 		public OrderItem getOrderItemById(Long id) {
 				return orderItemRepository.findById(id).orElseThrow(() -> new NoSuchItemException("Order item with such element doesn't exist"));
 		}
@@ -29,6 +31,9 @@ public class OrderItemService {
 		public void updateOrderItem(Long id, OrderItemDTO orderItemDTO) {
 				OrderItem orderItem = getOrderItemById(id);
 				Stock stock = orderItem.getStock();
+
+				stockQuantityValidator.validateOrderedQuantity(orderItem.getQuantityOrdered(), orderItemDTO.getQuantityOrdered());
+
 				int newStockQuantity = stock.getQuantity() + (orderItem.getQuantityOrdered() - orderItemDTO.getQuantityOrdered());
 				stock.setQuantity(newStockQuantity);
 				stockRepository.save(stock);

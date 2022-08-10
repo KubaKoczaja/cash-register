@@ -46,7 +46,7 @@ public class ReportController {
 		@PostMapping("/generatereport")
 		@PreAuthorize("hasRole('ROLE_SENIOR_CASHIER')")
 		public String generateXReport(@Valid ReportDTO reportDTO) {
-				reportService.saveReport(reportDTO);
+				reportService.createReport(reportDTO);
 				return REDIRECT + REPORT_ROOT;
 		}
 }

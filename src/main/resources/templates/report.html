@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
   <meta charset="UTF-8">
   <title>Report View</title>
@@ -10,7 +11,7 @@
 
 <div class="d flex">
 
-  <div class="container fluid mt-5 mr-6 text-center">
+  <div class="container fluid mt-5 mr-6 text-center" sec:authorize="hasRole('ROLE_SENIOR_CASHIER')">
     <form th:object="${reportDTO}" th:action="@{/report/generatereport}" th:method="post">
       <div class="form-check">
         <input class="form-check-input" type="radio" th:field="*{reportType}" th:value="x" name="reportType" id="reportType1" th:checked="true">

@@ -13,10 +13,10 @@ public class ReportFactory {
 		private final ReportDTOMapper reportDTOMapper;
 		private final OrderRepository orderRepository;
 		private final ReportRepository reportRepository;
-		public ReportGenerate createService(ReportDTO reportDTO) {
+		public ReportGenerator createService(ReportDTO reportDTO) {
 				if (reportDTO.getReportType().equalsIgnoreCase("X")) {
-						return new XReportGenerate(reportDTOMapper, orderRepository, reportRepository);
+						return new XReportGenerator(reportDTOMapper, orderRepository, reportRepository);
 				}
-				return new ZReportGenerate(reportDTOMapper, orderRepository, reportRepository);
+				return new ZReportGenerator(reportDTOMapper, orderRepository);
 		}
 }

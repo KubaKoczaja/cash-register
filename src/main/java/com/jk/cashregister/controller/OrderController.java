@@ -14,10 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -67,15 +65,13 @@ public class OrderController {
 				return ORDER_ROOT + ID_DETAILS;
 		}
 
-		@Transactional
 		@PostMapping("/{id}/delete")
 		@PreAuthorize("hasRole('ROLE_SENIOR_CASHIER')")
-		public RedirectView deleteOrder(@PathVariable long id) {
+		public String deleteOrder(@PathVariable long id) {
 				// log
-				orderItemRepository.deleteAllByOrderId(id);
-				orderRepository.deleteById(id);
+				orderService.deleteOrderWithItems(id);
 				//log out
-				return new RedirectView(ORDER_ROOT);
+				return REDIRECT + ORDER_ROOT;
 		}
 		@PostMapping("/{id}/details/{itemId}/deleteitem")
 		@PreAuthorize("hasRole('ROLE_SENIOR_CASHIER')")
