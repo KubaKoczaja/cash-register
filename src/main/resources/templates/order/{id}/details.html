@@ -20,11 +20,11 @@
                     <li class="list-group-item d-flex justify-content-between lh-condensed">
 
                             <h6 class="my-0" th:text="#{opened}">Opened</h6>
-                            <small class="text-muted" th:text="${orderDetails.openDate}">Opened</small>
+                            <small class="text-muted" th:text="${#temporals.format(orderDetails.openDate, 'dd-MM-yyyy HH:mm:ss')}">Opened</small>
                     </li>
                     <li class="list-group-item d-flex justify-content-between lh-condensed">
                             <h6 class="my-0" th:text="#{closed}">Closed</h6>
-                            <small class="text-muted" th:text="${orderDetails.closeDate}">Closed</small>
+                            <small class="text-muted" th:text="${#temporals.format(orderDetails.closeDate, 'dd-MM-yyyy HH:mm:ss')}">Closed</small>
                     </li>
                 </ul>
                 <form class="m-2" th:action="@{/order/{id}/delete(id=${orderDetails.id})}" th:method="post">

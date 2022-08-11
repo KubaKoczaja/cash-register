@@ -31,8 +31,8 @@
                     <tbody>
                     <tr th:each="order : ${allOrders}">
                         <td><a th:href="@{/order/{id}/details(id=${order.id})}" th:text="${order.id}">Id</a></td>
-                        <td th:text="${order.openDate}">Opened</td>
-                        <td th:text="${order.closeDate}">Closed</td>
+                        <td th:text="${#temporals.format(order.openDate, 'dd-MM-yyyy HH:mm:ss')}">Opened</td>
+                        <td th:text="${#temporals.format(order.closeDate, 'dd-MM-yyyy HH:mm:ss')}">Closed</td>
                         <td th:text="${order.user.lastName}">Employee</td>
 
                         <td sec:authorize="hasRole('ROLE_SENIOR_CASHIER')"><form th:object="${order}" th:action="@{/order/{id}/delete(id=${order.id})}" th:method="post"><button type="submit" class="btn-sm btn-danger" th:text="#{delete}">Delete</button></form></td>

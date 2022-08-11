@@ -45,8 +45,8 @@
           <tbody>
           <tr th:each="report : ${allReports}">
             <td><a th:href="@{/report/{id}/details(id=${report.id})}" th:text="${report.id}">Id</a></td>
-            <td th:text="${report.fromDate}">From</td>
-            <td th:text="${report.toDate}">To</td>
+            <td th:text="${#temporals.format(report.fromDate, 'dd-MM-yyyy HH:mm:ss')}">From</td>
+            <td th:text="${#temporals.format(report.toDate, 'dd-MM-yyyy HH:mm:ss')}">To</td>
             <td th:text="${report.reportType}">Report Type</td>
             <td th:text="${report.user.lastName}">Employee</td>
 
