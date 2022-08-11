@@ -22,10 +22,17 @@
                         <small class="text-muted" th:text="${newOrder.openDate}">Opened</small>
                     </li>
                 </ul>
-                <form class="card p-2" th:action="@{/order/{id}/closeorder(id=${newOrder.id})}" th:method="get">
+                <form class="m-2" th:action="@{/order/{id}/closeorder(id=${newOrder.id})}" th:method="get">
                     <div class="input-group">
                         <div class="input-group-append">
-                                <button type="submit" class="btn btn-dark" th:text="#{close_order}">Close Order</button>
+                                <button type="submit" class="btn-sm btn-dark" th:text="#{close_order}">Close Order</button>
+                        </div>
+                    </div>
+                </form>
+                <form class="m-2" th:object="${newOrder}" th:action="@{/order/{id}/deleteneworder(id=${newOrder.id})}" th:method="post">
+                    <div class="input-group">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn-sm btn-danger" th:text="#{delete}">Delete</button>
                         </div>
                     </div>
                 </form>
@@ -33,7 +40,7 @@
         </div>
         <!--serching options-->
         <div class="col-lg-5 mt-5 mb-5">
-            <form class="card p-2" th:action="@{/order/{id}/openorder/searchcode(id=${newOrder.id})}" th:method="get">
+            <form class="card p-2" th:action="@{/order/{id}/editorder/searchcode(id=${newOrder.id})}" th:method="get">
                 <div class="input-group rounded">
                     <input type="text" name="code" th:value="${code}" class="form-control rounded" placeholder="Search by code"/>
                 </div>
@@ -44,7 +51,7 @@
                 </div>
             </form>
 
-            <form class="card p-2" th:action="@{/order/{id}/openorder/searchname(id=${newOrder.id})}" th:method="get">
+            <form class="card p-2" th:action="@{/order/{id}/editorder/searchname(id=${newOrder.id})}" th:method="get">
                 <div class="input-group rounded">
                     <input type="text" name="name" th:value="${name}" class="form-control rounded" placeholder="Search by name"/>
                 </div>
@@ -77,8 +84,8 @@
                     <td th:text="${item.stock.quantity}">Quantity</td>
                     <td th:text="${item.stock.price}">Price</td>
                     <td th:text="${item.quantityOrdered}">Quantity ordered</td>
-                    <td><form th:action="@{/order/{id}/openorder/{itemId}/updateitem(id=${newOrder.id},itemId=${item.id})}" th:method="get"><button type="submit" class="btn btn-dark" th:text="#{update}">Update</button></form></td>
-                    <td><form th:object="${item}" th:action="@{/order/{id}/openorder/{itemId}/deleteitem(id=${newOrder.id},itemId=${item.id})}" th:method="post"><button type="submit" class="btn btn-dark" th:text="#{delete}">Delete</button></form></td>
+                    <td><form th:action="@{/order/{id}/editorder/{itemId}/updateitem(id=${newOrder.id},itemId=${item.id})}" th:method="get"><button type="submit" class="btn-sm btn-dark" th:text="#{update}">Update</button></form></td>
+                    <td><form th:object="${item}" th:action="@{/order/{id}/editorder/{itemId}/deleteitem(id=${newOrder.id},itemId=${item.id})}" th:method="post"><button type="submit" class="btn-sm btn-danger" th:text="#{delete}">Delete</button></form></td>
                 </tr>
                 </tr>
                 </tbody>
@@ -86,13 +93,13 @@
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
                     <li class="page-item" th:if="${currentPage > 1}">
-                        <a class="page-link" th:href="@{'/order/' + ${newOrder.id} + '/openorder?page=' + ${previousPage}}" aria-label="Previous">
+                        <a class="page-link" th:href="@{'/order/' + ${newOrder.id} + '/editorder?page=' + ${previousPage}}" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                             <span class="sr-only">Previous</span>
                         </a>
                     </li>
                     <li class="page-item" th:if="${currentPage} < ${numberOfPages}">
-                        <a class="page-link" th:href="@{'/order/' + ${newOrder.id} + '/openorder?page=' + ${nextPage}}" aria-label="Next">
+                        <a class="page-link" th:href="@{'/order/' + ${newOrder.id} + '/editorder?page=' + ${nextPage}}" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                             <span class="sr-only">Next</span>
                         </a>

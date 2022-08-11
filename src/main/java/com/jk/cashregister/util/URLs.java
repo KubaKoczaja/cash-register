@@ -8,6 +8,6 @@ public class URLs {
 		public static final String REPORT_ROOT = "/report";
 		public static final String ORDER_ROOT = "/order";
 		public static final String REDIRECT = "redirect:";
-		public static final String ID_OPENORDER = "/{id}/openorder";
 		public static final String ID_DETAILS = "/{id}/details";
+		public static final String ID_EDITORDER = "/{id}/editorder";
 }

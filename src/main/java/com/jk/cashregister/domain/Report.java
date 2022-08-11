@@ -3,6 +3,7 @@ package com.jk.cashregister.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@ToString
 public class Report {
 		@Id
 		@GeneratedValue(strategy = GenerationType.IDENTITY)

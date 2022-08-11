@@ -10,6 +10,11 @@
 <header th:insert="fragments/general.html :: header"> </header>
 
 <div class="d flex">
+    <div class="container fluid mt-5 text-center" sec:authorize="hasAnyRole('ROLE_SENIOR_CASHIER','ROLE_CASHIER')">
+        <form th:action="@{/order/{id}/editorder(id=${openedOrder.id})}" th:method="get">
+            <button type="submit" class="btn btn-dark" th:text="#{go_back}">Go back</button>
+        </form>
+    </div>
     <div class="container fluid">
         <div class="row">
             <div class="col-lg-10 mt-5 mb-5">
@@ -26,7 +31,7 @@
                     </thead>
                     <tbody>
                     <tr th:each="stock : ${stockList}">
-                        <form th:object="${orderItemDTO}" th:action="@{/order/{id}/openorder/additem(id=${openedOrder.id})}" th:method="post">
+                        <form th:object="${orderItemDTO}" th:action="@{/order/{id}/editorder/additem(id=${openedOrder.id})}" th:method="post">
                             <td th:text="${stock.id}">Id</td>
                             <td th:text="${stock.productCode}">Product Code</td>
                             <td th:text="${stock.productName}">Product Name</td>
@@ -42,13 +47,13 @@
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
                         <li class="page-item" th:if="${currentPage > 1}">
-                            <a class="page-link" th:href="@{'/order/' + ${openedOrder.id} + '/openorder/searchcode?page=' + ${previousPage}}" aria-label="Previous">
+                            <a class="page-link" th:href="@{'/order/' + ${openedOrder.id} + '/editorder/searchcode?page=' + ${previousPage}}" aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                                 <span class="sr-only">Previous</span>
                             </a>
                         </li>
                         <li class="page-item" th:if="${currentPage} < ${numberOfPages}">
-                            <a class="page-link" th:href="@{'/order/' + ${openedOrder.id} + '/openorder/searchcode?page=' + ${nextPage}}" aria-label="Next">
+                            <a class="page-link" th:href="@{'/order/' + ${openedOrder.id} + '/editorder/searchcode?page=' + ${nextPage}}" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                                 <span class="sr-only">Next</span>
                             </a>

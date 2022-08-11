@@ -19,6 +19,7 @@ public class GlobalExceptionHandler {
 				List<ObjectError> allErrors = e.getAllErrors();
 				modelAndView.addObject("allErrors", allErrors);
 				modelAndView.addObject("url", req.getRequestURL());
+				modelAndView.addObject("referer", req.getHeader("Referer"));
 				modelAndView.setViewName("/inputerror");
 				return modelAndView;
 		}

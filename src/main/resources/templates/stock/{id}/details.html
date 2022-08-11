@@ -39,14 +39,18 @@
                         <strong th:text="${stockItem.price}">price</strong>
                     </li>
                 </ul>
-
-                <form class="card p-2">
-                    <div class="input-group">
+                <div class="input-group">
+                    <form class="card p-2">
                         <div class="input-group-append" sec:authorize="hasRole('ROLE_COMMODITY_EXPERT')">
-                            <form th:object="${stockItem}" th:action="@{/stock/{id}/delete(id=${stockItem.id})}" th:method="post"><button type="submit" class="btn btn-dark" th:text="#{delete}">Delete</button></form>
+                            <form th:object="${stockItem}" th:action="@{/stock/{id}/delete(id=${stockItem.id})}" th:method="post"><button type="submit" class="btn-sm btn-danger" th:text="#{delete}">Delete</button></form>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                    <form class="card p-2" th:action="@{/stock}" th:method="get">
+                            <div class="input-group-append">
+                                <button type="submit" class="btn-sm btn-dark"><span th:text="#{go_back}">Go back</span></button>
+                            </div>
+                    </form>
+                </div>
             </div>
 
         </div>

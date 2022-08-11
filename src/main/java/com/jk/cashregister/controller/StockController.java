@@ -6,6 +6,7 @@ import com.jk.cashregister.repository.OrderItemRepository;
 import com.jk.cashregister.service.StockService;
 import com.jk.cashregister.service.exception.StockDeletingException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,7 @@ import static com.jk.cashregister.util.URLs.STOCK_ROOT;
 @Controller
 @RequestMapping("/stock")
 @RequiredArgsConstructor
+@Slf4j
 public class StockController {
 
 		private final StockService stockService;
@@ -48,12 +50,9 @@ public class StockController {
 		@PostMapping("/addstock")
 		@PreAuthorize("hasRole('ROLE_COMMODITY_EXPERT')")
 		public String addingNewStock(@Valid @ModelAttribute StockDTO stockDTO, Model model) {
-//				if (bindingResult.hasErrors()) {
-//						List<ObjectError> allErrors = bindingResult.getAllErrors();
-//						model.addAttribute("allErrors", allErrors);
-//						return "/inputerror";
-//				}
-				stockService.createStock(stockDTO);
+				log.info("Creating stock");
+				Stock stock = stockService.createStock(stockDTO);
+				log.info("Stock with id: " + stock.getId() + " created");
 				return REDIRECT + STOCK_ROOT;
 		}
 
@@ -67,11 +66,14 @@ public class StockController {
 		@PostMapping("/{id}/delete")
 		@PreAuthorize("hasRole('ROLE_COMMODITY_EXPERT')")
 		public String deleteStock(@PathVariable long id) {
-				// check if stock item is somewhere in order
+
+				log.info("Attempt to delete stock with id: " + id + " - checking if stock item is present somewhere in order");
 				if (!orderItemRepository.findAllByStockId(id).isEmpty()) {
+						log.warn("Stock in active order!");
 						throw new StockDeletingException("You can't delete stock in active order");
 				}
 				stockService.deleteStockById(id);
+				log.info("Stock deleted");
 				return REDIRECT + STOCK_ROOT;
 		}
 
@@ -87,7 +89,9 @@ public class StockController {
 		@PostMapping("{id}/update")
 		@PreAuthorize("hasRole('ROLE_COMMODITY_EXPERT')")
 		public String updateStock(@PathVariable Long id, @Valid StockDTO stockDTO, Model model) {
+				log.info("Updating stock");
 				stockService.updateStock(stockDTO,id);
+				log.info("Stock updated");
 				return REDIRECT + STOCK_ROOT;
 		}
 }

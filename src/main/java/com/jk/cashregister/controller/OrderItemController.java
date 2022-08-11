@@ -22,19 +22,20 @@ import static com.jk.cashregister.util.URLs.*;
 @RequestMapping("/order")
 @RequiredArgsConstructor
 public class OrderItemController {
+
 		private final OrderItemService orderItemService;
 		private final OrderWorkflowService orderWorkflowService;
 
 
-		@PostMapping("/{id}/openorder/additem")
+		@PostMapping("/{id}/editorder/additem")
 		@PreAuthorize("hasAnyRole('ROLE_SENIOR_CASHIER','ROLE_CASHIER')")
 		public String addItem(@PathVariable(name = "id") Long orderId, Model model, @Valid OrderItemDTO orderItemDTO){
 				Order newOrder = orderWorkflowService.addNewOrderItemToOrder(orderItemDTO,orderId);
 				model.addAttribute("newOrder", newOrder);
-				return REDIRECT + ORDER_ROOT + ID_OPENORDER;
+				return REDIRECT + ORDER_ROOT + ID_EDITORDER;
 		}
 
-		@GetMapping("/{id}/openorder/{itemId}/updateitem")
+		@GetMapping("/{id}/editorder/{itemId}/updateitem")
 		@PreAuthorize("hasAnyRole('ROLE_SENIOR_CASHIER','ROLE_CASHIER')")
 		public String getItemUpdateForNewOrderView(@PathVariable(name = "id") Long orderId,@PathVariable(name = "itemId") Long id, Model model) {
 				Stock orderItemStock = orderItemService.getOrderItemById(id).getStock();
@@ -43,20 +44,20 @@ public class OrderItemController {
 				model.addAttribute("orderItemStock", orderItemStock);
 				model.addAttribute("orderId", orderId);
 				model.addAttribute("itemId", id);
-				return ORDER_ROOT + ID_OPENORDER + "/{itemId}/update";
+				return ORDER_ROOT + ID_EDITORDER + "/{itemId}/update";
 		}
 
-		@PostMapping("/{id}/openorder/{itemId}/updateitem")
+		@PostMapping("/{id}/editorder/{itemId}/updateitem")
 		@PreAuthorize("hasAnyRole('ROLE_SENIOR_CASHIER','ROLE_CASHIER')")
 		public String updateOrderItemFromNewOrder(@PathVariable(name = "itemId") Long itemId, @PathVariable(name = "id") Long id, @Valid OrderItemDTO orderItemDTOToUpdate) {
 				orderItemService.updateOrderItem(itemId, orderItemDTOToUpdate);
-				return REDIRECT + ORDER_ROOT + ID_OPENORDER;
+				return REDIRECT + ORDER_ROOT + ID_EDITORDER;
 		}
 
-		@PostMapping("/{id}/openorder/{itemId}/deleteitem")
+		@PostMapping("/{id}/editorder/{itemId}/deleteitem")
 		@PreAuthorize("hasAnyRole('ROLE_SENIOR_CASHIER','ROLE_CASHIER')")
 		public String deleteItemFromNewOrder(@PathVariable(name = "id") Long orderId, @PathVariable(name = "itemId") Long itemId) {
 				orderItemService.deleteOrderItemFromOrder(itemId);
-				return REDIRECT + ORDER_ROOT + ID_OPENORDER;
+				return REDIRECT + ORDER_ROOT + ID_EDITORDER;
 		}
 }

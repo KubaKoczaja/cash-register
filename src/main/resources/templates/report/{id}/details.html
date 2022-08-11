@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
   <meta charset="UTF-8">
   <title>Details</title>
@@ -43,6 +44,13 @@
         </li>
 
       </div>
+      <form class="m-2" th:action="@{/report}" th:method="get">
+        <div class="input-group">
+          <div class="input-group-append">
+            <button type="submit" class="btn-sm btn-dark"><span th:text="#{go_back}">Go back</span></button>
+          </div>
+        </div>
+      </form>
 
     </div>
   </div>

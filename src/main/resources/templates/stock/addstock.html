@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
   <meta charset="UTF-8">
   <title>Stock View</title>
@@ -9,6 +10,11 @@
 <header th:insert="fragments/general.html :: header"> </header>
 
 <div class="d flex">
+  <div class="container fluid mt-5 text-center" sec:authorize="hasRole('ROLE_COMMODITY_EXPERT')">
+    <form th:action="@{/stock}" th:method="get">
+      <button type="submit" class="btn btn-dark" th:text="#{go_back}">Go back</button>
+    </form>
+  </div>
   <div class="container fluid">
     <div class="row">
       <div class="col-lg-4 mt-5 mb-5">

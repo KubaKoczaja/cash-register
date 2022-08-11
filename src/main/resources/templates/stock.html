@@ -35,7 +35,7 @@
                     <td th:text="${stock.quantity}">Quantity</td>
                     <td th:text="${stock.price}">Price</td>
                     <td sec:authorize="hasRole('ROLE_COMMODITY_EXPERT')"><form th:object="${stock}" th:action="@{/stock/{id}/update(id=${stock.id})}" th:method="get"><button type="submit" class="btn-sm btn-dark"><span th:text="#{update}">Update</span></button></form></td>
-                    <td sec:authorize="hasRole('ROLE_COMMODITY_EXPERT')"><form th:object="${stock}" th:action="@{/stock/{id}/delete(id=${stock.id})}" th:method="post"><button type="submit" class="btn-sm btn-dark"><span th:text="#{delete}">Delete</span></button></form></td>
+                    <td sec:authorize="hasRole('ROLE_COMMODITY_EXPERT')"><form th:object="${stock}" th:action="@{/stock/{id}/delete(id=${stock.id})}" th:method="post"><button type="submit" class="btn-sm btn-danger"><span th:text="#{delete}">Delete</span></button></form></td>
                 </tr>
                 </tbody>
             </table>

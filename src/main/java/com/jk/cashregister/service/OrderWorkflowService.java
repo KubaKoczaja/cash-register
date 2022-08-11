@@ -10,6 +10,7 @@ import com.jk.cashregister.service.exception.EmptyOrderException;
 import com.jk.cashregister.service.mapper.OrderDTOMapper;
 import com.jk.cashregister.service.mapper.OrderItemDTOMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class OrderWorkflowService {
 		private final OrderItemDTOMapper orderItemDTOMapper;
 		private final OrderItemRepository orderItemRepository;
@@ -36,10 +38,6 @@ public class OrderWorkflowService {
 				OrderItem orderItem = orderItemDTOMapper.mapToOrderItem(orderItemDTO);
 				orderItem.setOrder(order);
 				OrderItem savedOrderItem = orderItemRepository.save(orderItem);
-
-				// stock quantity is updated. check if there is enough quantity in warehouse -> stockService updateQuantity method
-				// stock is updated after creating each order item
-
 				stockService.updateQuantity(savedOrderItem.getStock().getId(), savedOrderItem.getQuantityOrdered());
 				return order;
 		}
@@ -47,10 +45,12 @@ public class OrderWorkflowService {
 		public void closeNewOrder(Long id) {
 				Order order = orderService.getOrderById(id);
 				if (order.getOrderItemList().isEmpty()) {
-						orderRepository.deleteById(id);
+						orderRepository.save(order);
+						log.warn("Attempt to create empty order");
 						throw new EmptyOrderException("Newly created order can't be empty!");
 				}
 				order.setCloseDate(LocalDateTime.now());
 				orderRepository.save(order);
+
 		}
 }

@@ -29,7 +29,7 @@ public class StockService {
 		public Page<Stock> getAllStock(int page, int size) {
 				return stockRepository.findAll(PageRequest.of(page - 1, size));
 		}
-//using dto object instead database entity
+
 		public Stock createStock(StockDTO request) {
 				Stock stock = StockDTOMapper.INSTANCE.stockDTOToStock(request);
 				return stockRepository.save(stock);

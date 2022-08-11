@@ -35,7 +35,7 @@
                         <td th:text="${order.closeDate}">Closed</td>
                         <td th:text="${order.user.lastName}">Employee</td>
 
-                        <td sec:authorize="hasRole('ROLE_SENIOR_CASHIER')"><form th:object="${order}" th:action="@{/order/{id}/delete(id=${order.id})}" th:method="post"><button type="submit" class="btn-sm btn-dark" th:text="#{delete}">Delete</button></form></td>
+                        <td sec:authorize="hasRole('ROLE_SENIOR_CASHIER')"><form th:object="${order}" th:action="@{/order/{id}/delete(id=${order.id})}" th:method="post"><button type="submit" class="btn-sm btn-danger" th:text="#{delete}">Delete</button></form></td>
                     </tr>
                     </tbody>
                 </table>

@@ -11,6 +11,7 @@ import com.jk.cashregister.service.OrderService;
 import com.jk.cashregister.service.OrderWorkflowService;
 import com.jk.cashregister.util.Paging;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -26,6 +27,7 @@ import static com.jk.cashregister.util.URLs.*;
 @Controller
 @RequestMapping("/order")
 @RequiredArgsConstructor
+@Slf4j
 public class OrderWorkFlowController {
 		private final OrderWorkflowService orderWorkFlowService;
 		private final StockRepository stockRepository;
@@ -37,12 +39,13 @@ public class OrderWorkFlowController {
 		@PostMapping("/openorder")
 		@PreAuthorize("hasAnyRole('ROLE_SENIOR_CASHIER','ROLE_CASHIER')")
 		public String openingNewOrder(@Valid @ModelAttribute OrderDTO orderDTO, Model model) {
+				log.info("Opening new order");
 				Order order = orderWorkFlowService.openNewOrder(orderDTO);
 				model.addAttribute("newOrder", order);
-				return REDIRECT + ORDER_ROOT + "/" + order.getId() + "/openorder";
+				return REDIRECT + ORDER_ROOT + "/" + order.getId() + "/editorder";
 		}
 
-		@GetMapping("/{id}/openorder")
+		@GetMapping("/{id}/editorder")
 		@PreAuthorize("hasAnyRole('ROLE_SENIOR_CASHIER','ROLE_CASHIER')")
 		public String addNewOrderView(@RequestParam(value = "page", defaultValue = "1") int page,
 																	@RequestParam(value = "size", defaultValue = "3") int size,
@@ -59,10 +62,10 @@ public class OrderWorkFlowController {
 				model.addAttribute(NEXT_PAGE, page + 1);
 				model.addAttribute(NUMBER_OF_PAGES, pageToReturn.getTotalPages());
 
-				return ORDER_ROOT + ID_OPENORDER;
+				return ORDER_ROOT + ID_EDITORDER;
 		}
 
-		@GetMapping("/{id}/openorder/searchcode")
+		@GetMapping("/{id}/editorder/searchcode")
 		@PreAuthorize("hasAnyRole('ROLE_SENIOR_CASHIER','ROLE_CASHIER')")
 		public String searchByCode(@RequestParam(value = "page", defaultValue = "1") int page,
 															 @RequestParam(value = "size", defaultValue = "5") int size,
@@ -84,9 +87,9 @@ public class OrderWorkFlowController {
 
 				model.addAttribute("openedOrder", openedOrder);
 				model.addAttribute("orderItemDTO", new OrderItemDTO());
-				return ORDER_ROOT + ID_OPENORDER + "/searchcode";
+				return ORDER_ROOT + ID_EDITORDER + "/searchcode";
 		}
-		@GetMapping("/{id}/openorder/searchname")
+		@GetMapping("/{id}/editorder/searchname")
 		@PreAuthorize("hasAnyRole('ROLE_SENIOR_CASHIER','ROLE_CASHIER')")
 		public String searchByName(@RequestParam(value = "page", defaultValue = "1") int page,
 															 @RequestParam(value = "size", defaultValue = "5") int size,
@@ -108,13 +111,23 @@ public class OrderWorkFlowController {
 
 				model.addAttribute("openedOrder", openedOrder);
 				model.addAttribute("orderItemDTO", new OrderItemDTO());
-				return ORDER_ROOT + ID_OPENORDER + "/searchname";
+				return ORDER_ROOT + ID_EDITORDER + "/searchname";
 		}
 
 		@GetMapping("/{id}/closeorder")
 		@PreAuthorize("hasAnyRole('ROLE_SENIOR_CASHIER','ROLE_CASHIER')")
 		public String closeOrder(@PathVariable Long id, Model model) {
+				log.info("Closing new order");
 				orderWorkFlowService.closeNewOrder(id);
+				log.info("New order closed");
 				return REDIRECT + ORDER_ROOT;
 		}
+
+		@PostMapping("/{id}/deleteneworder")
+		@PreAuthorize("hasAnyRole('ROLE_SENIOR_CASHIER','ROLE_CASHIER')")
+		public String deleteNewOrder(@PathVariable Long id) {
+				orderService.deleteOrderWithItems(id);
+				return REDIRECT + ORDER_ROOT;
+		}
+
 }

@@ -5,22 +5,26 @@ import com.jk.cashregister.domain.dto.ReportDTO;
 import com.jk.cashregister.repository.ReportRepository;
 import com.jk.cashregister.service.exception.NoSuchItemException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ReportService {
 		private final ReportFactory reportFactory;
 		private final ReportRepository reportRepository;
 
 		public void createReport(ReportDTO reportDTO) {
-				// log
+
+				log.info("creating report");
 				ReportGenerator reportService = reportFactory.createService(reportDTO);
 				Report report = reportService.generateReport(reportDTO);
 				reportRepository.save(report);
-				// log out
+
+				log.info("report created");
 		}
 
 		public Page<Report> getAllReports(int page, int size) {

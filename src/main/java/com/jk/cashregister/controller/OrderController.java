@@ -6,11 +6,11 @@ import com.jk.cashregister.domain.Stock;
 import com.jk.cashregister.domain.dto.OrderDTO;
 import com.jk.cashregister.domain.dto.OrderItemDTO;
 import com.jk.cashregister.repository.OrderItemRepository;
-import com.jk.cashregister.repository.OrderRepository;
 import com.jk.cashregister.service.OrderItemService;
 import com.jk.cashregister.service.OrderService;
 import com.jk.cashregister.util.Paging;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -26,9 +26,9 @@ import static com.jk.cashregister.util.URLs.*;
 @Controller
 @RequestMapping("/order")
 @RequiredArgsConstructor
+@Slf4j
 public class OrderController {
 		private final OrderService orderService;
-		private final OrderRepository orderRepository;
 		private final OrderItemRepository orderItemRepository;
 		private final OrderItemService orderItemService;
 		private final Paging<OrderItem> paging;
@@ -68,9 +68,10 @@ public class OrderController {
 		@PostMapping("/{id}/delete")
 		@PreAuthorize("hasRole('ROLE_SENIOR_CASHIER')")
 		public String deleteOrder(@PathVariable long id) {
-				// log
+
+				log.info("Deleting order with all its items");
 				orderService.deleteOrderWithItems(id);
-				//log out
+
 				return REDIRECT + ORDER_ROOT;
 		}
 		@PostMapping("/{id}/details/{itemId}/deleteitem")

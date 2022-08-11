@@ -9,11 +9,13 @@ import com.jk.cashregister.service.exception.NoSuchItemException;
 import com.jk.cashregister.service.mapper.OrderItemDTOMapper;
 import com.jk.cashregister.service.validator.StockQuantityValidator;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class OrderItemService {
 
 		private final OrderItemRepository orderItemRepository;
@@ -29,24 +31,31 @@ public class OrderItemService {
 		}
 		@Transactional
 		public void updateOrderItem(Long id, OrderItemDTO orderItemDTO) {
+				log.info("Updating order with id: " + id);
 				OrderItem orderItem = getOrderItemById(id);
 				Stock stock = orderItem.getStock();
-
-				stockQuantityValidator.validateOrderedQuantity(orderItem.getQuantityOrdered(), orderItemDTO.getQuantityOrdered());
+				log.info("Checking ordered quantity");
+				int previousQuantityOrdered = stock.getQuantity() + orderItem.getQuantityOrdered();
+				int newQuantityOrdered = orderItemDTO.getQuantityOrdered();
+				stockQuantityValidator.validateOrderedQuantity(previousQuantityOrdered, newQuantityOrdered);
 
 				int newStockQuantity = stock.getQuantity() + (orderItem.getQuantityOrdered() - orderItemDTO.getQuantityOrdered());
 				stock.setQuantity(newStockQuantity);
 				stockRepository.save(stock);
 				orderItem.setQuantityOrdered(orderItemDTO.getQuantityOrdered());
 				orderItemRepository.save(orderItem);
+				log.info("OrderItem updated");
 		}
 
 		@Transactional
 		public void deleteOrderItemFromOrder(Long id) {
+				log.info("Deleting OrderItem from order");
 				OrderItem orderItem = getOrderItemById(id);
 				Stock stock = orderItem.getStock();
 				stock.setQuantity(stock.getQuantity() + orderItem.getQuantityOrdered());
+				log.info("Stock quantity in warehouse updated");
 				stockRepository.save(stock);
 				orderItemRepository.deleteById(id);
+				log.info("OrderItem deleted");
 		}
 }

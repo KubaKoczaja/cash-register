@@ -7,6 +7,7 @@ import com.jk.cashregister.repository.OrderRepository;
 import com.jk.cashregister.service.mapper.ReportDTOMapper;
 import liquibase.repackaged.org.apache.commons.lang3.tuple.ImmutablePair;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public abstract class ReportGenerator {
 		private final ReportDTOMapper reportDTOMapper;
 		private final OrderRepository orderRepository;
@@ -26,6 +28,7 @@ public abstract class ReportGenerator {
 				LocalDateTime fromDate = provideFromDate();
 				report.setFromDate(fromDate);
 				report.setContent(provideContent(report.getFromDate(), report.getToDate()));
+				log.info("Report with type " + report.getReportType());
 				return report;
 		}
 		public abstract LocalDateTime provideFromDate();
