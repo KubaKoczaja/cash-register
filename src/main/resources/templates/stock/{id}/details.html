@@ -40,12 +40,12 @@
                     </li>
                 </ul>
                 <div class="input-group">
-                    <form class="card p-2">
+                    <form>
                         <div class="input-group-append" sec:authorize="hasRole('ROLE_COMMODITY_EXPERT')">
                             <form th:object="${stockItem}" th:action="@{/stock/{id}/delete(id=${stockItem.id})}" th:method="post"><button type="submit" class="btn-sm btn-danger" th:text="#{delete}">Delete</button></form>
                         </div>
                     </form>
-                    <form class="card p-2" th:action="@{/stock}" th:method="get">
+                    <form class="ml-2" th:action="@{/stock}" th:method="get">
                             <div class="input-group-append">
                                 <button type="submit" class="btn-sm btn-dark"><span th:text="#{go_back}">Go back</span></button>
                             </div>

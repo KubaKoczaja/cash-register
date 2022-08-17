@@ -10,9 +10,9 @@ import java.util.List;
 
 @Repository
 public interface StockRepository extends JpaRepository<Stock, Long> {
-		@Query(value = "select * from stock s where s.product_code like %:code%", nativeQuery = true)
+		@Query(value = "select * from stock s where UPPER(s.product_code) like %:code%", nativeQuery = true)
 		List<Stock> findByProductCodePattern(@Param("code") String code);
 
-		@Query(value = "select * from stock s where s.product_name like %:name%", nativeQuery = true)
+		@Query(value = "select * from stock s where UPPER(s.product_name) like %:name%", nativeQuery = true)
 		List<Stock> findByProductNamePattern(@Param("name") String name);
 }

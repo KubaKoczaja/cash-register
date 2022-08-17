@@ -16,9 +16,9 @@
 
 <div class="container fluid">
     <div class="row">
-        <div class="col-lg-10 mt-5 mb-5">
-            <table id="stock" class="table table-bordered" style="width: 100%">
-                <thead>
+        <div class="col-lg-10 mt-5 mb-2">
+            <table class="table" style="width: 100%">
+                <thead class="table-secondary">
                 <tr>
                     <th>Id</th>
                     <th th:text="#{product_code}">Product Code</th>
@@ -34,8 +34,10 @@
                     <td><a th:href="@{/stock/{id}/details(id=${stock.id})}" th:text="${stock.productName}">Product Name</a></td>
                     <td th:text="${stock.quantity}">Quantity</td>
                     <td th:text="${stock.price}">Price</td>
-                    <td sec:authorize="hasRole('ROLE_COMMODITY_EXPERT')"><form th:object="${stock}" th:action="@{/stock/{id}/update(id=${stock.id})}" th:method="get"><button type="submit" class="btn-sm btn-dark"><span th:text="#{update}">Update</span></button></form></td>
-                    <td sec:authorize="hasRole('ROLE_COMMODITY_EXPERT')"><form th:object="${stock}" th:action="@{/stock/{id}/delete(id=${stock.id})}" th:method="post"><button type="submit" class="btn-sm btn-danger"><span th:text="#{delete}">Delete</span></button></form></td>
+                    <td class="border-top btn-group" role="group" sec:authorize="hasRole('ROLE_COMMODITY_EXPERT')">
+                        <form th:object="${stock}" th:action="@{/stock/{id}/update(id=${stock.id})}" th:method="get"><button type="submit" class="btn-sm btn-dark"><span th:text="#{update}">Update</span></button></form>
+                        <form th:object="${stock}" th:action="@{/stock/{id}/delete(id=${stock.id})}" th:method="post"><button type="submit" class="btn-sm btn-danger ml-1"><span th:text="#{delete}">Delete</span></button></form>
+                    </td>
                 </tr>
                 </tbody>
             </table>

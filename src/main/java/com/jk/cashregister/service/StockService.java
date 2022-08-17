@@ -1,6 +1,7 @@
 package com.jk.cashregister.service;
 
 import com.jk.cashregister.domain.Stock;
+import com.jk.cashregister.domain.dto.SearchDTO;
 import com.jk.cashregister.domain.dto.StockDTO;
 import com.jk.cashregister.repository.StockRepository;
 import com.jk.cashregister.service.exception.NoSuchItemException;
@@ -10,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -51,6 +54,17 @@ public class StockService {
 
 		public void deleteStockById(Long id) {
 				stockRepository.deleteById(id);
+		}
+		public List<Stock> getAllUsingSearch(SearchDTO searchDTO) {
+				List<Stock>	stockList;
+				if (searchDTO.getCode().isBlank() && !searchDTO.getName().isBlank()) {
+						stockList = stockRepository.findByProductNamePattern(searchDTO.getName().toUpperCase());
+				} else if (!searchDTO.getCode().isBlank() && searchDTO.getName().isBlank()) {
+						stockList = stockRepository.findByProductCodePattern(searchDTO.getCode().toUpperCase());
+				} else {
+						stockList = stockRepository.findAll();
+				}
+				return stockList;
 		}
 }
 

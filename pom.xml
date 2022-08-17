@@ -35,6 +35,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -89,6 +93,11 @@
 			<artifactId>mapstruct</artifactId>
 			<version>1.5.2.Final</version>
 		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-junit-jupiter</artifactId>
+			<version>4.6.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -97,6 +106,18 @@
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.8</version>
+				<configuration>
+				<excludes>
+					<exclude>com/jk/**/domain/*</exclude>
+					<exclude>com/jk/**/service/exception/*</exclude>
+					<exclude>com/jk/**/domain/dto/*</exclude>
+					<exclude>com/jk/**/repository/*</exclude>
+					<exclude>com/jk/**/security/*</exclude>
+					<exclude>com/jk/**/util/URLs*</exclude>
+					<exclude>com/jk/**/util/Strings*</exclude>
+					<exclude>**/configuration/*</exclude>
+				</excludes>
+			</configuration>
 				<executions>
 					<execution>
 						<goals>

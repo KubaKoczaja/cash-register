@@ -1,7 +1,8 @@
 package com.jk.cashregister.service.exception;
 
-public class CustomException extends RuntimeException{
-		public CustomException(String message) {
+public abstract class CustomException extends RuntimeException{
+		protected CustomException(String message) {
 				super(message);
 		}
+		public abstract String getBundledKey();
 }

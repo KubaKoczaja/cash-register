@@ -2,6 +2,7 @@ package com.jk.cashregister.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@EqualsAndHashCode(exclude = "id")
 public class User {
 		@Id
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,5 +39,4 @@ public class User {
 
 		@OneToMany(mappedBy = "user")
 		private List<Order> orders;
-
 }

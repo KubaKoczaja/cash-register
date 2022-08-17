@@ -6,7 +6,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class CashRegisterApplicationTests {
 
-	@Test
+
+		@Test
 	void contextLoads() {
 	}
 

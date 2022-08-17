@@ -12,8 +12,8 @@ import com.jk.cashregister.service.mapper.OrderItemDTOMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 
 @Service
@@ -47,10 +47,9 @@ public class OrderWorkflowService {
 				if (order.getOrderItemList().isEmpty()) {
 						orderRepository.save(order);
 						log.warn("Attempt to create empty order");
-						throw new EmptyOrderException("Newly created order can't be empty!");
+						throw new EmptyOrderException("Order can't be empty");
 				}
 				order.setCloseDate(LocalDateTime.now());
 				orderRepository.save(order);
-
 		}
 }

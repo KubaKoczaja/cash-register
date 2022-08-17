@@ -23,9 +23,9 @@ public class ReportController {
 		public final ReportService reportService;
 
 		@GetMapping
-		public String getAllReports(@RequestParam(value = "page", defaultValue = "1") int page,
-																@RequestParam(value = "size", defaultValue = "5") int size,
-																Model model) {
+		public String getAllReportsView(@RequestParam(value = "page", defaultValue = "1") int page,
+																		@RequestParam(value = "size", defaultValue = "5") int size,
+																		Model model) {
 				Page<Report> allReports = reportService.getAllReports(page,size);
 				model.addAttribute("allReports", allReports.getContent());
 				model.addAttribute(CURRENT_PAGE, page);
@@ -37,7 +37,7 @@ public class ReportController {
 		}
 
 		@GetMapping("/{id}/details")
-		public String getDetailsOnReport(@PathVariable Long id, Model model) {
+		public String getDetailsOnReportView(@PathVariable Long id, Model model) {
 				Report report = reportService.getReportById(id);
 				model.addAttribute("reportDetails", report);
 				return REPORT_ROOT + "/{id}/details";

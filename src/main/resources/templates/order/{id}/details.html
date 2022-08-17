@@ -10,7 +10,7 @@
 <header th:insert="fragments/general.html :: header"> </header>
 <div class="container">
     <div class="row">
-        <div class="col-lg-10 mt-5 mb-5">
+        <div class="col-lg-10 mt-5 mb-2">
             <div class="col-md-4 order-md-2 mb-4">
                 <h4 class="d-flex justify-content-between align-items-center mb-3">
                     <span class="text-muted">Id</span>
@@ -27,45 +27,38 @@
                             <small class="text-muted" th:text="${#temporals.format(orderDetails.closeDate, 'dd-MM-yyyy HH:mm:ss')}">Closed</small>
                     </li>
                 </ul>
-                <form class="m-2" th:action="@{/order/{id}/delete(id=${orderDetails.id})}" th:method="post">
-                    <div class="input-group">
+                <div class="btn-group" role="group">
+                    <form class="m-2" th:action="@{/order/{id}/delete(id=${orderDetails.id})}" th:method="post">
                         <div class="input-group-append" sec:authorize="hasRole('ROLE_SENIOR_CASHIER')">
                             <button type="submit" class="btn-sm btn-danger"><span th:text="#{delete}">Delete</span></button>
                         </div>
-                    </div>
-                </form>
-                <form class="m-2" th:action="@{/order/{id}/editorder(id=${orderDetails.id})}" th:method="get">
-                    <div class="input-group">
+                    </form>
+                    <form class="m-2" th:action="@{/order/{id}/editorder(id=${orderDetails.id})}" th:method="get">
                         <div class="input-group-append" sec:authorize="hasRole('ROLE_SENIOR_CASHIER')">
                             <button type="submit" class="btn-sm btn-dark"><span th:text="#{edit}">Edit</span></button>
                         </div>
-                    </div>
-                </form>
-                <div th:if="${orderDetails.closeDate == null}">
-                    <form class="m-2" th:action="@{/order/{id}/editorder(id=${orderDetails.id})}" th:method="get">
-                        <div class="input-group">
-                            <div class="input-group-append" sec:authorize="hasRole('ROLE_CASHIER')">
-                                <button type="submit" class="btn-sm btn-dark"><span th:text="#{continue}">Continue</span></button>
-                            </div>
+                    </form>
+
+                    <form class="m-2" th:if="${orderDetails.closeDate == null}" sec:authorize="hasRole('ROLE_CASHIER')" th:action="@{/order/{id}/editorder(id=${orderDetails.id})}" th:method="get">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn-sm btn-dark"><span th:text="#{continue}">Continue</span></button>
                         </div>
                     </form>
-                </div>
-                <form class="m-2" th:action="@{/order}" th:method="get">
-                    <div class="input-group">
+
+                    <form class="m-2" th:action="@{/order}" th:method="get">
                         <div class="input-group-append">
                             <button type="submit" class="btn-sm btn-dark"><span th:text="#{go_back}">Go back</span></button>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
-
         </div>
     </div>
 
     <div class="row">
         <div class="col-lg-10 mt-2 mb-5">
-            <table class="table table-bordered" style="width: 100%">
-                <thead>
+            <table class="table" style="width: 100%">
+                <thead class="table-secondary">
                 <tr>
                     <th>Id</th>
                     <th th:text="#{product_code}">Product Code</th>
@@ -76,14 +69,14 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="item : ${orderItemsForOrder}">
-                    <td th:text="${item.id}">Id</td>
-                    <td th:text="${item.stock.productCode}">Product Code</td>
-                    <td th:text="${item.stock.productName}">Product Name</td>
-                    <td th:text="${item.stock.quantity}">Quantity</td>
-                    <td th:text="${item.stock.price}">Price</td>
-                    <td th:text="${item.quantityOrdered}">Quantity ordered</td>
-                </tr>
+                    <tr th:each="item : ${orderItemsForOrder}">
+                        <td th:text="${item.id}">Id</td>
+                        <td th:text="${item.stock.productCode}">Product Code</td>
+                        <td th:text="${item.stock.productName}">Product Name</td>
+                        <td th:text="${item.stock.quantity}">Quantity</td>
+                        <td th:text="${item.stock.price}">Price</td>
+                        <td th:text="${item.quantityOrdered}">Quantity ordered</td>
+                    </tr>
                 </tbody>
             </table>
             <nav aria-label="Page navigation example">

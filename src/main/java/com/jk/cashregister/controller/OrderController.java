@@ -34,9 +34,9 @@ public class OrderController {
 		private final Paging<OrderItem> paging;
 
 		@GetMapping
-		public String viewAllStock(@RequestParam(value = "page", defaultValue = "1") int page,
-															 @RequestParam(value = "size", defaultValue = "5") int size,
-															 Model model) {
+		public String viewAllOrders(@RequestParam(value = "page", defaultValue = "1") int page,
+																@RequestParam(value = "size", defaultValue = "5") int size,
+																Model model) {
 				Page<Order> allOrders = orderService.getAllOrders(page, size);
 				model.addAttribute("allOrders", allOrders.getContent());
 				model.addAttribute(CURRENT_PAGE, page);
