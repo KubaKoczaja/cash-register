@@ -33,7 +33,29 @@
                     </form>
                     <form class="m-2" th:object="${newOrder}" th:action="@{/order/{id}/deleteneworder(id=${newOrder.id})}" th:method="post">
                             <div class="input-group-append">
-                                <button type="submit" class="btn-sm btn-danger" th:text="#{delete}">Delete</button>
+<!--                                <button type="submit" class="btn-sm btn-danger" th:text="#{delete}">Delete</button>-->
+                                <button type="button" class="border-top btn-sm btn-danger" data-toggle="modal" data-target="#delete_order_modal" th:text="#{delete}">Delete</button>
+                                <!-- Modal -->
+                                <div class="modal fade" id="delete_order_modal" tabindex="-1" role="dialog" aria-labelledby="delete_stock_modal" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title"><span th:text="#{orders}">Orders</span></h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <span th:text="#{delete_item} + ${newOrder.id}"></span>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-dark" data-dismiss="modal" th:text="#{stop}">Stop</button>
+                                                <button type="submit" class="btn btn-danger" th:text="#{continue}">Continue</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--modal end-->
                             </div>
                     </form>
                 </div>
@@ -112,7 +134,31 @@
                     <td>
                         <div class=" border-top btn-group" role="group">
                             <form th:action="@{/order/{id}/editorder/{itemId}/updateitem(id=${newOrder.id},itemId=${item.id})}" th:method="get"><button type="submit" class="btn-sm btn-dark" th:text="#{update}">Update</button></form>
-                            <form th:object="${item}" th:action="@{/order/{id}/editorder/{itemId}/deleteitem(id=${newOrder.id},itemId=${item.id})}" th:method="post"><button type="submit" class="btn-sm btn-danger ml-1" th:text="#{delete}">Delete</button></form>
+                            <form th:object="${item}" th:action="@{/order/{id}/editorder/{itemId}/deleteitem(id=${newOrder.id},itemId=${item.id})}" th:method="post">
+<!--                                <button type="submit" class="btn-sm btn-danger ml-1" th:text="#{delete}">Delete</button>-->
+                                <button type="button" class="btn-sm btn-danger ml-1" data-toggle="modal" data-target="#delete_orderItem_modal" th:text="#{delete}">Delete</button>
+                                <!-- Modal -->
+                                <div class="modal fade" id="delete_orderItem_modal" tabindex="-1" role="dialog" aria-labelledby="delete_stock_modal" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title"><span th:text="#{orders_item}">Order's item</span></h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <span th:text="#{delete_item} + ${item.id}"></span>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-dark" data-dismiss="modal" th:text="#{stop}">Stop</button>
+                                                <button type="submit" class="btn btn-danger" th:text="#{continue}">Continue</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--modal end-->
+                            </form>
                         </div>
                     </td>
                 </tr>

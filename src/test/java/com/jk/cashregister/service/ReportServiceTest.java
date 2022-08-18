@@ -58,7 +58,7 @@ class ReportServiceTest {
 
 		@Test
 		void shouldProvideContentForGivenListOfOrders() {
-				when(orderRepository.findAllByOpenDateGreaterThanAndCloseDateLessThanEqual(any(LocalDateTime.class), any(LocalDateTime.class)))
+				when(orderRepository.findAllByCloseDateGreaterThanAndCloseDateLessThanEqual(any(LocalDateTime.class), any(LocalDateTime.class)))
 								.thenReturn(orderList);
 				String expected = "Number of orders: 1\nItems stats: \npn : 4\n";
 				String result = xReportGenerator.provideContent(LocalDateTime.now(), LocalDateTime.now());
@@ -90,7 +90,7 @@ class ReportServiceTest {
 				ReportDTO reportDTOInput = new ReportDTO("X");
 				when(reportDTOMapper.map(any(ReportDTO.class))).thenReturn(reportInput);
 				when(reportRepository.findAllByReportType(anyString())).thenReturn(reportList);
-				when(orderRepository.findAllByOpenDateGreaterThanAndCloseDateLessThanEqual(any(LocalDateTime.class), any(LocalDateTime.class)))
+				when(orderRepository.findAllByCloseDateGreaterThanAndCloseDateLessThanEqual(any(LocalDateTime.class), any(LocalDateTime.class)))
 								.thenReturn(orderList);
 				Report result = xReportGenerator.generateReport(reportDTOInput);
 				assertEquals(reportDTOInput.getReportType(), result.getReportType());
@@ -102,7 +102,7 @@ class ReportServiceTest {
 				Report reportInput = new Report(1L, LocalDateTime.now(), LocalDateTime.now(),"a","Z", new User());
 				ReportDTO reportDTOInput = new ReportDTO("Z");
 				when(reportDTOMapper.map(any(ReportDTO.class))).thenReturn(reportInput);
-				when(orderRepository.findAllByOpenDateGreaterThanAndCloseDateLessThanEqual(any(LocalDateTime.class), any(LocalDateTime.class)))
+				when(orderRepository.findAllByCloseDateGreaterThanAndCloseDateLessThanEqual(any(LocalDateTime.class), any(LocalDateTime.class)))
 								.thenReturn(orderList);
 				Report result = zReportGenerator.generateReport(reportDTOInput);
 				assertEquals(reportDTOInput.getReportType(), result.getReportType());

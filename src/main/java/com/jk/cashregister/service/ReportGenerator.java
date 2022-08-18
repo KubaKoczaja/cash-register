@@ -34,7 +34,7 @@ public abstract class ReportGenerator {
 		public abstract LocalDateTime provideFromDate();
 		public String provideContent(LocalDateTime fromDate, LocalDateTime toDate) {
 				List<Order> ordersPlacedInGivenTime = orderRepository
-								.findAllByOpenDateGreaterThanAndCloseDateLessThanEqual(fromDate, toDate);
+								.findAllByCloseDateGreaterThanAndCloseDateLessThanEqual(fromDate, toDate);
 				Map<String, List<ImmutablePair<String,Integer>>> map = ordersPlacedInGivenTime
 								.stream()
 								.map(Order::getOrderItemList)
