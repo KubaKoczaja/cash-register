@@ -3,13 +3,13 @@ package com.jk.cashregister.controller;
 import com.jk.cashregister.domain.Order;
 import com.jk.cashregister.domain.OrderItem;
 import com.jk.cashregister.domain.Stock;
-import com.jk.cashregister.domain.dto.OrderDTO;
-import com.jk.cashregister.domain.dto.OrderItemDTO;
-import com.jk.cashregister.domain.dto.SearchDTO;
 import com.jk.cashregister.repository.OrderItemRepository;
 import com.jk.cashregister.service.OrderService;
 import com.jk.cashregister.service.OrderWorkflowService;
 import com.jk.cashregister.service.StockService;
+import com.jk.cashregister.service.dto.OrderDTO;
+import com.jk.cashregister.service.dto.OrderItemDTO;
+import com.jk.cashregister.service.dto.SearchDTO;
 import com.jk.cashregister.util.Paging;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,14 +18,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.support.RequestContextUtils;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 
 import static com.jk.cashregister.util.Strings.*;
 import static com.jk.cashregister.util.URLs.*;
@@ -74,23 +70,16 @@ public class OrderWorkFlowController {
 
 		@PostMapping("/{id}/editorder/search")
 		@PreAuthorize("hasAnyRole('ROLE_SENIOR_CASHIER','ROLE_CASHIER')")
-		public String searchByPattern(@ModelAttribute SearchDTO searchDTO, Model model, RedirectAttributes redirectAttributes) {
-				redirectAttributes.addFlashAttribute("searchDTO", searchDTO);
+		public String searchByPattern(@ModelAttribute SearchDTO searchDTO, HttpSession session) {
+				session.setAttribute("searchDTO", searchDTO);
 				return REDIRECT + ORDER_ROOT + ID_EDITORDER + "/search";
 		}
 
 		@GetMapping("/{id}/editorder/search")
 		public String getSearchView(@RequestParam(value = "page", defaultValue = "1") int page,
 																@RequestParam(value = "size", defaultValue = "5") int size,
-																@PathVariable Long id, Model model, HttpServletRequest request, HttpSession session, RedirectAttributes redirectAttributes) {
-				Map<String, ?> inputFlashMap = RequestContextUtils.getInputFlashMap(request);
-				SearchDTO searchDTO;
-				if (inputFlashMap != null) {
-						searchDTO = (SearchDTO) inputFlashMap.get("searchDTO");
-								session.setAttribute("searchDTO", searchDTO);
-				} else {
-						searchDTO = (SearchDTO) session.getAttribute("searchDTO");
-				}
+																@PathVariable Long id, Model model, HttpSession session) {
+				SearchDTO searchDTO = (SearchDTO) session.getAttribute("searchDTO");
 
 				List<Stock> stockList = stockService.getAllUsingSearch(searchDTO);
 				Order openedOrder = orderService.getOrderById(id);

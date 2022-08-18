@@ -3,7 +3,7 @@ package com.jk.cashregister.service;
 import com.jk.cashregister.domain.Order;
 import com.jk.cashregister.domain.OrderItem;
 import com.jk.cashregister.domain.Stock;
-import com.jk.cashregister.domain.dto.OrderItemDTO;
+import com.jk.cashregister.service.dto.OrderItemDTO;
 import com.jk.cashregister.repository.OrderItemRepository;
 import com.jk.cashregister.repository.StockRepository;
 import com.jk.cashregister.service.exception.NoSuchItemException;

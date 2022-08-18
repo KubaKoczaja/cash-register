@@ -2,7 +2,7 @@ package com.jk.cashregister.controller;
 
 import com.jk.cashregister.domain.OrderItem;
 import com.jk.cashregister.domain.Stock;
-import com.jk.cashregister.domain.dto.StockDTO;
+import com.jk.cashregister.service.dto.StockDTO;
 import com.jk.cashregister.repository.OrderItemRepository;
 import com.jk.cashregister.service.CashRegisterUserDetailsService;
 import com.jk.cashregister.service.StockService;

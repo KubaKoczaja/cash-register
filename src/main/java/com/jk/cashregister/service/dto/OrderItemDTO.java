@@ -1,4 +1,4 @@
-package com.jk.cashregister.domain.dto;
+package com.jk.cashregister.service.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

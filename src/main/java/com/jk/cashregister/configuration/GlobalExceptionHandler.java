@@ -1,6 +1,7 @@
 package com.jk.cashregister.configuration;
 
 import com.jk.cashregister.service.exception.CustomException;
+import com.jk.cashregister.util.LocalizedMessageProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -13,7 +14,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Locale;
 
 @ControllerAdvice
 @Slf4j
@@ -22,6 +22,8 @@ public class GlobalExceptionHandler {
 		LocaleResolver localeResolver;
 		@Autowired
 		MessageSource messageSource;
+		@Autowired
+		LocalizedMessageProvider provider;
 
 		@ExceptionHandler(BindException.class)
 		public ModelAndView	bindErrorHandler(HttpServletRequest req, BindException e) {
@@ -38,8 +40,7 @@ public class GlobalExceptionHandler {
 		public ModelAndView	customErrorHandler(HttpServletRequest req, CustomException e) {
 				ModelAndView modelAndView = new ModelAndView();
 
-				Locale locale = localeResolver.resolveLocale(req);
-				String message = messageSource.getMessage(e.getBundledKey(), new Object[]{}, locale);
+				String message = provider.provideMessage(e.getBundledKey());
 				log.info(message);
 
 				modelAndView.addObject("message", message);

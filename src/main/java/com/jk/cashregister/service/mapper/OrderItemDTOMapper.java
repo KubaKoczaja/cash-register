@@ -1,7 +1,7 @@
 package com.jk.cashregister.service.mapper;
 
 import com.jk.cashregister.domain.OrderItem;
-import com.jk.cashregister.domain.dto.OrderItemDTO;
+import com.jk.cashregister.service.dto.OrderItemDTO;
 import com.jk.cashregister.service.StockService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -13,7 +13,6 @@ public class OrderItemDTOMapper {
 
 		public OrderItem mapToOrderItem(OrderItemDTO orderItemDTO) {
 				OrderItem orderItem = new OrderItem();
-				orderItem.setStock(stockService.getStockById(orderItemDTO.getStockId()));
 				orderItem.setQuantityOrdered(orderItemDTO.getQuantityOrdered());
 				return orderItem;
 		}

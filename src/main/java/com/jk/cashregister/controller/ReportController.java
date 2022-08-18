@@ -1,7 +1,7 @@
 package com.jk.cashregister.controller;
 
 import com.jk.cashregister.domain.Report;
-import com.jk.cashregister.domain.dto.ReportDTO;
+import com.jk.cashregister.service.dto.ReportDTO;
 import com.jk.cashregister.service.ReportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import static com.jk.cashregister.util.Strings.*;
@@ -45,7 +46,7 @@ public class ReportController {
 
 		@PostMapping("/generatereport")
 		@PreAuthorize("hasRole('ROLE_SENIOR_CASHIER')")
-		public String generateReport(@Valid ReportDTO reportDTO) {
+		public String generateReport(@Valid ReportDTO reportDTO, HttpServletRequest req) {
 				reportService.createReport(reportDTO);
 				return REDIRECT + REPORT_ROOT;
 		}

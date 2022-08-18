@@ -23,10 +23,14 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
 		private CashRegisterUserDetailsService userDetailsService;
 
 		@Bean
+		public BCryptPasswordEncoder passwordEncoder() {
+				return new BCryptPasswordEncoder(10);
+		}
+		@Bean
 		public DaoAuthenticationProvider authenticationProvider() {
 			DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
 			provider.setUserDetailsService(userDetailsService);
-			provider.setPasswordEncoder(new BCryptPasswordEncoder(10));
+			provider.setPasswordEncoder(passwordEncoder());
 			provider.setAuthoritiesMapper(authoritiesMapper());
 			return provider;
 		}
@@ -49,7 +53,7 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
 				http
 								.csrf().disable()
 								.authorizeRequests()
-								.antMatchers("/","/index","/css/*","/js/*","/login?lang=pl").permitAll()
+								.antMatchers("/","/index","/css/*","/js/*","/login?lang=pl","/register?success","/register","/h2-console").permitAll()
 								.anyRequest().authenticated()
 								.and()
 								.formLogin()

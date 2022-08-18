@@ -2,7 +2,7 @@ package com.jk.cashregister.controller;
 
 import com.jk.cashregister.domain.Order;
 import com.jk.cashregister.domain.Stock;
-import com.jk.cashregister.domain.dto.OrderItemDTO;
+import com.jk.cashregister.service.dto.OrderItemDTO;
 import com.jk.cashregister.service.OrderItemService;
 import com.jk.cashregister.service.OrderWorkflowService;
 import lombok.RequiredArgsConstructor;

@@ -2,9 +2,10 @@ package com.jk.cashregister.service;
 
 import com.jk.cashregister.domain.Order;
 import com.jk.cashregister.domain.Report;
-import com.jk.cashregister.domain.dto.ReportDTO;
 import com.jk.cashregister.repository.OrderRepository;
+import com.jk.cashregister.service.dto.ReportDTO;
 import com.jk.cashregister.service.mapper.ReportDTOMapper;
+import com.jk.cashregister.util.LocalizedMessageProvider;
 import liquibase.repackaged.org.apache.commons.lang3.tuple.ImmutablePair;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,11 +21,15 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public abstract class ReportGenerator {
+		private  final UserService userService;
 		private final ReportDTOMapper reportDTOMapper;
 		private final OrderRepository orderRepository;
+		private final LocalizedMessageProvider provider;
+
 
 		public Report generateReport(ReportDTO reportDTO) {
 				Report report = reportDTOMapper.map(reportDTO);
+				report.setUser(userService.getAuthenticatedUser());
 				LocalDateTime fromDate = provideFromDate();
 				report.setFromDate(fromDate);
 				report.setContent(provideContent(report.getFromDate(), report.getToDate()));
@@ -33,9 +38,8 @@ public abstract class ReportGenerator {
 		}
 		public abstract LocalDateTime provideFromDate();
 		public String provideContent(LocalDateTime fromDate, LocalDateTime toDate) {
-				List<Order> ordersPlacedInGivenTime = orderRepository
-								.findAllByCloseDateGreaterThanAndCloseDateLessThanEqual(fromDate, toDate);
-				Map<String, List<ImmutablePair<String,Integer>>> map = ordersPlacedInGivenTime
+				List<Order> ordersPlacedInGivenTime = orderRepository.findAllByCloseDateGreaterThanAndCloseDateLessThanEqual(fromDate, toDate);
+				Map<String, List<ImmutablePair<String, Integer>>> map = ordersPlacedInGivenTime
 								.stream()
 								.map(Order::getOrderItemList)
 								.flatMap(List::stream)
@@ -43,17 +47,15 @@ public abstract class ReportGenerator {
 								.collect(Collectors.groupingBy(p -> p.left));
 				Map<String, Integer> result = new HashMap<>();
 				for (Map.Entry<String, List<ImmutablePair<String, Integer>>> stringListEntry : map.entrySet()) {
-						int sum = stringListEntry.getValue()
-										.stream()
-										.map(e -> e.right)
-										.reduce(0, Integer::sum);
+						int sum = stringListEntry.getValue().stream().map(e -> e.right).reduce(0, Integer::sum);
 						result.put(stringListEntry.getKey(), sum);
 				}
 				StringBuilder sb = new StringBuilder();
 				result.forEach((key, value) -> sb.append(key).append(" : ").append(value).append("\n"));
-				return "Number of orders: "
-								+ ordersPlacedInGivenTime.size()
-								+ "\nItems stats: \n"
-								+ sb;
+
+				String numberOfOrdersString = provider.provideMessage("no_of_orders");
+				String itemStatString = provider.provideMessage("item_stats");
+
+				return 	numberOfOrdersString + ordersPlacedInGivenTime.size() + "\n" + itemStatString + "\n" + sb;
 		}
 }

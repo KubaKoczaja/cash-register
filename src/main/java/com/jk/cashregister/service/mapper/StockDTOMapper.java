@@ -1,7 +1,7 @@
 package com.jk.cashregister.service.mapper;
 
 import com.jk.cashregister.domain.Stock;
-import com.jk.cashregister.domain.dto.StockDTO;
+import com.jk.cashregister.service.dto.StockDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;

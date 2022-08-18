@@ -1,7 +1,7 @@
 package com.jk.cashregister.service;
 
 import com.jk.cashregister.domain.*;
-import com.jk.cashregister.domain.dto.ReportDTO;
+import com.jk.cashregister.service.dto.ReportDTO;
 import com.jk.cashregister.repository.OrderRepository;
 import com.jk.cashregister.repository.ReportRepository;
 import com.jk.cashregister.service.exception.NoSuchItemException;
@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,7 @@ class ReportServiceTest {
 		private ReportRepository reportRepository;
 		@Mock
 		private ReportDTOMapper reportDTOMapper;
+
 		private List<Report> reportList;
 		private List<Order> orderList;
 

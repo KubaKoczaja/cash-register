@@ -1,8 +1,8 @@
 package com.jk.cashregister.service;
 
 import com.jk.cashregister.domain.Stock;
-import com.jk.cashregister.domain.dto.SearchDTO;
-import com.jk.cashregister.domain.dto.StockDTO;
+import com.jk.cashregister.service.dto.SearchDTO;
+import com.jk.cashregister.service.dto.StockDTO;
 import com.jk.cashregister.repository.StockRepository;
 import com.jk.cashregister.service.exception.NoSuchItemException;
 import com.jk.cashregister.service.mapper.StockDTOMapper;
@@ -55,6 +55,7 @@ public class StockService {
 		public void deleteStockById(Long id) {
 				stockRepository.deleteById(id);
 		}
+
 		public List<Stock> getAllUsingSearch(SearchDTO searchDTO) {
 				List<Stock>	stockList;
 				if (searchDTO.getCode().isBlank() && !searchDTO.getName().isBlank()) {

@@ -3,7 +3,7 @@ package com.jk.cashregister.service.mapper;
 import com.jk.cashregister.domain.Order;
 import com.jk.cashregister.domain.OrderItem;
 import com.jk.cashregister.domain.Stock;
-import com.jk.cashregister.domain.dto.OrderItemDTO;
+import com.jk.cashregister.service.dto.OrderItemDTO;
 import com.jk.cashregister.service.StockService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,8 +1,8 @@
 package com.jk.cashregister.service;
 
 import com.jk.cashregister.domain.Report;
-import com.jk.cashregister.domain.dto.ReportDTO;
 import com.jk.cashregister.repository.ReportRepository;
+import com.jk.cashregister.service.dto.ReportDTO;
 import com.jk.cashregister.service.exception.NoSuchItemException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

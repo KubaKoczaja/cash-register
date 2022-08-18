@@ -2,8 +2,8 @@ package com.jk.cashregister.service;
 
 import com.jk.cashregister.domain.Order;
 import com.jk.cashregister.domain.OrderItem;
-import com.jk.cashregister.domain.dto.OrderDTO;
-import com.jk.cashregister.domain.dto.OrderItemDTO;
+import com.jk.cashregister.service.dto.OrderDTO;
+import com.jk.cashregister.service.dto.OrderItemDTO;
 import com.jk.cashregister.repository.OrderItemRepository;
 import com.jk.cashregister.repository.OrderRepository;
 import com.jk.cashregister.service.exception.EmptyOrderException;
@@ -20,15 +20,16 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 @Slf4j
 public class OrderWorkflowService {
-		private final OrderItemDTOMapper orderItemDTOMapper;
 		private final OrderItemRepository orderItemRepository;
 		private final OrderRepository orderRepository;
-		private final OrderDTOMapper orderDTOMapper;
 		private final StockService stockService;
 		private final OrderService orderService;
-
+		private final UserService userService;
+		private final OrderDTOMapper orderDTOMapper;
+		private final OrderItemDTOMapper orderItemDTOMapper;
 		public Order openNewOrder(OrderDTO orderDTO) {
 				Order openOrder = orderDTOMapper.map(orderDTO);
+				openOrder.setUser(userService.getAuthenticatedUser());
 				return orderRepository.save(openOrder);
 		}
 
@@ -36,6 +37,7 @@ public class OrderWorkflowService {
 		public Order addNewOrderItemToOrder(OrderItemDTO orderItemDTO, Long orderId) {
 				Order order = orderService.getOrderById(orderId);
 				OrderItem orderItem = orderItemDTOMapper.mapToOrderItem(orderItemDTO);
+				orderItem.setStock(stockService.getStockById(orderItemDTO.getStockId()));
 				orderItem.setOrder(order);
 				OrderItem savedOrderItem = orderItemRepository.save(orderItem);
 				stockService.updateQuantity(savedOrderItem.getStock().getId(), savedOrderItem.getQuantityOrdered());

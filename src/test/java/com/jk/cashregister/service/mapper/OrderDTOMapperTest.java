@@ -2,7 +2,7 @@ package com.jk.cashregister.service.mapper;
 
 import com.jk.cashregister.domain.Order;
 import com.jk.cashregister.domain.User;
-import com.jk.cashregister.domain.dto.OrderDTO;
+import com.jk.cashregister.service.dto.OrderDTO;
 import com.jk.cashregister.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

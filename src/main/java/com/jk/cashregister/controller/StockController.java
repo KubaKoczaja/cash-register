@@ -1,7 +1,7 @@
 package com.jk.cashregister.controller;
 
 import com.jk.cashregister.domain.Stock;
-import com.jk.cashregister.domain.dto.StockDTO;
+import com.jk.cashregister.service.dto.StockDTO;
 import com.jk.cashregister.repository.OrderItemRepository;
 import com.jk.cashregister.service.StockService;
 import com.jk.cashregister.service.exception.StockDeletingException;
@@ -68,7 +68,7 @@ public class StockController {
 		public String deleteStock(@PathVariable long id) {
 
 				log.info("Attempt to delete stock with id: " + id + " - checking if stock item is present somewhere in order");
-				if (!orderItemRepository.findAllByStockId(id).isEmpty()) {
+				if (orderItemRepository.existsById(id)) {
 						log.warn("Stock in active order!");
 						throw new StockDeletingException("You can't delete stock in active order");
 				}

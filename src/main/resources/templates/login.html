@@ -47,6 +47,9 @@
       <div class="row">
         <input class="m-3" type="submit" th:value="#{login}"/>
       </div>
+      <div class="row">
+        <span class="ml-2" th:text="#{not_registered}">Not registered? </span><a th:href="@{/register}"><span  class="ml-1"th:text="#{register_here}">Register here</span></a></span>
+      </div>
     </form>
 </div>
 </body>
