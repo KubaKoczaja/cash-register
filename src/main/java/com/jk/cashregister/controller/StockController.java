@@ -1,9 +1,10 @@
 package com.jk.cashregister.controller;
 
 import com.jk.cashregister.domain.Stock;
-import com.jk.cashregister.service.dto.StockDTO;
 import com.jk.cashregister.repository.OrderItemRepository;
+import com.jk.cashregister.repository.StockRepository;
 import com.jk.cashregister.service.StockService;
+import com.jk.cashregister.service.dto.StockDTO;
 import com.jk.cashregister.service.exception.StockDeletingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,7 @@ import static com.jk.cashregister.util.URLs.STOCK_ROOT;
 public class StockController {
 
 		private final StockService stockService;
+		private final StockRepository stockRepository;
 		private final OrderItemRepository orderItemRepository;
 
 		@GetMapping
@@ -72,7 +74,7 @@ public class StockController {
 						log.warn("Stock in active order!");
 						throw new StockDeletingException("You can't delete stock in active order");
 				}
-				stockService.deleteStockById(id);
+				stockRepository.deleteById(id);
 				log.info("Stock deleted");
 				return REDIRECT + STOCK_ROOT;
 		}

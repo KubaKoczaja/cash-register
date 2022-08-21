@@ -4,7 +4,7 @@ import com.jk.cashregister.domain.Report;
 import com.jk.cashregister.domain.User;
 import com.jk.cashregister.service.CashRegisterUserDetailsService;
 import com.jk.cashregister.service.ReportService;
-import org.junit.jupiter.api.BeforeEach;
+import com.jk.cashregister.util.LocalizedMessageProvider;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -35,6 +35,8 @@ class ReportControllerTest {
 		private ReportService reportService;
 		@MockBean
 		private Page<Report> pageList;
+		@MockBean
+		private LocalizedMessageProvider provider;
 
 		@Test
 		void shouldReturnAllReportsViewPage() throws Exception {

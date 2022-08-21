@@ -25,6 +25,7 @@
                     <th th:text="#{product_name}">Product Name</th>
                     <th th:text="#{quantity}">Quantity</th>
                     <th th:text="#{price}">Price</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -34,33 +35,12 @@
                     <td><a th:href="@{/stock/{id}/details(id=${stock.id})}" th:text="${stock.productName}">Product Name</a></td>
                     <td th:text="${stock.quantity}">Quantity</td>
                     <td th:text="${stock.price}">Price</td>
-                    <td class="border-top btn-group" role="group" sec:authorize="hasRole('ROLE_COMMODITY_EXPERT')">
-                        <form th:object="${stock}" th:action="@{/stock/{id}/update(id=${stock.id})}" th:method="get"><button type="submit" class="btn-sm btn-dark" th:text="#{update}">Update</button></form>
-                        <form th:object="${stock}" th:action="@{/stock/{id}/delete(id=${stock.id})}" th:method="post">
-                            <button type="button" class="btn-sm btn-danger ml-1" data-toggle="modal" data-target="#delete_stock_modal" th:text="#{delete}">Delete</button>
-                            <!-- Modal -->
-                            <div class="modal fade" id="delete_stock_modal" tabindex="-1" role="dialog" aria-labelledby="delete_stock_modal" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title"><span th:text="#{stock}">Stock</span></h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <span th:text="#{delete_item} + ${stock.id}"></span>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-dark" data-dismiss="modal" th:text="#{stop}">Stop</button>
-                                            <button type="submit" class="btn btn-danger" th:text="#{continue}">Continue</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--modal end-->
+                    <td>
+                        <form th:action="@{/stock/{id}/details(id=${stock.id})}" th:method="get">
+                            <button type="submit" class="btn-sm btn-secondary" th:text="#{details}">Details</button>
                         </form>
                     </td>
+
                 </tr>
                 </tbody>
             </table>

@@ -6,6 +6,7 @@ import com.jk.cashregister.repository.OrderItemRepository;
 import com.jk.cashregister.service.CashRegisterUserDetailsService;
 import com.jk.cashregister.service.OrderItemService;
 import com.jk.cashregister.service.OrderService;
+import com.jk.cashregister.util.LocalizedMessageProvider;
 import com.jk.cashregister.util.Paging;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,8 @@ class OrderControllerTest {
 		private Page<Order> orderPage;
 		@MockBean
 		private Paging<OrderItem> orderItemPaging;
+		@MockBean
+		private LocalizedMessageProvider provider;
 
 		@Test
 		void shouldReturnAllOrdersView() throws Exception {

@@ -68,6 +68,11 @@
                             </form>
                         </div>
                     </form>
+                    <form class="ml-2" th:action="@{/stock/{id}/update(id=${stockItem.id})}" th:method="get">
+                        <div class="input-group-append" sec:authorize="hasRole('ROLE_COMMODITY_EXPERT')">
+                            <button type="submit" class="btn-sm btn-dark"><span th:text="#{edit}">Edit</span></button>
+                        </div>
+                    </form>
                     <form class="ml-2" th:action="@{/stock}" th:method="get">
                             <div class="input-group-append">
                                 <button type="submit" class="btn-sm btn-dark"><span th:text="#{go_back}">Go back</span></button>

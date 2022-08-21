@@ -1,11 +1,12 @@
 package com.jk.cashregister.controller;
 
-import com.jk.cashregister.domain.OrderItem;
 import com.jk.cashregister.domain.Stock;
-import com.jk.cashregister.service.dto.StockDTO;
 import com.jk.cashregister.repository.OrderItemRepository;
+import com.jk.cashregister.repository.StockRepository;
 import com.jk.cashregister.service.CashRegisterUserDetailsService;
 import com.jk.cashregister.service.StockService;
+import com.jk.cashregister.service.dto.StockDTO;
+import com.jk.cashregister.util.LocalizedMessageProvider;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -15,7 +16,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
@@ -34,6 +34,8 @@ class StockControllerTest {
 		@MockBean
 		private OrderItemRepository orderItemRepository;
 		@MockBean
+		private StockRepository stockRepository;
+		@MockBean
 		private CashRegisterUserDetailsService cashRegisterUserDetailsService;
 		@MockBean
 		private Page<Stock> pageList;
@@ -41,6 +43,8 @@ class StockControllerTest {
 		private Stock stock;
 		@MockBean
 		private StockDTO stockDTO;
+		@MockBean
+		private LocalizedMessageProvider provider;
 
 		@Test
 		void shouldReturnAllStockViewWithOkStatus() throws Exception {
@@ -85,7 +89,7 @@ class StockControllerTest {
 		}
 		@Test
 		void shouldThrowExceptionWhenStockSetToBeDeleteIsInOrder() throws Exception {
-				when(orderItemRepository.findAllByStockId(anyLong())).thenReturn(List.of(new OrderItem()));
+				when(orderItemRepository.existsById(anyLong())).thenReturn(true);
 				mockMvc.perform(post("/stock/{id}/delete", 1L))
 								.andExpect(view().name("/customerror"))
 								.andExpect(status().isOk());

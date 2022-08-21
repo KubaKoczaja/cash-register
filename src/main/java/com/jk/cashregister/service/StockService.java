@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -33,27 +34,25 @@ public class StockService {
 				return stockRepository.findAll(PageRequest.of(page - 1, size));
 		}
 
+		@Transactional
 		public Stock createStock(StockDTO request) {
 				Stock stock = StockDTOMapper.INSTANCE.stockDTOToStock(request);
 				return stockRepository.save(stock);
 		}
 
+		@Transactional
 		public void updateStock(StockDTO request, Long stockToUpdateId) {
 				Stock stock = StockDTOMapper.INSTANCE.stockDTOToStock(request);
 				stock.setId(stockToUpdateId);
 				stockRepository.save(stock);
 		}
 
+		@Transactional
 		public void updateQuantity(long stockId, int newQuantity) {
 				Stock byId = getStockById(stockId);
-
 				stockQuantityValidator.validateOrderedQuantity(byId.getQuantity(), newQuantity);
 				byId.setQuantity(byId.getQuantity() - newQuantity);
 				stockRepository.save(byId);
-		}
-
-		public void deleteStockById(Long id) {
-				stockRepository.deleteById(id);
 		}
 
 		public List<Stock> getAllUsingSearch(SearchDTO searchDTO) {

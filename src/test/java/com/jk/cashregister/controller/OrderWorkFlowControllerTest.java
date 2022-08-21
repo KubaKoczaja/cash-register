@@ -10,6 +10,7 @@ import com.jk.cashregister.service.CashRegisterUserDetailsService;
 import com.jk.cashregister.service.OrderService;
 import com.jk.cashregister.service.OrderWorkflowService;
 import com.jk.cashregister.service.StockService;
+import com.jk.cashregister.util.LocalizedMessageProvider;
 import com.jk.cashregister.util.Paging;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -53,6 +54,8 @@ class OrderWorkFlowControllerTest {
 		private List<Stock> stockList;
 		@MockBean
 		private Page<Stock> stockPage;
+		@MockBean
+		private LocalizedMessageProvider provider;
 
 		@BeforeEach
 		void setUp() {
@@ -64,12 +67,6 @@ class OrderWorkFlowControllerTest {
 				when(orderWorkflowService.openNewOrder(any(OrderDTO.class))).thenReturn(order);
 				mockMvc.perform(post("/order/openorder"))
 								.andExpect(view().name("redirect:/order/" + order.getId() + "/editorder"))
-								.andExpect(status().is3xxRedirection());
-		}
-		@Test
-		void shouldDeleteNewOrder() throws Exception {
-				mockMvc.perform(post("/order/{id}/deleteneworder", 1L))
-								.andExpect(view().name("redirect:/order"))
 								.andExpect(status().is3xxRedirection());
 		}
 		@Test

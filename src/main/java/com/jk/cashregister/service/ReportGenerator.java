@@ -2,6 +2,7 @@ package com.jk.cashregister.service;
 
 import com.jk.cashregister.domain.Order;
 import com.jk.cashregister.domain.Report;
+import com.jk.cashregister.domain.User;
 import com.jk.cashregister.repository.OrderRepository;
 import com.jk.cashregister.service.dto.ReportDTO;
 import com.jk.cashregister.service.mapper.ReportDTOMapper;
@@ -21,15 +22,16 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public abstract class ReportGenerator {
-		private  final UserService userService;
-		private final ReportDTOMapper reportDTOMapper;
+
 		private final OrderRepository orderRepository;
 		private final LocalizedMessageProvider provider;
+		private final UserService userService;
+		private final ReportDTOMapper reportDTOMapper;
 
 
 		public Report generateReport(ReportDTO reportDTO) {
-				Report report = reportDTOMapper.map(reportDTO);
-				report.setUser(userService.getAuthenticatedUser());
+				User authUser = userService.getAuthenticatedUser();
+				Report report = reportDTOMapper.map(reportDTO, authUser);
 				LocalDateTime fromDate = provideFromDate();
 				report.setFromDate(fromDate);
 				report.setContent(provideContent(report.getFromDate(), report.getToDate()));

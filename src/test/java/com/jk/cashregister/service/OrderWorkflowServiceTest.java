@@ -4,10 +4,10 @@ import com.jk.cashregister.domain.Order;
 import com.jk.cashregister.domain.OrderItem;
 import com.jk.cashregister.domain.Stock;
 import com.jk.cashregister.domain.User;
-import com.jk.cashregister.service.dto.OrderDTO;
-import com.jk.cashregister.service.dto.OrderItemDTO;
 import com.jk.cashregister.repository.OrderItemRepository;
 import com.jk.cashregister.repository.OrderRepository;
+import com.jk.cashregister.service.dto.OrderDTO;
+import com.jk.cashregister.service.dto.OrderItemDTO;
 import com.jk.cashregister.service.exception.EmptyOrderException;
 import com.jk.cashregister.service.mapper.OrderDTOMapper;
 import com.jk.cashregister.service.mapper.OrderItemDTOMapper;
@@ -41,18 +41,21 @@ class OrderWorkflowServiceTest {
 		private OrderService orderService;
 		@Mock
 		private StockService stockService;
+		@Mock
+		private UserService userService;
 		@InjectMocks
 		private OrderWorkflowService orderWorkflowService;
 		private Order newOrder;
 		private OrderDTO orderDTOInput;
 		private OrderItem orderItemInput;
 		private OrderItem orderItemToSave;
+		private Stock stockTest;
 		private ArgumentCaptor<Order> orderArgumentCaptor;
 		private ArgumentCaptor<OrderItem> orderItemArgumentCaptor;
 
 		@BeforeEach
 		void setUp() {
-				Stock stockTest = new Stock(1L, "aaa", "test", 10, 100, new ArrayList<>());
+				stockTest = new Stock(1L, "aaa", "test", 10, 100, new ArrayList<>());
 				orderDTOInput = new OrderDTO(LocalDateTime.now());
 				orderItemInput = new OrderItem(1L, stockTest, 10, new Order());
 				orderItemToSave = new OrderItem(1L, stockTest, 10, newOrder);
@@ -64,7 +67,8 @@ class OrderWorkflowServiceTest {
 
 		@Test
 		void shouldOpenNewOrder() {
-				when(orderDTOMapper.map(any(OrderDTO.class))).thenReturn(newOrder);
+				when(userService.getAuthenticatedUser()).thenReturn(new User());
+				when(orderDTOMapper.map(any(OrderDTO.class), any(User.class))).thenReturn(newOrder);
 				orderWorkflowService.openNewOrder(orderDTOInput);
 
 				verify(orderRepository).save(orderArgumentCaptor.capture());
@@ -76,18 +80,14 @@ class OrderWorkflowServiceTest {
 
 		@Test
 		void shouldAddNewOrderItemToExistingOrder() {
-
+				OrderItemDTO orderItemDTOInput = new OrderItemDTO(1L, 10);
 				when(orderService.getOrderById(anyLong())).thenReturn(newOrder);
-				when(orderItemDTOMapper.mapToOrderItem(any(OrderItemDTO.class))).thenReturn(orderItemInput);
+				when(stockService.getStockById(anyLong())).thenReturn(stockTest);
+				when(orderItemDTOMapper.mapToOrderItem(any(OrderItemDTO.class), any(Order.class), any(Stock.class))).thenReturn(orderItemInput);
 				when(orderItemRepository.save(any(OrderItem.class))).thenReturn(orderItemToSave);
-
-				orderWorkflowService.addNewOrderItemToOrder(new OrderItemDTO(), anyLong());
-
-				verify(orderItemRepository).save(orderItemArgumentCaptor.capture());
-				OrderItem result = orderItemArgumentCaptor.getValue();
-				assertEquals(newOrder, result.getOrder());
-
+				Order result = orderWorkflowService.addNewOrderItemToOrder(orderItemDTOInput, 1L);
 				verify(stockService).updateQuantity(anyLong(), anyInt());
+
 		}
 		@Test
 		void shouldThrowExceptionWhenClosingOrderWithoutAnyOrderItems() {

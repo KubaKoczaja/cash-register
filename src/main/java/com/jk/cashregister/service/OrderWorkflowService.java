@@ -2,10 +2,12 @@ package com.jk.cashregister.service;
 
 import com.jk.cashregister.domain.Order;
 import com.jk.cashregister.domain.OrderItem;
-import com.jk.cashregister.service.dto.OrderDTO;
-import com.jk.cashregister.service.dto.OrderItemDTO;
+import com.jk.cashregister.domain.Stock;
+import com.jk.cashregister.domain.User;
 import com.jk.cashregister.repository.OrderItemRepository;
 import com.jk.cashregister.repository.OrderRepository;
+import com.jk.cashregister.service.dto.OrderDTO;
+import com.jk.cashregister.service.dto.OrderItemDTO;
 import com.jk.cashregister.service.exception.EmptyOrderException;
 import com.jk.cashregister.service.mapper.OrderDTOMapper;
 import com.jk.cashregister.service.mapper.OrderItemDTOMapper;
@@ -27,23 +29,24 @@ public class OrderWorkflowService {
 		private final UserService userService;
 		private final OrderDTOMapper orderDTOMapper;
 		private final OrderItemDTOMapper orderItemDTOMapper;
+		@Transactional
 		public Order openNewOrder(OrderDTO orderDTO) {
-				Order openOrder = orderDTOMapper.map(orderDTO);
-				openOrder.setUser(userService.getAuthenticatedUser());
+				User authUser = userService.getAuthenticatedUser();
+				Order openOrder = orderDTOMapper.map(orderDTO, authUser);
 				return orderRepository.save(openOrder);
 		}
 
 		@Transactional
 		public Order addNewOrderItemToOrder(OrderItemDTO orderItemDTO, Long orderId) {
 				Order order = orderService.getOrderById(orderId);
-				OrderItem orderItem = orderItemDTOMapper.mapToOrderItem(orderItemDTO);
-				orderItem.setStock(stockService.getStockById(orderItemDTO.getStockId()));
-				orderItem.setOrder(order);
+				Stock stock = stockService.getStockById(orderItemDTO.getStockId());
+				OrderItem orderItem = orderItemDTOMapper.mapToOrderItem(orderItemDTO, order, stock);
 				OrderItem savedOrderItem = orderItemRepository.save(orderItem);
 				stockService.updateQuantity(savedOrderItem.getStock().getId(), savedOrderItem.getQuantityOrdered());
 				return order;
 		}
 
+		@Transactional
 		public void closeNewOrder(Long id) {
 				Order order = orderService.getOrderById(id);
 				if (order.getOrderItemList().isEmpty()) {
