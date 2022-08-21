@@ -4,11 +4,13 @@ import com.jk.cashregister.domain.Report;
 import com.jk.cashregister.repository.ReportRepository;
 import com.jk.cashregister.service.dto.ReportDTO;
 import com.jk.cashregister.service.exception.NoSuchItemException;
+import com.jk.cashregister.service.mapper.ReportDTOMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -16,7 +18,10 @@ import org.springframework.stereotype.Service;
 public class ReportService {
 		private final ReportFactory reportFactory;
 		private final ReportRepository reportRepository;
+		private  final UserService userService;
+		private final ReportDTOMapper reportDTOMapper;
 
+		@Transactional
 		public void createReport(ReportDTO reportDTO) {
 
 				log.info("creating report");

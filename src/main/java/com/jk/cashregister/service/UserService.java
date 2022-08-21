@@ -37,8 +37,8 @@ public class UserService {
 		@Transactional
 		public void register(UserDTO userDTO) {
 				newUserValidator.validate(userDTO);
+				userDTO.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
 				User user = UserDTOMapper.INSTANCE.userDTOToUser(userDTO);
-				user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 				userRepository.save(user);
 				AuthGroup authGroup = authGroupMapper.mapTpAuthGroup(userDTO);
 				authGroupRepository.save(authGroup);

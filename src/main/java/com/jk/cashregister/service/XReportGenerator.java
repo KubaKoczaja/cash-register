@@ -17,11 +17,12 @@ public class XReportGenerator extends ReportGenerator {
 
 		private final ReportRepository reportRepository;
 
-		public XReportGenerator(UserService userService, ReportDTOMapper reportDTOMapper, OrderRepository orderRepository, ReportRepository reportRepository,
-														LocalizedMessageProvider provider) {
-				super(userService, reportDTOMapper, orderRepository, provider);
+		public XReportGenerator(OrderRepository orderRepository, LocalizedMessageProvider provider, UserService userService, ReportDTOMapper reportDTOMapper, ReportRepository reportRepository) {
+				super(orderRepository, provider, userService, reportDTOMapper);
 				this.reportRepository = reportRepository;
 		}
+
+
 		@Override
 		public LocalDateTime provideFromDate() {
 				List<Report> reports = reportRepository.findAllByReportType(Z);

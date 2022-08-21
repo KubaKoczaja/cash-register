@@ -31,9 +31,9 @@
                                     <button type="submit" class="btn-sm btn-dark" th:text="#{close_order}">Close Order</button>
                             </div>
                     </form>
-                    <form class="m-2" th:object="${newOrder}" th:action="@{/order/{id}/deleteneworder(id=${newOrder.id})}" th:method="post">
+                    <form class="m-2" th:object="${newOrder}" th:action="@{/order/{id}/delete(id=${newOrder.id})}" th:method="post">
                             <div class="input-group-append">
-<!--                                <button type="submit" class="btn-sm btn-danger" th:text="#{delete}">Delete</button>-->
+
                                 <button type="button" class="border-top btn-sm btn-danger" data-toggle="modal" data-target="#delete_order_modal" th:text="#{delete}">Delete</button>
                                 <!-- Modal -->
                                 <div class="modal fade" id="delete_order_modal" tabindex="-1" role="dialog" aria-labelledby="delete_stock_modal" aria-hidden="true">

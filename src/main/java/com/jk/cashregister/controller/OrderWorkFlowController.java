@@ -103,12 +103,4 @@ public class OrderWorkFlowController {
 				log.info("New order closed");
 				return REDIRECT + ORDER_ROOT;
 		}
-
-		@PostMapping("/{id}/deleteneworder")
-		@PreAuthorize("hasAnyRole('ROLE_SENIOR_CASHIER','ROLE_CASHIER')")
-		public String deleteNewOrder(@PathVariable Long id) {
-				orderService.deleteOrderWithItems(id);
-				return REDIRECT + ORDER_ROOT;
-		}
-
 }

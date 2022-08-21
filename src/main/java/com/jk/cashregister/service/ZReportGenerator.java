@@ -10,8 +10,10 @@ import java.time.LocalDateTime;
 @Service
 public class ZReportGenerator extends ReportGenerator {
 
-		public ZReportGenerator(UserService userService, ReportDTOMapper reportDTOMapper, OrderRepository orderRepository, LocalizedMessageProvider provider) {
-				super(userService, reportDTOMapper, orderRepository, provider);
+
+		public ZReportGenerator(OrderRepository orderRepository, LocalizedMessageProvider provider,
+														UserService userService, ReportDTOMapper reportDTOMapper) {
+				super(orderRepository, provider, userService, reportDTOMapper);
 		}
 
 		// Z Report will always prepare content of report from midnight to now

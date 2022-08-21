@@ -2,6 +2,7 @@ package com.jk.cashregister.controller;
 
 import com.jk.cashregister.service.CashRegisterUserDetailsService;
 import com.jk.cashregister.service.OrderService;
+import com.jk.cashregister.util.LocalizedMessageProvider;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -22,6 +23,8 @@ class MainControllerTest {
 		private OrderService orderService;
 		@MockBean
 		private CashRegisterUserDetailsService cashRegisterUserDetailsService;
+		@MockBean
+		private LocalizedMessageProvider provider;
 
 
 		@Test

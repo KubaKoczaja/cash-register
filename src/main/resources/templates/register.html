@@ -7,16 +7,23 @@
 </head>
 <body>
 <header>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-    <div class="container">
-      <a class="navbar-brand" th:href="@{/index}" th:text="#{cash_register}">Cash Register</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-              aria-controls="navbarResponsive"
-              aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-    </div>
-  </nav>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/index}" th:text="#{cash_register}">Cash Register</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                    aria-controls="navbarResponsive"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link" href="?lang=en">EN</a></li>
+                    <li class="nav-item"><a class="nav-link" href="?lang=pl">PL</a></li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
 </header>
 
 <div class="container">
@@ -65,7 +72,7 @@
             <input id="username" class="form-control" th:field="*{username}" />
         </div>
         <div class="form-group mb-1">
-          <label for="password" class="control-label" th:text="#{password}">Password</label>
+          <label for="password" class="control-label" th:text="#{password_register}">Password</label>
             <input id="password" class="form-control" type="password" th:field="*{password}" />
         </div>
         <div class="form-group mb-1">

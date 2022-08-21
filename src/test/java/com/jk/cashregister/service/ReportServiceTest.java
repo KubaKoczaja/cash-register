@@ -1,11 +1,12 @@
 package com.jk.cashregister.service;
 
 import com.jk.cashregister.domain.*;
-import com.jk.cashregister.service.dto.ReportDTO;
 import com.jk.cashregister.repository.OrderRepository;
 import com.jk.cashregister.repository.ReportRepository;
+import com.jk.cashregister.service.dto.ReportDTO;
 import com.jk.cashregister.service.exception.NoSuchItemException;
 import com.jk.cashregister.service.mapper.ReportDTOMapper;
+import com.jk.cashregister.util.LocalizedMessageProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,7 +14,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ReportServiceTest {
@@ -37,7 +37,10 @@ class ReportServiceTest {
 		private ReportRepository reportRepository;
 		@Mock
 		private ReportDTOMapper reportDTOMapper;
-
+		@Mock
+		private UserService userService;
+		@Mock
+		private LocalizedMessageProvider provider;
 		private List<Report> reportList;
 		private List<Order> orderList;
 
@@ -57,13 +60,13 @@ class ReportServiceTest {
 				stock.setOrderItemList(List.of(orderItem));
 				orderList.add(order1);
 		}
-
 		@Test
 		void shouldProvideContentForGivenListOfOrders() {
 				when(orderRepository.findAllByCloseDateGreaterThanAndCloseDateLessThanEqual(any(LocalDateTime.class), any(LocalDateTime.class)))
 								.thenReturn(orderList);
-				String expected = "Number of orders: 1\nItems stats: \npn : 4\n";
+				String expected = "null1\nnull\npn : 4\n";
 				String result = xReportGenerator.provideContent(LocalDateTime.now(), LocalDateTime.now());
+				verify(provider, times(2)).provideMessage(anyString());
 				assertEquals(expected, result);
 		}
 		@Test
@@ -90,7 +93,8 @@ class ReportServiceTest {
 		void shouldGenerateXReport() {
 				Report reportInput = new Report(1L, LocalDateTime.now(), LocalDateTime.now(),"a","X", new User());
 				ReportDTO reportDTOInput = new ReportDTO("X");
-				when(reportDTOMapper.map(any(ReportDTO.class))).thenReturn(reportInput);
+				when(userService.getAuthenticatedUser()).thenReturn(new User());
+				when(reportDTOMapper.map(any(ReportDTO.class), any(User.class))).thenReturn(reportInput);
 				when(reportRepository.findAllByReportType(anyString())).thenReturn(reportList);
 				when(orderRepository.findAllByCloseDateGreaterThanAndCloseDateLessThanEqual(any(LocalDateTime.class), any(LocalDateTime.class)))
 								.thenReturn(orderList);
@@ -101,9 +105,12 @@ class ReportServiceTest {
 		}
 		@Test
 		void shouldGenerateZReport() {
-				Report reportInput = new Report(1L, LocalDateTime.now(), LocalDateTime.now(),"a","Z", new User());
+				User user = new User(1L, "testName","testLastName", "CASHIER", "testUserName","test", new ArrayList<>(), new ArrayList<>());
+
+				Report reportInput = new Report(1L, LocalDateTime.now(), LocalDateTime.now(),"a","Z", user);
 				ReportDTO reportDTOInput = new ReportDTO("Z");
-				when(reportDTOMapper.map(any(ReportDTO.class))).thenReturn(reportInput);
+				when(userService.getAuthenticatedUser()).thenReturn(new User());
+				when(reportDTOMapper.map(any(ReportDTO.class), any(User.class))).thenReturn(reportInput);
 				when(orderRepository.findAllByCloseDateGreaterThanAndCloseDateLessThanEqual(any(LocalDateTime.class), any(LocalDateTime.class)))
 								.thenReturn(orderList);
 				Report result = zReportGenerator.generateReport(reportDTOInput);

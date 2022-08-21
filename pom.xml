@@ -33,6 +33,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-maven-plugin</artifactId>
+			<version>2.7.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 		<dependency>
@@ -96,12 +101,16 @@
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-junit-jupiter</artifactId>
-			<version>4.6.1</version>
+			<version>4.7.0</version>
 		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
@@ -110,7 +119,7 @@
 				<excludes>
 					<exclude>com/jk/**/domain/*</exclude>
 					<exclude>com/jk/**/service/exception/*</exclude>
-					<exclude>com/jk/**/domain/dto/*</exclude>
+					<exclude>com/jk/**/service/dto/*</exclude>
 					<exclude>com/jk/**/repository/*</exclude>
 					<exclude>com/jk/**/security/*</exclude>
 					<exclude>com/jk/**/util/URLs*</exclude>

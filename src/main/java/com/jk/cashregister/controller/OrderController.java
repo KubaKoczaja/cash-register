@@ -67,7 +67,7 @@ public class OrderController {
 
 		@PostMapping("/{id}/delete")
 		@PreAuthorize("hasRole('ROLE_SENIOR_CASHIER')")
-		public String deleteOrder(@PathVariable long id) {
+		public String deleteOrder(@PathVariable Long id) {
 
 				log.info("Deleting order with all its items");
 				orderService.deleteOrderWithItems(id);

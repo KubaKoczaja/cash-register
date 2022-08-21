@@ -19,47 +19,29 @@
     <div class="container fluid">
         <div class="row">
             <div class="col-lg-10 mt-5 mb-5">
-                <table id="stock" class="table" style="width: 100%">
+                <table id="order" class="table" style="width: 100%">
                     <thead class="table-secondary">
                     <tr>
                         <th>Id</th>
                         <th th:text="#{opened}">Opened</th>
                         <th th:text="#{closed}">Closed</th>
                         <th th:text="#{employee}">Employee</th>
+                        <th></th>
+
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="order : ${allOrders}">
+
                         <td><a th:href="@{/order/{id}/details(id=${order.id})}" th:text="${order.id}">Id</a></td>
                         <td th:text="${#temporals.format(order.openDate, 'dd-MM-yyyy HH:mm:ss')}">Opened</td>
                         <td th:text="${#temporals.format(order.closeDate, 'dd-MM-yyyy HH:mm:ss')}">Closed</td>
                         <td th:text="${order.user.lastName}">Employee</td>
-
-                        <td sec:authorize="hasRole('ROLE_SENIOR_CASHIER')"><form th:object="${order}" th:action="@{/order/{id}/delete(id=${order.id})}" th:method="post">
-<!--                            <button type="submit" class="border-top btn-sm btn-danger" th:text="#{delete}">Delete</button>-->
-                            <button type="button" class="border-top btn-sm btn-danger" data-toggle="modal" data-target="#delete_order_modal" th:text="#{delete}">Delete</button>
-                            <!-- Modal -->
-                            <div class="modal fade" id="delete_order_modal" tabindex="-1" role="dialog" aria-labelledby="delete_stock_modal" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title"><span th:text="#{orders}">Orders</span></h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <span th:text="#{delete_item} + ${order.id}"></span>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-dark" data-dismiss="modal" th:text="#{stop}">Stop</button>
-                                            <button type="submit" class="btn btn-danger" th:text="#{continue}">Continue</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--modal end-->
-                        </form></td>
+                        <td>
+                            <form th:action="@{/order/{id}/details(id=${order.id})}" th:method="get">
+                                <button type="submit" class="btn-sm btn-secondary" th:text="#{details}">Details</button>
+                            </form>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
